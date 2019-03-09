@@ -17,9 +17,8 @@ Gem::Specification.new do |s|
   s.executables   = 'kraken-mobile'
   s.files        = Dir.glob('lib/**/*') + %w(LICENSE README.md)
 
-  s.required_ruby_version     = '>= 2.2'
-
   s.add_dependency( 'calabash-android', '0.9.8')
-  s.add_dependency( 'parallel' )
+  s.add_dependency( 'parallel', '1.14.0')
+
   s.require_paths = ['lib']
 end

@@ -22,10 +22,9 @@ else
         exit 1
       else
         options = {
-          apk_path: "app.apk",
+          apk_path: ARGV.first,
           cucumber_options: "--format pretty",
-          mute_output: true,
-          feature_folder: "features/"
+          feature_folder: @features_dir
         }
         kraken = KrakenMobile::App.new(options)
         kraken.run_in_parallel
