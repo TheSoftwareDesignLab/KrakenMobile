@@ -24,8 +24,8 @@ module KrakenMobile
 			end
 
 			def build_execution_command process_number, apk_path, cucumber_options, test_files
-				execution_command = @command_helper.build_command [BASE_COMMAND, apk_path, cucumber_options, *test_files]
-				device = @adb_helper.connected_devices[process_number]
+        device = @adb_helper.connected_devices[process_number]
+				execution_command = @command_helper.build_command [BASE_COMMAND, apk_path, cucumber_options, *test_files, "--tags @user#{device.position}"]
 				env_variables = {
 					AUTOTEST: '1',
 					ADB_DEVICE_ARG: device.id,

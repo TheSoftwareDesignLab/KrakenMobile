@@ -17,7 +17,7 @@ module KrakenMobile
 							line_id = extract_device_id(line)
 							line_model = extract_device_model(line)
 							if line_id && line_model
-								device = Models::Device.new(line_id, line_model)
+								device = Models::Device.new(line_id, line_model, devices.size + 1)
 								devices << device
 							end
 						end

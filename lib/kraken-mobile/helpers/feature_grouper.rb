@@ -2,10 +2,17 @@ require 'json'
 
 module KrakenMobile
   class FeatureGrouper
-    def self.file_groups(feature_folder, group_size)
+    # Returns files in feature_folder distributed equally in group size.
+    def self.distributed_file_groups(feature_folder, group_size)
       files = feature_files_in_folder feature_folder
       groups = create_file_groups group_size,files
       groups
+    end
+
+    # All groups contains all files in feature_folder
+    def self.file_groups(feature_folder, group_size)
+      files = feature_files_in_folder feature_folder
+      group_size.times.map { files }
     end
 
     def self.create_file_groups group_size, files
