@@ -15,7 +15,12 @@ Gem::Specification.new do |s|
   s.summary     = %q{Automated E2E mobile testing involving intercommunication scenarios. }
   s.description = %q{Automated E2E testing involving intercommunication between two or more mobile applications running in different devices or emulators. }
   s.executables   = 'kraken-mobile'
-  s.files        = Dir.glob('lib/**/*') + %w(LICENSE README.md)
+  s.files        = lambda do
+      Dir.glob('lib/**/*') +
+      Dir.glob("bin/**/*.rb") +
+      ["bin/kraken-mobile"] +
+      %w(LICENSE README.md)
+  end.call
 
   s.add_dependency( 'calabash-android', '0.9.8')
   s.add_dependency( 'parallel', '1.14.0')
