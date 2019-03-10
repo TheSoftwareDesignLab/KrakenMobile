@@ -1,7 +1,8 @@
-Then /^I wait for a signal$/ do
-  readSignal("93c6af534id", "signal", 10)
+Then("I wait for a signal containig {string}") do |string|
+  channel = @scenario_tags.grep(/@user/).first
+  readSignal(channel, string, 10)
 end
 
-Then /^I send a signal$/ do
-  writeSignal("93c6af5234id", "signal")
+Then("I send a signal to user {int} containing {string}") do |int, string|
+  writeSignal("@user#{int}", string)
 end
