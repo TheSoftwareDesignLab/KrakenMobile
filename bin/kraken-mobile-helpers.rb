@@ -16,6 +16,14 @@ def print_usage
 EOF
 end
 
+def print_devices
+  device_helper = KrakenMobile::DevicesHelper::AdbHelper.new()
+  puts "List of devices attached"
+  device_helper.connected_devices.each_with_index do |device, index|
+    puts "user#{index+1} - #{device.id} - #{device.model}"
+  end
+end
+
 def is_apk_file?(file_path)
     file_path.end_with? ".apk" and File.exist? file_path
 end

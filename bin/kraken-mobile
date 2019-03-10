@@ -32,6 +32,9 @@ else
     when 'version'
       require 'kraken-mobile/version'
       puts KrakenMobile::VERSION
+    when 'devices'
+      require 'kraken-mobile/helpers/devices_helper/adb_helper'
+      print_devices
     else
       puts "Invalid command '#{cmd}'"
       print_usage
