@@ -10,12 +10,16 @@ require 'kraken-mobile'
 
 @features_dir = File.join(FileUtils.pwd, "features")
 @support_dir = File.join(@features_dir, "support")
+@source_dir = File.join(File.dirname(__FILE__), '..', 'features-skeleton')
 
 if ARGV.length == 0
     print_usage
 else
   cmd = ARGV.shift
   case cmd
+    when 'gen'
+      require File.join(File.dirname(__FILE__), "kraken-mobile-generate")
+      kraken_scaffold()
     when 'run'
       if ARGV.empty? or not is_apk_file?(ARGV.first)
         puts "The first parameter must be the path to the apk file."

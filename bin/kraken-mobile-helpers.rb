@@ -31,3 +31,9 @@ end
 def relative_to_full_path(file_path)
     File.expand_path(file_path)
 end
+
+def msg(title, &block)
+  puts "\n" + "-"*10 + title + "-"*10
+  block.call
+  puts "-"*10 + "-------" + "-"*10 + "\n"
+end

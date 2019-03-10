@@ -1,0 +1,1 @@
+require 'kraken-mobile/cucumber'
