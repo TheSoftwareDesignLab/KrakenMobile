@@ -8,6 +8,14 @@ module KrakenMobile
 				`adb devices -l`
 			end
 
+      def file_content file_name, device_id
+        `adb -s #{device_id} shell "cat /sdcard/#{file_name}"`
+      end
+
+      def write_content_to_device content, file_name, device_id
+        `adb -s #{device_id} shell "echo "#{content}" > /sdcard/#{file_name}"`
+      end
+
       # Returns an array with all the devices and emulators connected to the computer.
 			def connected_devices
 				begin
@@ -26,6 +34,24 @@ module KrakenMobile
 					[]
 				end
 			end
+
+      def read_file_content file_name, device_id
+        begin
+          content = file_content("#{file_name}.txt", device_id)
+          content.strip
+        rescue
+          ""
+        end
+      end
+
+      def write_content_to_file content, file_name, device_id
+        begin
+          write_content_to_device(content, "#{file_name}.txt", device_id)
+          true
+        rescue
+          false
+        end
+      end
 
       # Parses the device id from the ADB devices command.
 			def extract_device_id line
