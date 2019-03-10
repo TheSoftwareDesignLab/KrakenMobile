@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.files        = lambda do
       Dir.glob('lib/**/*') +
       Dir.glob("bin/**/*.rb") +
+      Dir.glob("features-skeleton/**/*.*") +
       ["bin/kraken-mobile"] +
       %w(LICENSE README.md)
   end.call
