@@ -19,8 +19,8 @@ module KrakenMobile
     # helpers
     def channel_to_device_id channel
       begin
-        channel.slice!("@user")
-        device_position = channel.to_i - 1
+        formatted_channel = channel.tr("@user", "")
+        device_position = formatted_channel.to_i - 1
         devices_helper = DevicesHelper::AdbHelper.new()
         devices_helper.connected_devices[device_position].id
       rescue
