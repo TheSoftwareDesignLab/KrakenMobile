@@ -16,6 +16,14 @@ module KrakenMobile
         `adb -s #{device_id} shell "echo "#{content}" > /sdcard/#{file_name}"`
       end
 
+      def create_file_in_device file_name, device_id
+        `adb -s #{device_id} shell "> /sdcard/#{file_name}"`
+      end
+
+      def delete_file_in_device file_name, device_id
+        `adb -s #{device_id} shell "rm -rf /sdcard/#{file_name}"`
+      end
+
       # Returns an array with all the devices and emulators connected to the computer.
 			def connected_devices
 				begin
@@ -47,6 +55,24 @@ module KrakenMobile
       def write_content_to_file content, file_name, device_id
         begin
           write_content_to_device(content, "#{file_name}.txt", device_id)
+          true
+        rescue
+          false
+        end
+      end
+
+      def create_file file_name, device_id
+        begin
+          create_file_in_device("#{file_name}.txt", device_id)
+          true
+        rescue
+          false
+        end
+      end
+
+      def delete_file file_name, device_id
+        begin
+          delete_file_in_device("#{file_name}.txt", device_id)
           true
         rescue
           false

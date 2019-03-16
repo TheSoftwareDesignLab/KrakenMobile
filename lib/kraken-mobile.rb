@@ -1,5 +1,5 @@
 require 'kraken-mobile/helpers/devices_helper/adb_helper'
-require 'kraken-mobile/runners/android_runner'
+require 'kraken-mobile/runners/calabash/android_runner'
 
 module KrakenMobile
 	class App
@@ -17,11 +17,15 @@ module KrakenMobile
 			groups = FeatureGrouper.file_groups(feature_folder, devices_connected.size)
 			threads = groups.size
 			puts "Running with #{threads} threads: #{groups}"
-			complete = []
 			test_results = Parallel.map_with_index(
 				groups,
 				:in_threads => threads,
-				:finish => lambda { |_, i, _|  complete.push(i); print complete, "\n"  }
+        :start => lambda { |group, index|
+          @runner.before_feature(index)
+        },
+				:finish => lambda { |group, index, _|
+          @runner.after_feature(index)
+        }
 			) do |group, index|
 				@runner.run_tests(group, index, @options)
 			end

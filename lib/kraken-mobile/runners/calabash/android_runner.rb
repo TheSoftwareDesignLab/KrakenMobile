@@ -15,6 +15,17 @@ module KrakenMobile
 				@command_helper = CommandHelper.new()
 			end
 
+      # Hooks
+      def before_feature process_number
+        device = @adb_helper.connected_devices[process_number]
+        @adb_helper.create_file "inbox", device.id
+      end
+
+      def after_feature process_number
+        device = @adb_helper.connected_devices[process_number]
+        @adb_helper.delete_file "inbox", device.id
+      end
+
 			def run_tests(test_files, process_number, options)
 				cucumber_options = "#{options[:cucumber_options]} #{options[:cucumber_reports]}"
 				command = build_execution_command(process_number, options[:apk_path], cucumber_options, test_files)
