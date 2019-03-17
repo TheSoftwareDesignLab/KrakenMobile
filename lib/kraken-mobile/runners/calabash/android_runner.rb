@@ -19,11 +19,13 @@ module KrakenMobile
       def before_feature process_number
         device = @adb_helper.connected_devices[process_number]
         @adb_helper.create_file "inbox", device.id
+        @adb_helper.create_file "kraken_settings", device.id
       end
 
       def after_feature process_number
         device = @adb_helper.connected_devices[process_number]
         @adb_helper.delete_file "inbox", device.id
+        @adb_helper.delete_file "kraken_settings", device.id
       end
 
 			def run_tests(test_files, process_number, options)
