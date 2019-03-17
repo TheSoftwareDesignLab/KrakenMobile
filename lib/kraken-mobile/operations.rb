@@ -6,8 +6,8 @@ module KrakenMobile
     def readSignal(channel, content, timeout)
       devices_helper = DevicesHelper::AdbHelper.new()
       device_id = channel_to_device_id(channel)
-      while(devices_helper.read_file_content("inbox", device_id) != content)
-        sleep(1)
+      Timeout::timeout(timeout, RuntimeError) do
+        sleep(1) until devices_helper.read_file_content("inbox", device_id) == content
       end
     end
 
