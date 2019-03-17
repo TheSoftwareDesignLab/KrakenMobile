@@ -1,4 +1,4 @@
-Then("I wait for a signal containig {string}") do |string|
+Then("I wait for a signal containing {string}") do |string|
   channel = @scenario_tags.grep(/@user/).first
   readSignal(channel, string, 10)
 end
