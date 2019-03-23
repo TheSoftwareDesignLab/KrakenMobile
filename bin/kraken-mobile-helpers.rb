@@ -12,7 +12,9 @@ def print_usage
     run <apk>
       runs Cucumber in the current folder with the environment needed.
     version
-      prints the gem version
+      prints the gem version.
+    devices
+      prints the list of devices attached.
 EOF
 end
 

@@ -71,7 +71,8 @@ module KrakenMobile
 					ADB_DEVICE_ARG: device.id,
 					DEVICE_INFO: device.model,
 					TEST_PROCESS_NUMBER: (process_number+1).to_s,
-					SCREENSHOT_PATH: device.screenshot_prefix
+					SCREENSHOT_PATH: device.screenshot_prefix,
+          PROTOCOL: @options[:protocol]
 				}
 				exports = @command_helper.build_export_env_command env_variables
 				exports + @command_helper.terminal_command_separator + execution_command

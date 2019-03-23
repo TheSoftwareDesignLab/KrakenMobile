@@ -30,7 +30,8 @@ else
           apk_path: ARGV.first,
           cucumber_options: "--format pretty",
           feature_folder: @features_dir,
-          runner: KrakenMobile::Constants::CALABASH_ANDROID
+          runner: KrakenMobile::Constants::CALABASH_ANDROID,
+          protocol: KrakenMobile::Constants::FILE_PROTOCOL
         }
         kraken = KrakenMobile::App.new(options)
         kraken.run_in_parallel
