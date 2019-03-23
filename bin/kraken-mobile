@@ -25,10 +25,12 @@ else
         puts "The first parameter must be the path to the apk file."
         exit 1
       else
+        require 'kraken-mobile/constants'
         options = {
           apk_path: ARGV.first,
           cucumber_options: "--format pretty",
-          feature_folder: @features_dir
+          feature_folder: @features_dir,
+          runner: KrakenMobile::Constants::CALABASH_ANDROID
         }
         kraken = KrakenMobile::App.new(options)
         kraken.run_in_parallel

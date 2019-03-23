@@ -6,7 +6,7 @@ require 'parallel'
 
 module KrakenMobile
 	module Runner
-		class AndroidRunner < KrakenRunner
+		class CalabashAndroidRunner < KrakenRunner
 			BASE_COMMAND = "calabash-android run"
 
       def initialize(options)
