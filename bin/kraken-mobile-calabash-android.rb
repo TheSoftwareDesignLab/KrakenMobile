@@ -6,8 +6,7 @@
 @support_dir = File.join(@features_dir, "support")
 @source_dir = File.join(File.dirname(__FILE__), '..', 'features-skeleton')
 
-def handle_calabash_android protocol
-  cmd = ARGV.shift
+def handle_calabash_android cmd, protocol
   case cmd
     when 'gen'
       require File.join(File.dirname(__FILE__), "kraken-mobile-generate")
@@ -23,17 +22,11 @@ def handle_calabash_android protocol
           cucumber_options: "--format pretty",
           feature_folder: @features_dir,
           runner: KrakenMobile::Constants::CALABASH_ANDROID,
-          protocol: KrakenMobile::Constants::FILE_PROTOCOL
+          protocol: protocol
         }
         kraken = KrakenMobile::App.new(options)
         kraken.run_in_parallel
       end
-    when 'version'
-      require 'kraken-mobile/version'
-      puts KrakenMobile::VERSION
-    when 'devices'
-      require 'kraken-mobile/helpers/devices_helper/adb_helper'
-      print_devices
     else
       puts "Invalid command '#{cmd}'"
       print_usage

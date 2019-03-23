@@ -42,19 +42,29 @@ end
 if ARGV.length == 0
     print_usage
 else
-  runner_command = read_specified_runner()
-  protocol = read_specified_protocol()
-  if runner_command
-      case runner_command
-        when KrakenMobile::Constants::CALABASH_ANDROID
-          require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-          handle_calabash_android(protocol)
-        else
-          raise "Specified runner not supported."
+  cmd = ARGV.shift
+  case cmd
+    when 'version'
+      require 'kraken-mobile/version'
+      puts KrakenMobile::VERSION
+    when 'devices'
+      require 'kraken-mobile/helpers/devices_helper/adb_helper'
+      print_devices
+    else
+      runner_command = read_specified_runner()
+      protocol = read_specified_protocol()
+      if runner_command
+          case runner_command
+            when KrakenMobile::Constants::CALABASH_ANDROID
+              require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
+              handle_calabash_android(cmd,protocol)
+            else
+              raise "Specified runner not supported."
+          end
+      else
+        require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
+        puts "Runner not specified, using Calabash-Android as default runner"
+        handle_calabash_android(cmd,protocol)
       end
-  else
-    require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-    puts "Runner not specified, using Calabash-Android as default runner"
-    handle_calabash_android(protocol)
   end
 end
