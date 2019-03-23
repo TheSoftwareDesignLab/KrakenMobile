@@ -1,4 +1,14 @@
 #-------------------------------
+# Helpers
+#-------------------------------
+def ensure_apk_is_specified
+  if ARGV.empty? || !is_apk_file?(ARGV.first)
+    puts "The first parameter must be the path to a valid apk file."
+    exit 1
+  end
+end
+
+#-------------------------------
 # Command reader
 #-------------------------------
 
@@ -11,22 +21,27 @@ def handle_calabash_android cmd, protocol
     when 'gen'
       require File.join(File.dirname(__FILE__), "kraken-mobile-generate")
       kraken_scaffold()
+    when 'resign'
+      require 'calabash-android/helpers'
+      require 'calabash-android/utils'
+      require 'calabash-android/java_keystore'
+      require 'calabash-android/env'
+      
+      ensure_apk_is_specified
+      puts "Resigning APK with Calabash-Android"
+      resign_apk(File.expand_path(ARGV.first))
     when 'run'
-      if ARGV.empty? or not is_apk_file?(ARGV.first)
-        puts "The first parameter must be the path to the apk file."
-        exit 1
-      else
-        require 'kraken-mobile/constants'
-        options = {
-          apk_path: ARGV.first,
-          cucumber_options: "--format pretty",
-          feature_folder: @features_dir,
-          runner: KrakenMobile::Constants::CALABASH_ANDROID,
-          protocol: protocol
-        }
-        kraken = KrakenMobile::App.new(options)
-        kraken.run_in_parallel
-      end
+      require 'kraken-mobile/constants'
+      ensure_apk_is_specified
+      options = {
+        apk_path: ARGV.first,
+        cucumber_options: "--format pretty",
+        feature_folder: @features_dir,
+        runner: KrakenMobile::Constants::CALABASH_ANDROID,
+        protocol: protocol
+      }
+      kraken = KrakenMobile::App.new(options)
+      kraken.run_in_parallel
     else
       puts "Invalid command '#{cmd}'"
       print_usage

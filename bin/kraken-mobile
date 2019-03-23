@@ -30,7 +30,6 @@ def read_specified_protocol
       raise "Specified protocol not supported."
     end
   else # If protocol not specified use file based as default.
-    puts "Protocol not specified, using file based as default protocol."
     KrakenMobile::Constants::FILE_PROTOCOL
   end
 end
@@ -61,9 +60,8 @@ else
             else
               raise "Specified runner not supported."
           end
-      else
+      else # If runner not specified use calabash android as default.
         require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-        puts "Runner not specified, using Calabash-Android as default runner"
         handle_calabash_android(cmd,protocol)
       end
   end
