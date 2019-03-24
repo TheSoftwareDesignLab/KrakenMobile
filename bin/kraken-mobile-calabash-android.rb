@@ -1,3 +1,4 @@
+
 #-------------------------------
 # Helpers
 #-------------------------------
@@ -23,16 +24,14 @@ def handle_calabash_android cmd, protocol
       kraken_scaffold()
     when 'resign'
       require 'calabash-android/helpers'
-      require 'calabash-android/utils'
-      require 'calabash-android/java_keystore'
-      require 'calabash-android/env'
-      
       ensure_apk_is_specified
       puts "Resigning APK with Calabash-Android"
       resign_apk(File.expand_path(ARGV.first))
     when 'run'
       require 'kraken-mobile/constants'
+      require 'calabash-android/helpers'
       ensure_apk_is_specified
+      resign_apk(File.expand_path(ARGV.first))
       options = {
         apk_path: ARGV.first,
         cucumber_options: "--format pretty",
