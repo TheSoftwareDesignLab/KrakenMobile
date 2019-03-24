@@ -15,7 +15,7 @@ end
 
 @features_dir = File.join(FileUtils.pwd, "features")
 @support_dir = File.join(@features_dir, "support")
-@source_dir = File.join(File.dirname(__FILE__), '..', 'features-skeleton')
+@source_dir = File.join(File.dirname(__FILE__), '..', 'calabash-android-features-skeleton')
 
 def handle_calabash_android cmd, protocol
   case cmd
