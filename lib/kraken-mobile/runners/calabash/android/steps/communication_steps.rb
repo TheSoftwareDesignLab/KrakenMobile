@@ -1,6 +1,6 @@
 Then("I wait for a signal containing {string}") do |string|
   channel = @scenario_tags.grep(/@user/).first
-  readSignal(channel, string, 10)
+  readSignal(channel, string, KrakenMobile::Constants::DEFAULT_TIMEOUT)
 end
 
 Then("I send a signal to user {int} containing {string}") do |int, string|

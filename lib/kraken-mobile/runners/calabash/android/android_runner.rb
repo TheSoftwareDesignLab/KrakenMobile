@@ -1,6 +1,7 @@
 require 'kraken-mobile/helpers/devices_helper/adb_helper'
 require 'kraken-mobile/helpers/feature_grouper'
 require 'kraken-mobile/runners/runner'
+require 'kraken-mobile/constants'
 require 'parallel'
 
 
@@ -19,14 +20,14 @@ module KrakenMobile
       #-------------------------------
       def before_execution process_number
         device = @adb_helper.connected_devices[process_number]
-        @adb_helper.create_file "inbox", device.id
-        @adb_helper.create_file "kraken_settings", device.id
+        @adb_helper.create_file KrakenMobile::Constants::DEVICE_INBOX_NAME, device.id
+        @adb_helper.create_file KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id
       end
 
       def after_execution process_number
         device = @adb_helper.connected_devices[process_number]
-        @adb_helper.delete_file "inbox", device.id
-        @adb_helper.delete_file "kraken_settings", device.id
+        @adb_helper.delete_file KrakenMobile::Constants::DEVICE_INBOX_NAME, device.id
+        @adb_helper.delete_file KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id
       end
 
       #-------------------------------
