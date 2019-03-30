@@ -4,7 +4,8 @@ def kraken_setup
   @settings = [
     {
       id: "93c6af52",
-      model: "ONEPLUS_A6013"
+      model: "ONEPLUS_A6013",
+      config: {}
     }
   ]
 

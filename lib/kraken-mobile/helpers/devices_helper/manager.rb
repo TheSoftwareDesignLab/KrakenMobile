@@ -19,7 +19,7 @@ module KrakenMobile
           configured_devices = JSON.parse(content)
           devices = []
           configured_devices.each do |dev_data|
-            device = Models::Device.new(dev_data["id"], dev_data["model"], devices.size + 1)
+            device = Models::Device.new(dev_data["id"], dev_data["model"], devices.size + 1, dev_data["config"])
             devices << device
           end
           devices

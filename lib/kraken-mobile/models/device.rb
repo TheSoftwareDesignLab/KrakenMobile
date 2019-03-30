@@ -8,14 +8,16 @@ module KrakenMobile
 			attr_accessor :id
 			attr_accessor :model
       attr_accessor :position
+      attr_accessor :config
 
       #-------------------------------
       # Constructors
       #-------------------------------
-			def initialize(id, model, position)
+			def initialize(id, model, position, config = {})
 				@id = id
 				@model = model
         @position = position
+        @config = config
 			end
 
       #-------------------------------

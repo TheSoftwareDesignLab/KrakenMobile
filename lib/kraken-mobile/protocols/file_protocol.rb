@@ -21,19 +21,19 @@ module KrakenMobile
       end
 
       def start_setup channel, scenario
-        devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
+        devices_manager = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]})
         device_id = channel_to_device_id(channel)
         scenario_id = build_scenario_id(scenario)
-        devices_helper.write_content_to_file "ready_#{scenario_id}", KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device_id
-        sleep(1) until devices_helper.connected_devices.all? { |device| devices_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "ready_#{scenario_id}" }
+        devices_manager.device_helper.write_content_to_file "ready_#{scenario_id}", KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device_id
+        sleep(1) until devices_manager.connected_devices.all? { |device| devices_manager.device_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "ready_#{scenario_id}" }
       end
 
       def end_setup channel, scenario
-        devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
+        devices_manager = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]})
         device_id = channel_to_device_id(channel)
         scenario_id = build_scenario_id(scenario)
-        devices_helper.write_content_to_file "end_#{scenario_id}", KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device_id
-        sleep(1) until devices_helper.connected_devices.all? { |device| devices_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "end_#{scenario_id}" }
+        devices_manager.device_helper.write_content_to_file "end_#{scenario_id}", KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device_id
+        sleep(1) until devices_manager.connected_devices.all? { |device| devices_manager.device_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "end_#{scenario_id}" }
       end
 
       def install_app_with_calabash
@@ -55,8 +55,8 @@ module KrakenMobile
         begin
           formatted_channel = channel.tr("@user", "")
           device_position = formatted_channel.to_i - 1
-          devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
-          devices_helper.connected_devices[device_position].id
+          devices_manager = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]})
+          devices_manager.connected_devices[device_position].id
         rescue
           nil
         end
