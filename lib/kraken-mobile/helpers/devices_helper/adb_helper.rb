@@ -24,6 +24,14 @@ module KrakenMobile
         `adb -s #{device_id} shell "rm -rf /sdcard/#{file_name}"`
       end
 
+      def is_device_connected device_id
+        begin
+         adb_devices_l.include?(device_id)
+        rescue
+          false
+        end
+      end
+
       # Returns an array with all the devices and emulators connected to the computer.
 			def connected_devices
 				begin
@@ -45,6 +53,7 @@ module KrakenMobile
 
       def read_file_content file_name, device_id
         begin
+          raise "Device #{device_id} not found" unless is_device_connected(device_id)
           content = file_content("#{file_name}.txt", device_id)
           content.strip
         rescue
@@ -54,6 +63,7 @@ module KrakenMobile
 
       def write_content_to_file content, file_name, device_id
         begin
+          raise "Device #{device_id} not found" unless is_device_connected(device_id)
           write_content_to_device(content, "#{file_name}.txt", device_id)
           true
         rescue
@@ -63,6 +73,7 @@ module KrakenMobile
 
       def create_file file_name, device_id
         begin
+          raise "Device #{device_id} not found" unless is_device_connected(device_id)
           create_file_in_device("#{file_name}.txt", device_id)
           true
         rescue
@@ -72,6 +83,7 @@ module KrakenMobile
 
       def delete_file file_name, device_id
         begin
+          raise "Device #{device_id} not found" unless is_device_connected(device_id)
           delete_file_in_device("#{file_name}.txt", device_id)
           true
         rescue

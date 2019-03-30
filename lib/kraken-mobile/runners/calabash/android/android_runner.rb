@@ -20,12 +20,14 @@ module KrakenMobile
       #-------------------------------
       def before_execution process_number
         device = @adb_helper.connected_devices[process_number]
+        raise "There is no device for process #{process_number}" unless device
         @adb_helper.create_file KrakenMobile::Constants::DEVICE_INBOX_NAME, device.id
         @adb_helper.create_file KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id
       end
 
       def after_execution process_number
         device = @adb_helper.connected_devices[process_number]
+        raise "There is no device for process #{process_number}" unless device
         @adb_helper.delete_file KrakenMobile::Constants::DEVICE_INBOX_NAME, device.id
         @adb_helper.delete_file KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id
       end
@@ -66,6 +68,7 @@ module KrakenMobile
       #-------------------------------
 			def build_execution_command process_number, apk_path, cucumber_options, test_files
         device = @adb_helper.connected_devices[process_number]
+        raise "Theres not a device for process #{process_number}" unless device
 				execution_command = @command_helper.build_command [BASE_COMMAND, apk_path, cucumber_options, *test_files, "--tags @user#{device.position}"]
 				env_variables = {
 					AUTOTEST: '1',

@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require File.join(File.dirname(__FILE__), "kraken-mobile-helpers")
+require File.join(File.dirname(__FILE__), "kraken-mobile-setup")
 require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
 $LOAD_PATH << File.expand_path("../../lib", __FILE__)
 require 'kraken-mobile'
@@ -49,6 +50,8 @@ else
     when 'devices'
       require 'kraken-mobile/helpers/devices_helper/adb_helper'
       print_devices
+    when 'setup'
+      kraken_setup
     else
       runner_command = read_specified_runner()
       protocol = read_specified_protocol()
