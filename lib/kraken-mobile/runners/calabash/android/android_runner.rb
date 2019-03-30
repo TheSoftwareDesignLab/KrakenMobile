@@ -1,4 +1,4 @@
-require 'kraken-mobile/helpers/devices_helper/adb_helper'
+require 'kraken-mobile/helpers/devices_helper/devices_helper'
 require 'kraken-mobile/helpers/feature_grouper'
 require 'kraken-mobile/runners/runner'
 require 'kraken-mobile/constants'
@@ -12,7 +12,7 @@ module KrakenMobile
 
       def initialize(options)
         super(options)
-				@adb_helper = DevicesHelper::AdbHelper.new()
+				@adb_helper = DevicesHelper.current_device_helper KrakenMobile::Constants::CALABASH_ANDROID
 			end
 
       #-------------------------------
@@ -76,7 +76,8 @@ module KrakenMobile
 					DEVICE_INFO: device.model,
 					TEST_PROCESS_NUMBER: (process_number+1).to_s,
 					SCREENSHOT_PATH: device.screenshot_prefix,
-          PROTOCOL: @options[:protocol]
+          PROTOCOL: @options[:protocol],
+          RUNNER: KrakenMobile::Constants::CALABASH_ANDROID
 				}
 				exports = @command_helper.build_export_env_command env_variables
 				exports + @command_helper.terminal_command_separator + execution_command

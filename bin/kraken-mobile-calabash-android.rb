@@ -31,7 +31,7 @@ def handle_calabash_android cmd, protocol
       require 'kraken-mobile/constants'
       require 'calabash-android/helpers'
       ensure_apk_is_specified
-      resign_apk(File.expand_path(ARGV.first))
+      #resign_apk(File.expand_path(ARGV.first)) TODO Resign app
       options = {
         apk_path: ARGV.first,
         cucumber_options: "--format pretty",
