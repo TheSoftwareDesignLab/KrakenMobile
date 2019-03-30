@@ -1,20 +1,35 @@
 require 'kraken-mobile/models/device'
 require 'kraken-mobile/helpers/devices_helper/adb_helper'
 require 'kraken-mobile/constants'
+require 'json'
 
 module KrakenMobile
 	module DevicesHelper
     class Manager
-      def initialize(runner)
-        @runner = runner
+      def initialize(options)
+        @runner_name = options[:runner]
+        @config_path = options[:config_path]
       end
 
       def connected_devices
-        puts "Hola"
+        if @config_path
+          raise "Config file path is not valid" unless File.exist?(@config_path) && File.file?(@config_path) && @config_path.end_with?(".json")
+          file = open(@config_path)
+          content = file.read
+          configured_devices = JSON.parse(content)
+          devices = []
+          configured_devices.each do |dev_data|
+            device = Models::Device.new(dev_data["id"], dev_data["model"], devices.size + 1)
+            devices << device
+          end
+          devices
+        else
+          device_helper.connected_devices
+        end
       end
 
       def device_helper
-        case @runner
+        case @runner_name
         when KrakenMobile::Constants::CALABASH_ANDROID
           DevicesHelper::AdbHelper.new()
         else

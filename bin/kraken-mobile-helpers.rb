@@ -20,9 +20,9 @@ end
 
 def print_devices
   runner = KrakenMobile::Constants::CALABASH_ANDROID
-  device_helper = KrakenMobile::DevicesHelper::Manager.new(runner).device_helper
+  device_manager = KrakenMobile::DevicesHelper::Manager.new({runner: runner})
   puts "List of devices attached"
-  device_helper.connected_devices.each_with_index do |device, index|
+  device_manager.connected_devices.each_with_index do |device, index|
     puts "user#{index+1} - #{device.id} - #{device.model}"
   end
 end

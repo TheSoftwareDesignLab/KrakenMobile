@@ -37,7 +37,8 @@ def handle_calabash_android cmd, protocol
         cucumber_options: "--format pretty",
         feature_folder: @features_dir,
         runner: KrakenMobile::Constants::CALABASH_ANDROID,
-        protocol: protocol
+        protocol: protocol,
+        config_path: File.expand_path("~/Desktop/kraken-mobile/example/kraken_mobile_settings.json")
       }
       kraken = KrakenMobile::App.new(options)
       kraken.run_in_parallel
