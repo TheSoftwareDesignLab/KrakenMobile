@@ -1,4 +1,4 @@
-require 'kraken-mobile/helpers/devices_helper/devices_helper'
+require 'kraken-mobile/helpers/devices_helper/manager'
 require 'kraken-mobile/helpers/feature_grouper'
 require 'kraken-mobile/runners/runner'
 require 'kraken-mobile/constants'
@@ -12,7 +12,8 @@ module KrakenMobile
 
       def initialize(options)
         super(options)
-				@adb_helper = DevicesHelper.current_device_helper KrakenMobile::Constants::CALABASH_ANDROID
+        default_runner = KrakenMobile::Constants::CALABASH_ANDROID
+				@adb_helper = DevicesHelper::Manager.new(default_runner).device_helper
 			end
 
       #-------------------------------

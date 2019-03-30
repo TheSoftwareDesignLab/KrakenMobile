@@ -48,7 +48,7 @@ else
       require 'kraken-mobile/version'
       puts KrakenMobile::VERSION
     when 'devices'
-      require 'kraken-mobile/helpers/devices_helper/devices_helper'
+      require 'kraken-mobile/helpers/devices_helper/manager'
       print_devices
     when 'setup'
       kraken_setup
