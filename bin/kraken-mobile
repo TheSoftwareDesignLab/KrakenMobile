@@ -12,7 +12,7 @@ require 'kraken-mobile/constants'
 #-------------------------------
 
 def read_specified_runner
-  runner_command = ARGV.select { |arg| arg.include?("--runner") }.first
+  runner_command = ARGV.select { |arg| arg.include?("--runner=") }.first
   if runner_command
     formatted_runner_command = runner_command.strip.downcase
     formatted_runner_command.slice!("--runner=")
@@ -21,7 +21,7 @@ def read_specified_runner
 end
 
 def read_specified_protocol
-  protocol_command = ARGV.select { |arg| arg.include?("--protocol") }.first
+  protocol_command = ARGV.select { |arg| arg.include?("--protocol=") }.first
   if protocol_command
     formatted_protocol_command = protocol_command.strip.downcase
     formatted_protocol_command.slice!("--protocol=")
@@ -32,6 +32,15 @@ def read_specified_protocol
     end
   else # If protocol not specified use file based as default.
     KrakenMobile::Constants::FILE_PROTOCOL
+  end
+end
+
+def read_configuration
+  configuration_command = ARGV.select { |arg| arg.include?("--configuration=") }.first
+  if configuration_command
+    configuration_command = configuration_command.strip.downcase
+    configuration_command.slice!("--configuration=")
+    configuration_command
   end
 end
 
@@ -55,17 +64,18 @@ else
     else
       runner_command = read_specified_runner()
       protocol = read_specified_protocol()
+      configuration = read_configuration()
       if runner_command
           case runner_command
             when KrakenMobile::Constants::CALABASH_ANDROID
               require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-              handle_calabash_android(cmd,protocol)
+              handle_calabash_android(cmd, protocol, configuration)
             else
               raise "Specified runner not supported."
           end
       else # If runner not specified use calabash android as default.
         require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-        handle_calabash_android(cmd,protocol)
+        handle_calabash_android(cmd, protocol, configuration)
       end
   end
 end

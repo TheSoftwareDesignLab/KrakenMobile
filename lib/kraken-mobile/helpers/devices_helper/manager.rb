@@ -13,7 +13,7 @@ module KrakenMobile
 
       def connected_devices
         if @config_path
-          raise "Config file path is not valid" unless File.exist?(@config_path) && File.file?(@config_path) && @config_path.end_with?(".json")
+          raise "The path of the configuration file is not valid" unless File.exist?(@config_path) && File.file?(@config_path) && @config_path.end_with?(".json")
           file = open(@config_path)
           content = file.read
           configured_devices = JSON.parse(content)

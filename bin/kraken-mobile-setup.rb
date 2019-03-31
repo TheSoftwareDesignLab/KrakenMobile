@@ -5,7 +5,9 @@ def kraken_setup
     {
       id: "93c6af52",
       model: "ONEPLUS_A6013",
-      config: {}
+      config: {
+        apk_path: "/Users/user/Desktop/app.apk"
+      }
     }
   ]
 
