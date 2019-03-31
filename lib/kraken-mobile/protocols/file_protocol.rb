@@ -14,6 +14,15 @@ module KrakenMobile
         end
       end
 
+      def readSignalWithKeyworkd(channel, keyword, timeout)
+        devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
+        device_id = channel_to_device_id(channel)
+        Timeout::timeout(timeout, RuntimeError) do
+          sleep(1) until devices_helper.read_file_content(KrakenMobile::Constants::DEVICE_INBOX_NAME, device_id).include?(keyword)
+          return devices_helper.read_file_content(KrakenMobile::Constants::DEVICE_INBOX_NAME, device_id)
+        end
+      end
+
       def writeSignal(channel, content)
         devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
         device_id = channel_to_device_id(channel)
