@@ -1,4 +1,5 @@
 require 'json'
+require 'kraken-mobile/helpers/feature_analyzer'
 
 module KrakenMobile
   class FeatureGrouper
@@ -12,6 +13,7 @@ module KrakenMobile
     # All groups contains all files in feature_folder
     def self.file_groups(feature_folder, group_size)
       files = feature_files_in_folder feature_folder
+      ensure_features_format files
       group_size.times.map { files }
     end
 
