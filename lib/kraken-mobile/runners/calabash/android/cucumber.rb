@@ -1,6 +1,7 @@
 require 'calabash-android/cucumber'
 require 'calabash-android/operations'
 require 'kraken-mobile/runners/calabash/android/kraken_hooks'
+require 'kraken-mobile/runners/calabash/android/operations'
 require 'kraken-mobile/constants'
 require 'kraken-mobile/protocols/file_protocol'
 
@@ -15,6 +16,7 @@ end
 
 World(Calabash::Android::ColorHelper)
 World(Calabash::Android::Operations)
+World(KrakenMobile::CalabashAndroid::Operations)
 World(requested_protocol())
 
 AfterConfiguration do

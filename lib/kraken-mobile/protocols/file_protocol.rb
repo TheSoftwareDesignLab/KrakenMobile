@@ -45,20 +45,6 @@ module KrakenMobile
         sleep(1) until devices_manager.connected_devices.all? { |device| devices_manager.device_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "end_#{scenario_id}" }
       end
 
-      def install_app_with_calabash
-        operations_module = Calabash::Android::Operations
-        default_device = operations_module::Device.new(operations_module, ENV["ADB_DEVICE_ARG"], ENV["TEST_SERVER_PORT"], ENV["APP_PATH"], ENV["TEST_APP_PATH"])
-        default_device.ensure_apps_installed
-        #default_device.clear_app_data TODO Opcional para el usuario
-      end
-
-      def uninstall_app_with_calabash
-        operations_module = Calabash::Android::Operations
-        default_device = operations_module::Device.new(operations_module, ENV["ADB_DEVICE_ARG"], ENV["TEST_SERVER_PORT"], ENV["APP_PATH"], ENV["TEST_APP_PATH"])
-        default_device.uninstall_app(package_name(default_device.test_server_path))
-        default_device.uninstall_app(package_name(default_device.app_path))
-      end
-
       # helpers
       def channel_to_device_id channel
         begin
