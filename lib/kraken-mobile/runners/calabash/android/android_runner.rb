@@ -93,6 +93,7 @@ module KrakenMobile
           RUNNER: KrakenMobile::Constants::CALABASH_ANDROID
 				}
         env_variables[:CONFIG_PATH] = @options[:config_path] if @options[:config_path]
+        env_variables[:PROPERTIES_PATH] = @options[:properties_path] if @options[:properties_path]
 				exports = @command_helper.build_export_env_command env_variables
 				exports + @command_helper.terminal_command_separator + execution_command
 			end

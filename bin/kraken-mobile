@@ -44,6 +44,15 @@ def read_configuration
   end
 end
 
+def read_properties
+  properties_command = ARGV.select { |arg| arg.include?("--properties=") }.first
+  if properties_command
+    properties_command = properties_command.strip.downcase
+    properties_command.slice!("--properties=")
+    properties_command
+  end
+end
+
 #-------------------------------
 # Command reader
 #-------------------------------
@@ -65,17 +74,18 @@ else
       runner_command = read_specified_runner()
       protocol = read_specified_protocol()
       configuration = read_configuration()
+      properties = read_properties()
       if runner_command
           case runner_command
             when KrakenMobile::Constants::CALABASH_ANDROID
               require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-              handle_calabash_android(cmd, protocol, configuration)
+              handle_calabash_android(cmd, protocol, configuration, properties)
             else
               raise "Specified runner not supported."
           end
       else # If runner not specified use calabash android as default.
         require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-        handle_calabash_android(cmd, protocol, configuration)
+        handle_calabash_android(cmd, protocol, configuration, properties)
       end
   end
 end
