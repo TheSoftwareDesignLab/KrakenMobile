@@ -3,15 +3,16 @@ ParameterType(
   regexp:      /[^\"]*/,
   type:        String,
   transformer: ->(s) {
-    if ENV["PROPERTIES_PATH"]
+    channel = @scenario_tags.grep(/@user/).first
+    if ENV["PROPERTIES_PATH"] && channel
       raise "Property #{s} should start with '<' and end with '>'" if !s.start_with?("<") || ! s.end_with?(">")
       s.slice!("<")
       s.slice!(">")
       file = open(ENV["PROPERTIES_PATH"])
       content = file.read
       properties = JSON.parse(content)
-      raise "Property <#{s}> not found" if !properties[s]
-      return properties[s]
+      raise "Property <#{s}> not found for #{channel}" if !properties[channel] || !properties[channel][s]
+      return properties[channel][s]
     else
       return s
     end
