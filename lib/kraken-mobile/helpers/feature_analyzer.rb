@@ -15,6 +15,7 @@ def ensure_feature_has_unique_tags file_path
   pickles = Gherkin::Pickles::Compiler.new.compile(gherkin_document)
   tag_hash = {}
   pickles.each do |scenario|
+    raise "Scenario '#{scenario[:name]}' can't have more than one @user{int} tag." if scenario[:tags].select{ |tag| tag[:name].start_with? "@user" }.count > 1
     scenario[:tags].each do |tag|
       tag_name = tag[:name]
       if tag_hash[tag_name]
