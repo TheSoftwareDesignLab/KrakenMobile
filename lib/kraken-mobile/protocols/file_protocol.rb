@@ -70,7 +70,7 @@ module KrakenMobile
           names = tag_object.map { |tag| tag.name if tag.name }
           tags.concat names
         end
-        tags.uniq.select{ |tag| tag.start_with? "@user" }
+        tags.uniq.select{ |tag| tag.start_with? "@user" }.sort
       end
 
       def ordered_feature_tags scenario
