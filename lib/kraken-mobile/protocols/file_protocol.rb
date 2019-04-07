@@ -34,7 +34,12 @@ module KrakenMobile
         device_id = channel_to_device_id(channel)
         scenario_id = build_scenario_id(scenario)
         devices_manager.device_helper.write_content_to_file "ready_#{scenario_id}", KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device_id
-        sleep(1) until devices_manager.connected_devices.all? { |device| devices_manager.device_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "ready_#{scenario_id}" }
+        ordered_tags = ordered_feature_tags scenario
+        while true
+          compare_criteria = devices_manager.connected_devices.count >= ordered_tags.count ? ordered_tags.count : devices_manager.connected_devices.count
+          break if devices_ready_start(devices_manager, scenario_id).count >= compare_criteria
+          sleep(1)
+        end
       end
 
       def end_setup channel, scenario
@@ -42,7 +47,12 @@ module KrakenMobile
         device_id = channel_to_device_id(channel)
         scenario_id = build_scenario_id(scenario)
         devices_manager.device_helper.write_content_to_file "end_#{scenario_id}", KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device_id
-        sleep(1) until devices_manager.connected_devices.all? { |device| devices_manager.device_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "end_#{scenario_id}" }
+        ordered_tags = ordered_feature_tags scenario
+        while true
+          compare_criteria = devices_manager.connected_devices.count >= ordered_tags.count ? ordered_tags.count : devices_manager.connected_devices.count
+          break if devices_ready_to_finish(devices_manager, scenario_id).count >= compare_criteria
+          sleep(1)
+        end
       end
 
       # helpers
@@ -62,6 +72,37 @@ module KrakenMobile
         index_of_line_number_start = location.index(":")
         real_location = location[0..index_of_line_number_start-1]
         Digest::SHA256.hexdigest(real_location)
+      end
+
+      def feature_tags scenario
+        tag_objects = scenario.feature.children.map { |e| e.tags if e.tags  }.compact
+        tags = []
+        tag_objects.each do |tag_object|
+          names = tag_object.map { |tag| tag.name if tag.name }
+          tags.concat names
+        end
+        tags.uniq.select{ |tag| tag.start_with? "@user" }
+      end
+
+      def ordered_feature_tags scenario
+        tags = feature_tags scenario
+        ordered_tags = []
+        tags.count.times do |index|
+          if tags[index].include? "@user#{index+1}"
+            ordered_tags << tags[index]
+          else
+            break
+          end
+        end
+        ordered_tags
+      end
+
+      def devices_ready_start devices_manager, scenario_id
+        devices_manager.connected_devices.select { |device| devices_manager.device_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "ready_#{scenario_id}" }
+      end
+
+      def devices_ready_to_finish devices_manager, scenario_id
+        devices_manager.connected_devices.select { |device| devices_manager.device_helper.read_file_content(KrakenMobile::Constants::KRAKEN_CONFIGURATION_FILE_NAME, device.id) == "end_#{scenario_id}" }
       end
     end
   end

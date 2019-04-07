@@ -9,7 +9,7 @@ module KrakenMobile
 			end
 
       def file_content file_name, device_id
-        `adb -s #{device_id} shell "cat /sdcard/#{file_name}"`
+        `adb -s #{device_id} shell "cat /sdcard/#{file_name} 2> /dev/null"`
       end
 
       def write_content_to_device content, file_name, device_id
