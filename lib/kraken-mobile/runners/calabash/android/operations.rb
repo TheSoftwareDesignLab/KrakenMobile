@@ -27,6 +27,18 @@ module KrakenMobile
         end_setup channel, scenario
         shutdown_test_server
       end
+
+      # helpers
+      def channel_to_device_id channel
+        begin
+          formatted_channel = channel.tr("@user", "")
+          device_position = formatted_channel.to_i - 1
+          devices_manager = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]})
+          devices_manager.connected_devices[device_position].id
+        rescue
+          nil
+        end
+      end
     end
   end
 end

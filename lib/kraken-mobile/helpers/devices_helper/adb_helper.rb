@@ -24,6 +24,10 @@ module KrakenMobile
         `adb -s #{device_id} shell "rm -rf /sdcard/#{file_name}"`
       end
 
+      def device_screen_size device_id
+        `adb -s #{device_id} shell wm size`
+      end
+
       def is_device_connected device_id
         begin
          adb_devices_l.include?(device_id)
@@ -88,6 +92,20 @@ module KrakenMobile
           true
         rescue
           false
+        end
+      end
+
+      # Returns height, width
+      def screen_size device_id
+        begin
+          adb_size = device_screen_size device_id
+          parts = adb_size.strip!.split(" ")
+          size = parts[parts.count-1]
+          return 0,0 if !size.include?("x")
+          size_parts = size.split("x")
+          return size_parts[1].to_i, size_parts[0].to_i
+        rescue
+          return 0,0
         end
       end
 

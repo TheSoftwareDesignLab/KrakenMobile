@@ -56,17 +56,6 @@ module KrakenMobile
       end
 
       # helpers
-      def channel_to_device_id channel
-        begin
-          formatted_channel = channel.tr("@user", "")
-          device_position = formatted_channel.to_i - 1
-          devices_manager = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]})
-          devices_manager.connected_devices[device_position].id
-        rescue
-          nil
-        end
-      end
-
       def build_scenario_id scenario
         location = scenario.location.to_s
         index_of_line_number_start = location.index(":")

@@ -32,3 +32,8 @@ end
 Then /^I send a signal to user (\d+) containing "([^\"]*)"$/ do |int, string|
   writeSignal("@user#{int}", string)
 end
+
+Then /^I start a monkey with (\d+) events$/ do |int|
+  channel = @scenario_tags.grep(/@user/).first
+  run_monkey channel, int
+end
