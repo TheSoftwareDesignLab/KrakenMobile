@@ -3,7 +3,8 @@ require 'kraken-mobile/helpers/feature_grouper'
 require 'kraken-mobile/runners/runner'
 require 'kraken-mobile/constants'
 require 'parallel'
-
+require 'digest'
+require 'fileutils'
 
 module KrakenMobile
 	module Runner
@@ -15,11 +16,18 @@ module KrakenMobile
         default_runner = KrakenMobile::Constants::CALABASH_ANDROID
 				@devices_manager = DevicesHelper::Manager.new({runner: default_runner, config_path: @options[:config_path]})
         @adb_helper = @devices_manager.device_helper
+        @execution_id = Digest::SHA256.hexdigest("#{Time.now.to_f}")
 			end
 
       #-------------------------------
       # Hooks
       #-------------------------------
+      def before_all
+        Dir.mkdir(KrakenMobile::Constants::SCREENSHOT_PATH) unless File.exists?(KrakenMobile::Constants::SCREENSHOT_PATH)
+        Dir.mkdir("#{KrakenMobile::Constants::SCREENSHOT_PATH}/#{@execution_id}")
+        @devices_manager.connected_devices.each do |device| Dir.mkdir("#{KrakenMobile::Constants::SCREENSHOT_PATH}/#{@execution_id}/#{device.id}") end
+      end
+
       def before_execution process_number
         device = @devices_manager.connected_devices[process_number]
         raise "There is no device for process #{process_number}" unless device
@@ -38,6 +46,7 @@ module KrakenMobile
       # Execution
       #-------------------------------
       def run_in_parallel
+        before_all
         feature_folder = @options[:feature_folder]
         devices_connected = @devices_manager.connected_devices
         groups = FeatureGrouper.file_groups(feature_folder, devices_connected.size)
@@ -79,7 +88,7 @@ module KrakenMobile
 					ADB_DEVICE_ARG: device.id,
 					DEVICE_INFO: device.model,
 					TEST_PROCESS_NUMBER: (process_number+1).to_s,
-					SCREENSHOT_PATH: device.screenshot_prefix,
+					SCREENSHOT_PATH: "#{KrakenMobile::Constants::SCREENSHOT_PATH}/#{@execution_id}/#{device.id}/#{device.screenshot_prefix}",
           PROTOCOL: @options[:protocol],
           RUNNER: KrakenMobile::Constants::CALABASH_ANDROID
 				}

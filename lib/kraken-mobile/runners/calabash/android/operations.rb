@@ -6,7 +6,7 @@ module KrakenMobile
       def install_app_with_calabash
         operations_module = Calabash::Android::Operations
         default_device = operations_module::Device.new(operations_module, ENV["ADB_DEVICE_ARG"], ENV["TEST_SERVER_PORT"], ENV["APP_PATH"], ENV["TEST_APP_PATH"])
-        default_device.ensure_apps_installed
+        #default_device.ensure_apps_installed
       end
 
       def uninstall_app_with_calabash
@@ -25,9 +25,6 @@ module KrakenMobile
       def shutdown_kraken_test_server scenario
         channel = @scenario_tags.grep(/@user/).first
         end_setup channel, scenario
-        if scenario.failed?
-          screenshot_embed
-        end
         shutdown_test_server
       end
     end
