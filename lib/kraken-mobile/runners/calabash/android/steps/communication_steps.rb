@@ -4,8 +4,7 @@ ParameterType(
   type:        String,
   transformer: ->(s) {
     channel = @scenario_tags.grep(/@user/).first
-    if ENV["PROPERTIES_PATH"] && channel
-      raise "Property #{s} should start with '<' and end with '>'" if !s.start_with?("<") || ! s.end_with?(">")
+    if ENV["PROPERTIES_PATH"] && channel && s.start_with?("<") && s.end_with?(">")
       s.slice!("<")
       s.slice!(">")
       file = open(ENV["PROPERTIES_PATH"])
