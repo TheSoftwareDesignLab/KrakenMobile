@@ -37,3 +37,8 @@ Then /^I start a monkey with (\d+) events$/ do |int|
   channel = @scenario_tags.grep(/@user/).first
   run_monkey channel, int
 end
+
+Then /^I start a monkey with (\d+) events from height (\d+)% to (\d+)% and width (\d+)% to (\d+)%$/ do |int, from_x, to_x, from_y, to_y|
+  channel = @scenario_tags.grep(/@user/).first
+  run_monkey channel, int, from_x, to_x, from_y, to_y
+end

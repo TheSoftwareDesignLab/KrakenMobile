@@ -1,4 +1,5 @@
 require 'kraken-mobile/models/device'
+require 'kraken-mobile/constants'
 
 module KrakenMobile
 	module DevicesHelper
@@ -26,6 +27,10 @@ module KrakenMobile
 
       def device_screen_size device_id
         `adb -s #{device_id} shell wm size`
+      end
+
+      def device_orientation device_id
+        `adb -s #{device_id} shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }'`
       end
 
       def is_device_connected device_id
@@ -103,9 +108,22 @@ module KrakenMobile
           size = parts[parts.count-1]
           return 0,0 if !size.include?("x")
           size_parts = size.split("x")
-          return size_parts[1].to_i, size_parts[0].to_i
+          if orientation(device_id) == KrakenMobile::Constants::PORTRAIT
+            return size_parts[1].to_i, size_parts[0].to_i
+          else
+            return size_parts[0].to_i, size_parts[1].to_i
+          end
         rescue
           return 0,0
+        end
+      end
+
+      def orientation device_id
+        begin
+          adb_orientation = device_orientation(device_id).strip!
+          return adb_orientation.to_i
+        rescue
+          return KrakenMobile::Constants::PORTRAIT
         end
       end
 
