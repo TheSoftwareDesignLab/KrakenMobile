@@ -45,7 +45,6 @@ def handle_calabash_android cmd, protocol, configuration, properties
       require 'kraken-mobile/constants'
       require 'calabash-android/helpers'
       options = {
-        cucumber_options: "--format pretty",
         feature_folder: @features_dir,
         runner: KrakenMobile::Constants::CALABASH_ANDROID,
         protocol: protocol

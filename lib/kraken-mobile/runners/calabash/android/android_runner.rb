@@ -23,9 +23,16 @@ module KrakenMobile
       # Hooks
       #-------------------------------
       def before_all
-        Dir.mkdir(KrakenMobile::Constants::SCREENSHOT_PATH) unless File.exists?(KrakenMobile::Constants::SCREENSHOT_PATH)
-        Dir.mkdir("#{KrakenMobile::Constants::SCREENSHOT_PATH}/#{@execution_id}")
-        @devices_manager.connected_devices.each do |device| Dir.mkdir("#{KrakenMobile::Constants::SCREENSHOT_PATH}/#{@execution_id}/#{device.id}") end
+        Dir.mkdir(KrakenMobile::Constants::REPORT_PATH) unless File.exists?(KrakenMobile::Constants::REPORT_PATH)
+        Dir.mkdir("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}")
+        devices_id_list = []
+        @devices_manager.connected_devices.each do |device|
+          devices_id_list << { id: device.id }
+          Dir.mkdir("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}")
+        end
+        file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{KrakenMobile::Constants::REPORT_DEVICES_FILE_NAME}.json", 'w')
+        file.puts(devices_id_list.to_json)
+        file.close
       end
 
       def before_execution process_number
@@ -67,8 +74,7 @@ module KrakenMobile
       end
 
       def run_tests(test_files, process_number, options)
-				cucumber_options = "#{options[:cucumber_options]} #{options[:cucumber_reports]}"
-				command = build_execution_command(process_number, options[:apk_path], cucumber_options, test_files)
+				command = build_execution_command(process_number, options[:apk_path], test_files)
 				puts "\n****** PROCESS #{process_number} STARTED ******\n\n"
 				@command_helper.execute_command(process_number, command)
 				puts "\n****** PROCESS #{process_number} COMPLETED ******\n\n"
@@ -77,18 +83,19 @@ module KrakenMobile
       #-------------------------------
       # Helpers
       #-------------------------------
-			def build_execution_command process_number, general_apk, cucumber_options, test_files
+			def build_execution_command process_number, general_apk, test_files
         device = @devices_manager.connected_devices[process_number]
         raise "Theres not a device for process #{process_number}" unless device
         apk_path = device.config["apk_path"] ? device.config["apk_path"] : general_apk
         raise "Invalid apk path" unless apk_path
+        cucumber_options = "--format json -o #{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/report.json"
 				execution_command = @command_helper.build_command [BASE_COMMAND, apk_path, cucumber_options, *test_files, "--tags @user#{device.position}"]
 				env_variables = {
 					AUTOTEST: '1',
 					ADB_DEVICE_ARG: device.id,
 					DEVICE_INFO: device.model,
 					TEST_PROCESS_NUMBER: (process_number+1).to_s,
-					SCREENSHOT_PATH: "#{KrakenMobile::Constants::SCREENSHOT_PATH}/#{@execution_id}/#{device.id}/#{device.screenshot_prefix}",
+					SCREENSHOT_PATH: "#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/#{device.screenshot_prefix}",
           PROTOCOL: @options[:protocol],
           RUNNER: KrakenMobile::Constants::CALABASH_ANDROID
 				}

@@ -2,7 +2,8 @@ module KrakenMobile
   module Constants
     # Runners
     CALABASH_ANDROID = "calabash-android"
-    SCREENSHOT_PATH = "./screenshots"
+    REPORT_PATH = "./reports"
+    REPORT_DEVICES_FILE_NAME = "devices"
 
     # Protocols
     FILE_PROTOCOL = "file-based"
