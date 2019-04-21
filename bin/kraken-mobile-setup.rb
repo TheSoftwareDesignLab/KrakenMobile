@@ -8,6 +8,17 @@ def kraken_setup
   @settings = []
 
   devices_connected = device_manager.connected_devices
+  if devices_connected.count <= 0
+    puts "No devices connected"
+    exit 1
+  end
+  number_of_devices = -1
+  while(number_of_devices <= 0 || number_of_devices > devices_connected.count)
+    number_of_devices = prompt.ask("How many devices do you want to use?", convert: :int)
+    prompt.error("Number of devices can't be less than 1.") if number_of_devices <= 0
+    prompt.error("You only have #{devices_connected.count} devices connected.") if number_of_devices > devices_connected.count
+  end
+
   devices_connected_id = devices_connected.map { |device| device.id }
   for i in 0...devices_connected.size
     selected_device_id = prompt.select("Choose your user #{i+1}", devices_connected_id)
@@ -31,7 +42,7 @@ def kraken_setup
     }
     devices_connected_id.delete(selected_device_id)
   end
-  
+
   open('kraken_mobile_settings.json', 'w') do |f|
     f.puts @settings.to_json
   end
