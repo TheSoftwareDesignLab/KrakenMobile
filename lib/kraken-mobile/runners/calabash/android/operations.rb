@@ -6,7 +6,7 @@ module KrakenMobile
       def install_app_with_calabash
         operations_module = Calabash::Android::Operations
         default_device = operations_module::Device.new(operations_module, ENV["ADB_DEVICE_ARG"], ENV["TEST_SERVER_PORT"], ENV["APP_PATH"], ENV["TEST_APP_PATH"])
-        #default_device.ensure_apps_installed
+        default_device.ensure_apps_installed
       end
 
       def uninstall_app_with_calabash

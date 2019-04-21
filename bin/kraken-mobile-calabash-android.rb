@@ -51,12 +51,10 @@ def handle_calabash_android cmd, protocol, configuration, properties
       }
       if configuration
         ensure_configuration_is_valid File.expand_path(configuration)
-        # User needs to resign the apps that is going to use manually with kraken-mobile resign <APK>
         options[:config_path] = File.expand_path(configuration)
       else
         ensure_apk_is_specified
         options[:apk_path] = ARGV.first
-        #resign_apk(File.expand_path(ARGV.first)) TODO Resign app
       end
       if properties
         ensure_properties_is_valid File.expand_path(properties)

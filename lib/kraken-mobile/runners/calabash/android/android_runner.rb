@@ -2,6 +2,7 @@ require 'kraken-mobile/helpers/devices_helper/manager'
 require 'kraken-mobile/helpers/feature_grouper'
 require 'kraken-mobile/runners/runner'
 require 'kraken-mobile/constants'
+require 'kraken-mobile/runners/calabash/android/apk_signer.rb'
 require 'parallel'
 require 'digest'
 require 'fileutils'
@@ -53,6 +54,7 @@ module KrakenMobile
       # Execution
       #-------------------------------
       def run_in_parallel
+        ensure_apks_signed
         before_all
         feature_folder = @options[:feature_folder]
         devices_connected = @devices_manager.connected_devices
@@ -104,6 +106,16 @@ module KrakenMobile
 				exports = @command_helper.build_export_env_command env_variables
 				exports + @command_helper.terminal_command_separator + execution_command
 			end
+
+      def ensure_apks_signed
+        checked_apks = {}
+        @devices_manager.connected_devices.each do |device|
+          apk_path = device.config["apk_path"] ? device.config["apk_path"] : @options[:apk_path]
+          next if checked_apks[apk_path] # Dont check already checked apks
+          raise "APK is not signed, you can resign the app by running kraken-mobile resign #{apk_path}" if !KrakenMobile::CalabashAndroid::ApkSigner.is_apk_signed? apk_path
+          checked_apks[apk_path] = apk_path
+        end
+      end
 		end
 	end
 end
