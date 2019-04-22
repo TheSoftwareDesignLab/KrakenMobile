@@ -15,7 +15,7 @@ module KrakenMobile
         kill_existing_monkey_processes
       end
 
-      def run_monkey channel, number_of_events, height_start, height_end, width_start, width_end
+      def run_small_monkey channel, number_of_events, height_start, height_end, width_start, width_end
         devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
         device_id = channel_to_device_id channel
         height, width = devices_helper.screen_size device_id
