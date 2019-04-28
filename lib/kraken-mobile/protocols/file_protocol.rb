@@ -14,6 +14,12 @@ module KrakenMobile
         end
       end
 
+      def readLastSignal(channel)
+        devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
+        device_id = channel_to_device_id(channel)
+          devices_helper.read_file_content(KrakenMobile::Constants::DEVICE_INBOX_NAME, device_id)
+      end
+
       def readSignalWithKeyworkd(channel, keyword, timeout)
         devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
         device_id = channel_to_device_id(channel)
@@ -27,6 +33,13 @@ module KrakenMobile
         devices_helper = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]}).device_helper
         device_id = channel_to_device_id(channel)
         devices_helper.write_content_to_file(content, KrakenMobile::Constants::DEVICE_INBOX_NAME, device_id)
+      end
+
+      def writeSignalToAll(content)
+        devices_manager = DevicesHelper::Manager.new({runner: ENV["RUNNER"], config_path: ENV["CONFIG_PATH"]})
+        devices_manager.connected_devices.each do |device|
+          devices_manager.device_helper.write_content_to_file(content, KrakenMobile::Constants::DEVICE_INBOX_NAME, device.id)
+        end
       end
 
       def start_setup channel, scenario

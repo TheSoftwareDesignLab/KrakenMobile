@@ -90,7 +90,7 @@ module KrakenMobile
         raise "Theres not a device for process #{process_number}" unless device
         apk_path = device.config["apk_path"] ? device.config["apk_path"] : general_apk
         raise "Invalid apk path" unless apk_path
-        cucumber_options = "--format json -o #{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/report.json"
+        cucumber_options = "--format pretty"#-o #{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/report.json"
 				execution_command = @command_helper.build_command [BASE_COMMAND, apk_path, cucumber_options, *test_files, "--tags @user#{device.position}"]
 				env_variables = {
 					AUTOTEST: '1',
