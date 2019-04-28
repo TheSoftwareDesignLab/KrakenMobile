@@ -1,4 +1,5 @@
 require 'kraken-mobile/runners/calabash/android/android_runner'
+require 'kraken-mobile/runners/calabash/monkey/monkey_runner'
 require 'kraken-mobile/constants'
 
 module KrakenMobile
@@ -18,6 +19,8 @@ module KrakenMobile
       case @options[:runner]
       when KrakenMobile::Constants::CALABASH_ANDROID
         Runner::CalabashAndroidRunner.new(@options)
+      when KrakenMobile::Constants::MONKEY
+        Runner::MonkeyRunner.new(@options)
       else
         raise "Invalid Kraken runner."
       end

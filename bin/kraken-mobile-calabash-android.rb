@@ -41,6 +41,22 @@ def handle_calabash_android cmd, protocol, configuration, properties
       ensure_apk_is_specified
       puts "Resigning APK with Calabash-Android"
       resign_apk(File.expand_path(ARGV.first))
+    when 'monkey'
+      require 'kraken-mobile/constants'
+      require 'calabash-android/helpers'
+      options = {
+        runner: KrakenMobile::Constants::MONKEY,
+      }
+      if configuration
+        ensure_configuration_is_valid File.expand_path(configuration)
+        options[:config_path] = File.expand_path(configuration)
+      else
+        ensure_apk_is_specified
+        options[:apk_path] = ARGV.first
+      end
+      # NOT AVAILABLE
+      #kraken = KrakenMobile::App.new(options)
+      #kraken.run_in_parallel
     when 'run'
       require 'kraken-mobile/constants'
       require 'calabash-android/helpers'

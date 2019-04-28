@@ -1,11 +1,12 @@
 require 'calabash-android/monkey_helpers'
+require 'kraken-mobile/constants'
 
 module KrakenMobile
   module CalabashAndroid
     module MonkeyHelper
 
       # Runs inteligent monkey
-      def run_inteligent_monkey channel, number_of_events
+      def run_intelligent_monkey channel, number_of_events
         device_id = channel_to_device_id channel
         logger = open("./#{device_id}.txt", 'w')
         number_of_events.times do |i|
@@ -50,8 +51,15 @@ module KrakenMobile
       ############## Events #####################
       ###########################################
       def handle_random_action channel, logger
-        arr = [method(:enter_last_signal_in_random_input), method(:send_random_signal), method(:random_click)]
-        arr.sample.call(channel, logger)
+        begin
+          Timeout::timeout(KrakenMobile::Constants::MONKEY_DEFAULT_TIMEOUT, RuntimeError) do
+            arr = [method(:enter_last_signal_in_random_input), method(:send_random_signal), method(:random_click)]
+            arr.sample.call(channel, logger)
+          end
+        rescue => e
+          puts "#{ENV['TEST_PROCESS_NUMBER']}> e"
+          logger.puts(e)
+        end
       end
 
       def random_click channel, logger
@@ -61,10 +69,11 @@ module KrakenMobile
         x = element["rect"]["x"]
         y = element["rect"]["y"]
         begin
-          puts "#{x},#{y} click"
           perform_action(random_touch_action, x, y)
-          logger.puts("Random click text: x: #{x} y: #{y}")
+          puts "#{ENV['TEST_PROCESS_NUMBER']}> random_click - Coordinates: #{x},#{y}"
+          logger.puts("random_click - Coordinates: #{x},#{y}")
         rescue => e
+          puts "#{ENV['TEST_PROCESS_NUMBER']}> #{e}"
           logger.puts(e)
         end
       end
@@ -72,6 +81,8 @@ module KrakenMobile
       def enter_last_signal_in_random_input channel, logger
         last_signal = readLastSignal(channel)
         enter_text_in_random_input last_signal, logger
+        puts "#{ENV['TEST_PROCESS_NUMBER']}> enter_last_signal_in_random_input - Signal: #{last_signal}"
+        logger.puts("enter_last_signal_in_random_input - Signal: #{last_signal}")
       end
 
       def enter_text_in_random_input text, logger
@@ -80,17 +91,26 @@ module KrakenMobile
         x = input["rect"]["x"]
         y = input["rect"]["y"]
         perform_action(random_touch_action, x, y)
-        logger.puts("Typed text: #{text} x: #{x} y: #{y}")
         enter_text text
       end
 
       def send_random_signal channel, logger
         return if app_texts.count <= 0
         text = app_texts.sample
+        # TODO Remove all special characters
         text.slice!("(")
         text.slice!(")")
-        logger.puts("Wrote signal: #{text}")
-        writeSignalToAll(text)
+        text.slice!("'")
+        text.slice!("\"")
+        send_signal_method = [method(:writeSignalToAnyDevice), method(:writeSignalToAll)]
+        ans = send_signal_method.sample.call(text)
+        if ans
+          puts "#{ENV['TEST_PROCESS_NUMBER']}> send_random_signal to #{ans.id} - Signal: #{text}"
+          logger.puts("send_random_signal to #{ans.id} - Signal: #{text}")
+        else
+          puts "#{ENV['TEST_PROCESS_NUMBER']}> send_random_signal - Signal: #{text}"
+          logger.puts("send_random_signal - Signal: #{text}")
+        end
       end
 
       def random_touch_action

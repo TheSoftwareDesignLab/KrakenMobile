@@ -32,6 +32,8 @@ module KrakenMobile
         case @runner_name
         when KrakenMobile::Constants::CALABASH_ANDROID
           DevicesHelper::AdbHelper.new()
+        when KrakenMobile::Constants::MONKEY
+          DevicesHelper::AdbHelper.new()
         else
           raise "Runner is not supported"
         end

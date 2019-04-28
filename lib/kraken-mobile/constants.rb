@@ -2,6 +2,7 @@ module KrakenMobile
   module Constants
     # Runners
     CALABASH_ANDROID = "calabash-android"
+    MONKEY = "monkey"
     REPORT_PATH = "./reports"
     REPORT_DEVICES_FILE_NAME = "devices"
 
@@ -13,6 +14,7 @@ module KrakenMobile
     DEVICE_INBOX_NAME = "inbox"
     KRAKEN_CONFIGURATION_FILE_NAME = "kraken_settings"
     DEFAULT_TIMEOUT = 10
+    MONKEY_DEFAULT_TIMEOUT = 5
 
     # ADB Orientations
     PORTRAIT = 0
