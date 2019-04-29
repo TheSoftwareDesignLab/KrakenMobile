@@ -11,5 +11,5 @@ After do |scenario|
 end
 
 AfterStep do |scenario|
-  screenshot_embed
+  #screenshot_embed
 end

@@ -1,11 +1,13 @@
 require 'kraken-mobile/helpers/devices_helper/manager'
 require 'kraken-mobile/helpers/feature_grouper'
+require 'kraken-mobile/helpers/reporter'
 require 'kraken-mobile/runners/runner'
 require 'kraken-mobile/constants'
 require 'kraken-mobile/runners/calabash/android/apk_signer.rb'
 require 'parallel'
 require 'digest'
 require 'fileutils'
+require 'erb'
 
 module KrakenMobile
 	module Runner
@@ -18,6 +20,7 @@ module KrakenMobile
 				@devices_manager = DevicesHelper::Manager.new({runner: default_runner, config_path: @options[:config_path]})
         @adb_helper = @devices_manager.device_helper
         @execution_id = Digest::SHA256.hexdigest("#{Time.now.to_f}")
+        @reporter = KrakenMobile::Reporter.new(@execution_id, options)
 			end
 
       #-------------------------------
@@ -34,6 +37,8 @@ module KrakenMobile
         file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{KrakenMobile::Constants::REPORT_DEVICES_FILE_NAME}.json", 'w')
         file.puts(devices_id_list.to_json)
         file.close
+        source_dir = File.expand_path("../../../../../../reporter/assets/", __FILE__)
+        FileUtils.cp_r(source_dir, "#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/")
       end
 
       def before_execution process_number
@@ -72,6 +77,7 @@ module KrakenMobile
           }
         ) do |group, index|
           run_tests(group, index, @options)
+          @reporter.generate_device_report devices_connected[index]
         end
       end
 
@@ -90,7 +96,7 @@ module KrakenMobile
         raise "Theres not a device for process #{process_number}" unless device
         apk_path = device.config["apk_path"] ? device.config["apk_path"] : general_apk
         raise "Invalid apk path" unless apk_path
-        cucumber_options = "--format pretty"#-o #{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/report.json"
+        cucumber_options = "--format json -o #{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json"
 				execution_command = @command_helper.build_command [BASE_COMMAND, apk_path, cucumber_options, *test_files, "--tags @user#{device.position}"]
 				env_variables = {
 					AUTOTEST: '1',

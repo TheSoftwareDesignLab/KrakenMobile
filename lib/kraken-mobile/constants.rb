@@ -5,6 +5,7 @@ module KrakenMobile
     MONKEY = "monkey"
     REPORT_PATH = "./reports"
     REPORT_DEVICES_FILE_NAME = "devices"
+    REPORT_FILE_NAME = "report"
 
     # Protocols
     FILE_PROTOCOL = "file-based"
