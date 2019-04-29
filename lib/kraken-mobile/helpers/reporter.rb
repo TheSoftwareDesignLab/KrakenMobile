@@ -1,4 +1,5 @@
 require 'kraken-mobile/constants'
+require 'digest'
 
 module KrakenMobile
 	class Reporter
@@ -38,6 +39,28 @@ module KrakenMobile
       File.open(html_file, 'w+') do |f|
         f.write result
       end
+      generate_features_report @features, device
+    end
+
+    def generate_features_report features, device
+      features.each do |feature|
+        generate_feature_report feature, device
+      end
+    end
+
+    def generate_feature_report feature, device
+      Dir.mkdir("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/features_report") unless File.exists?("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/features_report")
+      file_name = feature_id feature
+      erb_file = File.join(File.expand_path("../../../../reporter/", __FILE__), "scenario_report.html.erb")
+      html_file = File.join(File.expand_path("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/features_report"), "#{file_name}.html") #=>"page.html"
+      # Variables
+      @feature = feature
+      template = File.read(erb_file)
+      result = ERB.new(template).result(binding)
+      # write result to file
+      File.open(html_file, 'w+') do |f|
+        f.write result
+      end
     end
 
     #-------------------------------
@@ -50,6 +73,10 @@ module KrakenMobile
         how_many += scenarios.count if scenarios
       end
       how_many
+    end
+
+    def feature_id feature
+      Digest::SHA256.hexdigest("#{feature["id"].strip}#{feature["uri"].strip}")
     end
 
     def passed_features features
@@ -123,6 +150,14 @@ module KrakenMobile
         how_many += 1 if !feature_passed?(feature)
       end
       how_many
+    end
+
+    def feature_passed_scenarios_percentage feature
+      (passed_scenarios(feature).count.to_f/feature["elements"].count.to_f).round(2) * 100.00
+    end
+
+    def feature_failed_scenarios_percentage feature
+      (failed_scenarios(feature).count.to_f/feature["elements"].count.to_f).round(2) * 100.00
     end
 
     def total_passed_scenarios_percentage features
