@@ -30,8 +30,8 @@ module KrakenMobile
         Dir.mkdir(KrakenMobile::Constants::REPORT_PATH) unless File.exists?(KrakenMobile::Constants::REPORT_PATH)
         Dir.mkdir("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}")
         devices_id_list = []
-        @devices_manager.connected_devices.each do |device|
-          devices_id_list << { id: device.id }
+        @devices_manager.connected_devices.each_with_index do |device, index|
+          devices_id_list << { user: (index+1), id: device.id, model: device.model }
           Dir.mkdir("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}")
         end
         file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{KrakenMobile::Constants::REPORT_DEVICES_FILE_NAME}.json", 'w')
@@ -79,6 +79,7 @@ module KrakenMobile
           run_tests(group, index, @options)
           @reporter.generate_device_report devices_connected[index]
         end
+        @reporter.generate_general_report
       end
 
       def run_tests(test_files, process_number, options)
