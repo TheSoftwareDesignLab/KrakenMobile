@@ -17,6 +17,8 @@ Installing and managing a Gem is done through the gem command. To Kraken's gem r
 
 ## Signaling
 
+Signaling is a protocol used for the communication of two or more devices running in parallel. It’s based in the idea that each emulator or real device has a communication channel where he can receive signals sent from other devices which contain information or actions that are supposed to be executed. This type of protocol is commonly used in automated mobile E2E testing tools that validate scenarios involving the inter-communication and collaboration of two or more applications.
+
 ## Writing your first test
 
 ## Running your tests
