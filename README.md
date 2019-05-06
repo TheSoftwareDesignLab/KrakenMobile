@@ -23,4 +23,6 @@ Signaling is a protocol used for the communication of two or more devices runnin
 
 ## Running your tests
 
+## Kraken Settings
+
 ## Properties file
