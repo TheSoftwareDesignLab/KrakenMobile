@@ -31,7 +31,9 @@ module KrakenMobile
         Dir.mkdir("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}")
         devices_id_list = []
         @devices_manager.connected_devices.each_with_index do |device, index|
-          devices_id_list << { user: (index+1), id: device.id, model: device.model }
+          height, width = @adb_helper.screen_size device.id
+          sdk_version = @adb_helper.sdk_version device.id
+          devices_id_list << { user: (index+1), id: device.id, model: device.model, screen_height: height, screen_width: width, sdk: sdk_version }
           Dir.mkdir("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}")
         end
         file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{KrakenMobile::Constants::REPORT_DEVICES_FILE_NAME}.json", 'w')

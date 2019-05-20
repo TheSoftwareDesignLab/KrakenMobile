@@ -29,6 +29,10 @@ module KrakenMobile
         `adb -s #{device_id} shell wm size`
       end
 
+      def device_sdk_version device_id
+        `adb -s #{device_id} shell getprop ro.build.version.sdk`
+      end
+
       def device_orientation device_id
         `adb -s #{device_id} shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }'`
       end
@@ -115,6 +119,14 @@ module KrakenMobile
           end
         rescue
           return 0,0
+        end
+      end
+
+      def sdk_version device_id
+        begin
+          return device_sdk_version device_id
+        rescue
+          return "N/A"
         end
       end
 

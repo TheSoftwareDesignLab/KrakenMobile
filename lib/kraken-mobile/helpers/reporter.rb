@@ -223,7 +223,7 @@ module KrakenMobile
     def scenario_duration scenario
       how_long = 0
       scenario["steps"].each do |step|
-        how_long += step["result"]["duration"] if step["result"]
+        how_long += step["result"]["duration"] if step["result"] && step["result"]["duration"]
       end
       how_long
     end

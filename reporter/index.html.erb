@@ -603,8 +603,8 @@
             </div>
             <div class="row device-title"><%= device['model'] %></div>
             <div class="row device-info">ID - <%= device['id'] %></div>
-            <div class="row device-info">Android Version - 141244</div>
-            <div class="row device-info">Screen Size - 200x200</div>
+            <div class="row device-info">SDK Version - <%= device['sdk'] %></div>
+            <div class="row device-info">Screen Size - <%= "#{device['screen_height']}x#{device['screen_width']}" %></div>
             <div class="row device-info result-btn">
               <a href='<%= "./#{device['id']}/feature_report.html" %>'>See Results</a>
             </div>
@@ -700,6 +700,7 @@
       .style('fill', function(d) {
         return c20c(devicesHash[d]);
       })
+      .style('opacity', .2)
 
       legend.append('text')
       .attr('x', legendRectSize + 5)
