@@ -65,6 +65,40 @@ After identifying what number each device has, you can write your test case givi
         Given I wait for a signal containing "hi"
         Then I wait
 
+## Kraken steps
+
+Kraken offers two main steps to help synchronizing your devices.
+
+### Signaling steps
+
+To wait for a signal coming from another device for 10 seconds that is Kraken default timeout use the following step.
+
+    Then /^I wait for a signal containing "([^\"]*)"$/
+
+To wait for a signal coming from another device for an specified number of seconds use the following step
+
+    Then /^I wait for a signal containing "([^\"]*)" for (\d+) seconds$/
+
+To send a signal to another specified device use the following step
+
+    Then /^I send a signal to user (\d+) containing "([^\"]*)"$/
+
+### Signaling functions
+
+Kraken internal implementation of the signaling steps use the following functions.
+
+#### readSignal(channel, content, timeout)
+
+Waits for a signal with the specified content in the channel passed by parameter. This functions waits for the specified number of seconds in the timeout parameter before throwing an exception.
+
+**Note: The channel parameter has to be the number of a device such as @user1, @user2, @userN**
+
+#### writeSignal(channel, content)
+
+Writes content to a channel passed by parameter.
+
+**Note: The channel parameter has to be the number of a device such as @user1, @user2, @userN**
+
 ## Running your tests
 
 To run your test:
