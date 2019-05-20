@@ -6,11 +6,14 @@ Kraken is an open source automated android E2E testing tool that supports and va
 
 Kraken uses [calabash-android](https://github.com/calabash/calabash-android) for running automated E2E tests in each device or emulator and [cucumber](https://github.com/cucumber/cucumber-ruby) for running your feature files written with Gherkin sintax. 
 
-**Requires Ruby ~ 2.3**
-
 ## Installation
 
-Installing and managing a Gem is done through the gem command. To Kraken's gem run the following command
+### Prerequisites
+
+Kraken requires Ruby 2.20 or higher but we recommend using ~2.3 version. We use calabash-android as runner, you can check their prerequisites at this [link](https://github.com/calabash/calabash-android/blob/master/documentation/installation.md)
+
+
+Installing and managing a Gem is done through the gem command. To install Kraken's gem run the following command
 
     $ gem install kraken-mobile
 
@@ -21,7 +24,32 @@ Signaling is a protocol used for the communication of two or more devices runnin
 
 ## Writing your first test
 
+### Generate cucumber feature skeleton
+
+First you need to generate the cucumber feature skeleton where your tests are going to be saved. To achieve this you should run `kraken-mobile gen`. It will create the skeleton in your current folder like this:
+
+    features
+    |_support
+    | |_app_installation_hooks.rb
+    | |_app_life_cycle_hooks.rb
+    | |_env.rb
+    |_step_definitions
+    | |_kraken_steps.rb
+    |_my_first.feature
+
+### Write a test
+
+The features goes in the features foler and should have the ".feature" extension.
+
+You can start out by looking at features/my_first.feature. You should also check calabash [predefined steps](https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md).
+
 ## Running your tests
+
+To run your test:
+
+    kraken-mobile run <apk>
+
+Kraken with the help of Calabash-Android will install an instrumentation along with your app and will start your tests in all devices connected (Check Kraken Settings section in order to learn how to specify in what devices your tests should be run).
 
 ## Kraken Settings
 
