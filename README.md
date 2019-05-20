@@ -11,6 +11,13 @@
 ## Table of contents
 
 - [Technologies](#technologies)
+- [Installation](#installation)
+- [Signaling](#signaling)
+- [Writing your first test](#writing-your-first-test)
+- [Kraken steps](#kraken-steps)
+- [Running your tests](#running-your-tests)
+- [Kraken Settings](#kraken-settings)
+- [Properties file](#properties-file)
 
 ## Technologies
 
