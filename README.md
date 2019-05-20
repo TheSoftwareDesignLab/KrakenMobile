@@ -75,4 +75,44 @@ Kraken with the help of Calabash-Android will install an instrumentation along w
 
 ## Kraken Settings
 
+Kraken uses kraken_mobile_settings.json to specify in what devices the tests should be run.
+
+### Generate settings file
+
+The following command will show you the available connected devices or emulators and let you choose which ones you want to use.
+
+    kraken-mobile setup
+
+### Run tests with settings file
+
+    kraken-mobile run <apk> --configuration=<kraken_mobile_settings_path>
+
 ## Properties file
+
+Kraken uses properties files to store sensitive data such as passwords or api keys that should be used in your test cases.
+
+### Generate properties file
+
+The properties files should be a manually created json file with the following structure.
+
+    {
+      "@user1": {
+        "PASSWORD": "test"
+      },
+      "@user2": {
+        "PASSWORD": "test2"
+      }
+    }
+    
+### Use properties file in your test
+
+You can use the specified properties using the following sintax.
+
+    @user1
+    Scenario: As a kjkhdkjds
+        Given I wait
+        Then I see the text "<PASSWORD>"
+
+### Run tests with settings file
+
+    kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
