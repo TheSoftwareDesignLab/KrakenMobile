@@ -120,22 +120,70 @@ module KrakenMobile
     def nodes_and_links feature_report, feature_name
       last_node_id = 0
       nodes = [{ name: "", id: "empty", image: nil }]
+      signal_hash = {}
       links = []
       feature_report.keys.each do |key|
         steps = feature_report[key]
+        coming_from_signal = false
+        last_signal = -1
         steps.each_with_index do |step, index|
           node_id = last_node_id+1
-          node = { name: step[:name], id: "#{node_id}", image: step[:image], status: step[:status] }
-          link = {
-            source: (index == 0 ? 0 : last_node_id),
-            target: node_id,
-            value: 1,
-            owner: key,
-            owner_model: step[:device_model]
-          }
-          nodes << node
-          links << link
-          last_node_id += 1
+          if isReadSignal(step[:name]) && step[:status] == PASSED
+            signal = signalContent(step[:name])
+            already_created_signal = signal_hash[signal] ? true : false
+            signal_hash[signal] = already_created_signal ? signal_hash[signal] : { id: "#{node_id}", receiver: key }
+            node = { name: "Signal: #{signal}, Receiver: #{step[:device_model]}", id: signal_hash[signal][:id], image: nil, status: step[:status] }
+            if already_created_signal
+              entry = nodes.select{ |node| node[:id] == signal_hash[signal][:id] }.first
+              entry[:name] = "Signal: #{signal}, Receiver: #{step[:device_model]}" if entry
+            end
+            source = (coming_from_signal ? last_signal : (index == 0 ? 0 : last_node_id))
+            link = {
+              source: source,
+              target: signal_hash[signal][:id].to_i,
+              value: 1,
+              owner: key,
+              owner_model: step[:device_model]
+            }
+            nodes << node if !already_created_signal
+            links << link
+            last_node_id += 1 if !already_created_signal
+            last_signal = signal_hash[signal][:id].to_i
+            coming_from_signal = true
+          elsif isWriteSignal(step[:name]) && step[:status] == PASSED
+            signal = signalContent(step[:name])
+            receiver = signalReceiver(step[:name])
+            already_created_signal = signal_hash[signal] ? true : false
+            signal_hash[signal] = already_created_signal ? signal_hash[signal] : { id: "#{node_id}", receiver: receiver }
+            node = { name: step[:name], id: signal_hash[signal][:id], image: nil, status: step[:status] }
+            source = (coming_from_signal ? last_signal : (index == 0 ? 0 : last_node_id))
+            link = {
+              source: source,
+              target: signal_hash[signal][:id].to_i,
+              value: 1,
+              owner: key,
+              owner_model: step[:device_model]
+            }
+            nodes << node if !already_created_signal
+            links << link
+            last_node_id += 1 if !already_created_signal
+            last_signal = signal_hash[signal][:id].to_i
+            coming_from_signal = true
+          else
+            node = { name: step[:name], id: "#{node_id}", image: step[:image], status: step[:status] }
+            source = (coming_from_signal ? last_signal : (index == 0 ? 0 : last_node_id))
+            link = {
+              source: source,
+              target: node_id,
+              value: 1,
+              owner: key,
+              owner_model: step[:device_model]
+            }
+            nodes << node
+            links << link
+            last_node_id += 1
+            coming_from_signal = false
+          end
         end
       end
       return {
@@ -143,6 +191,26 @@ module KrakenMobile
         nodes: nodes,
         links: links
       }
+    end
+
+    def isReadSignal step
+      line = step.split(' ')[1..-1].join(' ')
+      (line =~ /^I wait for a signal containing "([^\"]*)"$/ ? true : false) || (line =~ /^I wait for a signal containing "([^\"]*)" for (\d+) seconds$/ ? true : false)
+    end
+
+    def isWriteSignal step
+      line = step.split(' ')[1..-1].join(' ')
+      line =~ /^I send a signal to user (\d+) containing "([^\"]*)"$/ ? true : false
+    end
+
+    def signalContent step
+      line = step.split(' ')[1..-1].join(' ')
+      line.scan(/"([^\"]*)"/).first.first if line.scan(/"([^\"]*)"/).first
+    end
+
+    def signalReceiver step
+      line = step.split(' ')[1..-1].join(' ')
+      line.scan(/(\d+)/).first.first if line.scan(/(\d+)/).first
     end
 
     def generate_features_report features, device

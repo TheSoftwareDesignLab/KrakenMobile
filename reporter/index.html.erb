@@ -638,14 +638,12 @@
       let devicesHash = {};
       for(var k = 0; k < jsonObject.links.length; k++) {
         let link = jsonObject.links[k];
-        devicesSet.add(link.owner_model);
-        devicesHash[link.owner_model] = link.owner
+        devicesSet.add(link.owner);
+        devicesHash[link.owner] = link.owner_model
       }
       devices = Array.from(devicesSet);
-      var numDevices = jsonObject["numDevices"];
-
       // GRAPH
-      var height = 150*numDevices;
+      var height = 150*(devices.length-1);
       var c20c = d3.scale.category10();
       d3.select("#chart_row" + (i+1))
       .text(jsonObject["name"])
@@ -683,7 +681,7 @@
       var legend = svg
       .append("g")
       .selectAll("g")
-      .data(devices)
+      .data(Object.keys(devicesHash))
       .enter()
       .append('g')
       .attr('class', 'legend')
@@ -698,14 +696,14 @@
       .attr('width', legendRectSize)
       .attr('height', legendRectSize)
       .style('fill', function(d) {
-        return c20c(devicesHash[d]);
+        return c20c(d);
       })
       .style('opacity', .2)
 
       legend.append('text')
       .attr('x', legendRectSize + 5)
       .attr('y', 10)
-      .text(function(d) { return d; });
+      .text(function(d) { return devicesHash[d]; });
     }
   });
   </script>
