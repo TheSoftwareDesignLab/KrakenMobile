@@ -1,6 +1,16 @@
-# KrakenMobile
+<p align="center">
+  <a href="https://getbootstrap.com/">
+    <img src="https://raw.githubusercontent.com/ravelinx22/KrakenMobile/master/reporter/assets/images/kraken.png" alt="Bootstrap logo" width="140" height="193">
+  </a>
+</p>
 
-Kraken is an open source automated android E2E testing tool that supports and validates scenarios that involve the inter-communication between two or more users. It works in a Black Box manner meaning that it’s not required to have access to the source code of the application but instead it can be run with the APK (Android package file format). Kraken uses signaling for coordinating the communication between the devices using a file based protocol.
+<h3 align="center">Kraken Mobile</h3>
+
+<p align="center">Kraken is an open source automated android E2E testing tool that supports and validates scenarios that involve the inter-communication between two or more users. It works in a Black Box manner meaning that it’s not required to have access to the source code of the application but instead it can be run with the APK (Android package file format). Kraken uses signaling for coordinating the communication between the devices using a file based protocol.</p>
+
+## Table of contents
+
+- [Technologies](#technologies)
 
 ## Technologies
 
