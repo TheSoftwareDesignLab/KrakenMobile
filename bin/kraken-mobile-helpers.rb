@@ -15,6 +15,12 @@ def print_usage
       prints the gem version.
     devices
       prints the list of devices attached.
+    setup
+      creates kraken-settings file specifying in what devices the tests are going to be run.
+    gen
+      generate a features folder structure.
+    resign <apk>
+      resigns the app with the currently configured keystore.
 EOF
 end
 

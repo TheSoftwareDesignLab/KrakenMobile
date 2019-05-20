@@ -20,7 +20,7 @@ def kraken_setup
   end
 
   devices_connected_id = devices_connected.map { |device| device.id }
-  for i in 0...devices_connected.size
+  for i in 0...number_of_devices
     selected_device_id = prompt.select("Choose your user #{i+1}", devices_connected_id)
     valid_apk = false
     entered_apk_path = nil
