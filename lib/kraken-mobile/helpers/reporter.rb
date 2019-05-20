@@ -24,10 +24,15 @@ module KrakenMobile
       erb_file = File.join(File.expand_path("../../../../reporter/", __FILE__), "index.html.erb")
       html_file = File.join(File.expand_path("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/"), "index.html")
       # Variables
-      @devices = [{"user":1,"id":"93c6af52","model":"ONEPLUS_A6013"},{"user":2,"id":"emulator-5554","model":"Android_SDK_built_for_x86"}]
+      report_file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{KrakenMobile::Constants::REPORT_DEVICES_FILE_NAME}.json")
+      content = report_file.read
+      @devices = JSON.parse(content)
       devices_report = report_by_devices(@devices)
       @features_report = fetures_from_report_by_devices devices_report
-      @branches = branches(@features_report).to_json # TODO
+      data_hash = feature_by_nodes_and_links @features_report
+      file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/assets/js/#{KrakenMobile::Constants::D3_DATA_FILE_NAME}.json", 'w')
+      file.puts(data_hash.to_json)
+      file.close
       template = File.read(erb_file)
       result = ERB.new(template).result(binding)
       # write result to file
@@ -62,11 +67,12 @@ module KrakenMobile
     def report_by_devices devices
       devices_report = {}
       devices.each do |device|
-        next if !File.exists?("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device[:id]}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json")
-        report_file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device[:id]}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json")
+        next if !File.exists?("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device['id']}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json")
+        report_file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device['id']}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json")
         content = report_file.read
-        devices_report[device[:user]] = JSON.parse(content)
-        devices_report[device[:user]].each do |d| d["device_id"] = device[:id] if !d["device_id"] end
+        devices_report[device['user']] = JSON.parse(content)
+        devices_report[device['user']].each do |d| d["device_model"] = device["model"] if !d["device_model"] end
+        devices_report[device['user']].each do |d| d["device_id"] = device["id"] if !d["device_id"] end
       end
       devices_report
     end
@@ -78,13 +84,65 @@ module KrakenMobile
         report.each do |feature|
           features[feature["id"]] = {} if !features[feature["id"]]
           features[feature["id"]]["name"] = feature["name"] if !features[feature["id"]]["name"] && feature["name"]
-          features[feature["id"]]["uri"] = feature["uri"] if !features[feature["id"]]["uri"] && feature["uri"]
-          features[feature["id"]]["hash"] = feature_id(feature) if !features[feature["id"]]["hash"]
           features[feature["id"]]["devices"] = {} if !features[feature["id"]]["devices"]
-          features[feature["id"]]["devices"][user_key] = feature["elements"] if feature["elements"]
+          if feature["elements"] && feature["elements"].count > 0
+            features[feature["id"]]["devices"][user_key] = []
+            if feature["elements"].first["steps"]
+              failed = false
+              feature["elements"].first["steps"].each do |step|
+                next if failed
+                failed = step["result"]["status"] != PASSED
+                image = nil
+                image = step["after"].first["embeddings"].first["data"] if step["after"] && step["after"].count > 0 && step["after"].first["embeddings"] && step["after"].first["embeddings"].count > 0
+                features[feature["id"]]["devices"][user_key] << {
+                  name: "#{step['keyword']} #{step['name']}",
+                  duration: step["result"]["duration"],
+                  image: image,
+                  device_model: feature["device_model"],
+                  status: failed ? FAILED : PASSED
+                }
+              end
+            end
+          end
         end
       end
       features
+    end
+
+    def feature_by_nodes_and_links features_report
+      features = []
+      features_report.values.each do |feature|
+        features << nodes_and_links(feature["devices"], feature["name"]) if feature["devices"]
+      end
+      features
+    end
+
+    def nodes_and_links feature_report, feature_name
+      last_node_id = 0
+      nodes = [{ name: "", id: "empty", image: nil }]
+      links = []
+      feature_report.keys.each do |key|
+        steps = feature_report[key]
+        steps.each_with_index do |step, index|
+          node_id = last_node_id+1
+          node = { name: step[:name], id: "#{node_id}", image: step[:image], status: step[:status] }
+          link = {
+            source: (index == 0 ? 0 : last_node_id),
+            target: node_id,
+            value: 1,
+            owner: key,
+            owner_model: step[:device_model]
+          }
+          nodes << node
+          links << link
+          last_node_id += 1
+        end
+      end
+      return {
+        name: feature_name,
+        nodes: nodes,
+        links: links
+      }
     end
 
     def generate_features_report features, device

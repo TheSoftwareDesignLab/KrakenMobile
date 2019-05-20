@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="utf-8">
   <title>Report</title>
 
   <!-- Dependencies -->
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
   <link href="./assets/css/font-awesome.min.css" rel="stylesheet">
   <link href="./assets/css/dataTables.bootstrap.min.css" rel="stylesheet">
-  <link href="./assets/css/responsive.dataTables.min.css" rel="stylesheet">
   <style>
   body {
     color: #73879C;
@@ -567,10 +564,30 @@
     height: 100%;
     object-fit: scale-down;
   }
-  </style>
+</style>
+
+<script src="./assets/js/d3.v3.min.js"></script>
+<script src="./assets/js/first-sankey.js"></script>
+<script src="./assets/js/d3.chart.min.js"></script>
+<script src="./assets/js/sankey.js"></script>
+<style>
+#chart {
+  font: 13px sans-serif;
+  height: 500px;
+}
+.node rect {
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+  stroke-width: 0;
+}
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+</style>
 </head>
 <body>
-
   <div class="main_conainer">
     <div class="container-fluid devices-list">
       <div class="x_title">
@@ -584,116 +601,112 @@
             <div class="row device-os-icon">
               <i class="fa fa-android fa-lg"></i>
             </div>
-            <div class="row device-title"><%= device[:model] %></div>
-            <div class="row device-info">ID - <%= device[:id] %></div>
+            <div class="row device-title"><%= device['model'] %></div>
+            <div class="row device-info">ID - <%= device['id'] %></div>
             <div class="row device-info">Android Version - 141244</div>
             <div class="row device-info">Screen Size - 200x200</div>
             <div class="row device-info result-btn">
-              <a href='<%= "./#{device[:id]}/feature_report.html" %>'>See Results</a>
+              <a href='<%= "./#{device['id']}/feature_report.html" %>'>See Results</a>
             </div>
           </div>
         </div>
         <% end %>
       </div>
     </div>
-    <% if false #TODO %>
+    <% @features_report.values.each_with_index do |element, index| %>
     <div class="container-fluid">
       <div class="row">
         <div class="x_title">
-          <h2>Features Result</h2>
+          <h2 id="chart_row<%= index + 1 %>"></h2>
           <div class="clearfix"></div>
         </div>
       </div>
-      <% @features_report.values.each do |i| %>
       <div class="row feature-flow">
-        <div class="col-md-10 col-xs-12">
-          <div class="x_title">
-            <h2><%= i["name"] %></h2>
-            <div class="clearfix"></div>
-          </div>
-          <div class="feature-flow-content">
-            <canvas id='<%= i["hash"] %>'></canvas>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="phone_container">
-            <div class="phone">
-              <img src="https://pbs.twimg.com/media/D5Fxil9XsAUsiit.jpg:large" alt="" class="phone_image" id="buenas">
-            </div>
-          </div>
-        </div>
+        <div id="chart<%= index + 1 %>"></div>
       </div>
-      <% end %>
     </div>
     <% end %>
   </div>
+
   <script src="./assets/js/jquery-3.2.1.min.js" ></script>
   <script src="./assets/js/bootstrap.min.js"></script>
-  <script src="./assets/js/gitgraph.min.js" ></script>
   <script>
-  var graphConfig = new GitGraph.Template({
-    colors: ["#34A5DA", "#66f", "#fd6a02", "#f19c79", "#00BB00", "#006", "#c2e812", "#9993FF","#999900", "#660033", "#34A5DA", "#006600", "#006", "#000", "#f00"],
-    branch: {
-      lineWidth: 1,
-      spacingX: 25,
-      mergeStyle: "bezier",
-      showLabel: false,
-      labelFont: "normal 8pt Calibri",
-      labelColor: "white",
-      labelRotation: 0
-    },
-    commit: {
-      spacingY: -55,
-      dot: {
-        size: 5
-      },
-      tag: {
-        font: "normal 8pt Calibri",
-        color: "#e0e0e0",
-        labelRotation: -90
-      },
-      message: {
-        color: "black",
-        font: "normal 12pt Calibri",
-        displayAuthor: false,
-        displayBranch: false,
-        displayHash: false,
-        display: false
-      },
-      shouldDisplayTooltipsInCompactMode: false
+  d3.json("./assets/js/data.json", function(error, json) {
+    for(var i = 0; i < json.length; i++) {
+      let jsonObject = json[i];
+      let devicesSet = new Set([]);
+      let devicesHash = {};
+      for(var k = 0; k < jsonObject.links.length; k++) {
+        let link = jsonObject.links[k];
+        devicesSet.add(link.owner_model);
+        devicesHash[link.owner_model] = link.owner
+      }
+      devices = Array.from(devicesSet);
+      var numDevices = jsonObject["numDevices"];
+
+      // GRAPH
+      var height = 150*numDevices;
+      var c20c = d3.scale.category10();
+      d3.select("#chart_row" + (i+1))
+      .text(jsonObject["name"])
+
+      let chartId = "#chart" + (i+1);
+      var svg = d3.select(chartId)
+      .style("height", height + "px")
+      .append("svg");
+
+      var chart = svg.chart("Sankey.Path");
+
+      chart
+      .name(label)
+      .colorNodes(function(name, node) {
+        color = "#ff6961";
+        if(node.id == "empty") {
+          color = "#9f9fa3"
+        } else if(node.status === "passed") {
+          color = "#77dd77";
+        }
+        return color;
+      })
+      .colorLinks(function(link) {
+        return c20c(link.owner);
+      })
+      .nodeWidth(10)
+      .nodePadding(10)
+      .spread(true)
+      .draw(jsonObject);
+
+      // LEGEND
+      let legendRectSize = 10;
+      let legendSpacing = 10
+
+      var legend = svg
+      .append("g")
+      .selectAll("g")
+      .data(devices)
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function(d, i) {
+        var height = legendRectSize;
+        var x = 10;
+        var y = 10 + (i * height) + i*5;
+        return 'translate(' + x + ',' + y + ')';
+      });
+
+      legend.append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', function(d) {
+        return c20c(devicesHash[d]);
+      })
+
+      legend.append('text')
+      .attr('x', legendRectSize + 5)
+      .attr('y', 10)
+      .text(function(d) { return d; });
     }
   });
-  branches = JSON.parse('<%= @branches %>');
-  console.log(branches);
-  for (var key in branches) {
-    local_branches = {};
-    let feature = branches[key];
-    var config = {
-      template: graphConfig,//"metro",//
-      mode: "compact",
-      orientation: "horizontal",
-      elementId: key
-    };
-    var gitgraph = new GitGraph(config);
-    var master = gitgraph.branch({});
-    master.commit({});
-    steps = branches[key]["steps"];
-    if(!steps) { continue; }
-    for(var i = 0; i < steps.length; i++) {
-      step = steps[i];
-      if(step.type == 0) { // create branch
-        local_branches[step.name] = gitgraph.branch({
-            parentBranch: master
-        });
-      } else if(step.type == 1) { // commit
-        local_branches[step.name].commit({message: step.message, onClick: function(commit) {
-          if(step.image) {
-            $("#buenas").attr("src","data:image/png;base64,"+step.image.data);
-          }
-        }});
-      }
-    }
-  }
   </script>
 </body>
 </html>

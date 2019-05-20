@@ -37,9 +37,9 @@ Then /^I send a signal to user (\d+) containing "([^\"]*)"$/ do |int, string|
   writeSignal("@user#{int}", string)
 end
 
-Then /^I send a signal to any user containing "([^\"]*)"$/ do |string|
-  writeSignalToAnyDevice(string)
-end
+#Then /^I send a signal to any user containing "([^\"]*)"$/ do |string|
+#  writeSignalToAnyDevice(string)
+#end
 
 Then /^I start a monkey with (\d+) events$/ do |int|
   channel = @scenario_tags.grep(/@user/).first

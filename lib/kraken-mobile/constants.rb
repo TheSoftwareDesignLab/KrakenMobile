@@ -6,6 +6,7 @@ module KrakenMobile
     REPORT_PATH = "./reports"
     REPORT_DEVICES_FILE_NAME = "devices"
     REPORT_FILE_NAME = "report"
+    D3_DATA_FILE_NAME = "data"
 
     # Protocols
     FILE_PROTOCOL = "file-based"
