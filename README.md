@@ -43,6 +43,28 @@ The features goes in the features foler and should have the ".feature" extension
 
 You can start out by looking at features/my_first.feature. You should also check calabash [predefined steps](https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md).
 
+### Syntax
+
+In Kraken each feature is a test and each scenario within a feature is a test case that is run in a device. Each device is identified as an user and numbered from 1 to N. Ex: @user1, @user2, @user3. To check what is the number of a given device you should run `kraken-mobile devices`
+
+    List of devices attached
+    user1 - emulator-5554 - Android_SDK_built_for_x86
+    user2 - emulator-5556 - Android_SDK_built_for_x86
+
+After identifying what number each device has, you can write your test case giving each scenario the tag of a given device like so:
+
+    Feature: Example feature
+
+      @user1
+      Scenario: As a first user I say hi to a second user
+        Given I wait
+        Then I send a signal to user 2 containing "hi"
+
+      @user2
+      Scenario: As a second user I wait for user 1 to say hi
+        Given I wait for a signal containing "hi"
+        Then I wait
+
 ## Running your tests
 
 To run your test:
