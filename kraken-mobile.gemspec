@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
       Dir.glob('lib/**/*') +
       Dir.glob("bin/**/*.rb") +
       Dir.glob("calabash-android-features-skeleton/**/*.*") +
+      Dir.glob("reporter/**/*.*") +
       ["bin/kraken-mobile"] +
       %w(LICENSE README.md)
   end.call
