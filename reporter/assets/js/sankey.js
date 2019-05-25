@@ -115,6 +115,9 @@
               }).on("mouseout", function(t) {
                 mouseout(t, i);
               })
+              .on("click", function(t) {
+                click(t, i);
+              })
             },
             exit: function() {
               this.remove()
@@ -495,6 +498,16 @@ function mouseover(d, contexter) {
 
 function mouseout(d, svg) {
   d3.selectAll("[class=\"scene-image\"]").remove();
+}
+
+function click(d, svg) {
+  if(d.image) {
+    var im = new Image();
+    im.src = "data:image/png;base64," + d.image
+    var w = window.open("",'_blank');
+    w.document.write(im.outerHTML);
+    w.document.close();
+  }
 }
 
 function label(node) {
