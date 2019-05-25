@@ -643,7 +643,8 @@
       }
       devices = Array.from(devicesSet);
       // GRAPH
-      var height = 150*(devices.length-1);
+      let devicesLength = devices.length > 1 ? (devices.length-1) : 1;
+      var height = 150*devicesLength;
       var c20c = d3.scale.category10();
       d3.select("#chart_row" + (i+1))
       .text(jsonObject["name"])
