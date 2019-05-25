@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="https://getbootstrap.com/">
-    <img src="https://raw.githubusercontent.com/ravelinx22/KrakenMobile/master/reporter/assets/images/kraken.png" alt="Bootstrap logo" width="140" height="193">
-  </a>
+    <img src="https://raw.githubusercontent.com/ravelinx22/KrakenMobile/master/reporter/assets/images/kraken.png" alt="kraken logo" width="140" height="193">
 </p>
 
 <h3 align="center">Kraken Mobile</h3>
