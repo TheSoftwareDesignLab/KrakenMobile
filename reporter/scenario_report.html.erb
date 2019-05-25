@@ -125,9 +125,42 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> <!-- Closes scenario row -->
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel" style="height: auto;">
+          <div class="x_title">
+            <h2>Screenshots</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="container">
+              <div class="row">
+                <% f["steps"].each do |s| %>
+                  <div class="col-md-2">
+                    <div class="step_title">
+                      <i class="fa fa-arrow-right step_title_icon"></i>
+                      <%= s["keyword"] %> <%= s["name"] %>
+                    </div>
+                    <% if(s["after"] && s["after"].count > 0 && s["after"].first["embeddings"] && s["after"].first["embeddings"].count > 0) %>
+                      <% step_image = s["after"].first["embeddings"].first["data"] %>
+                      <img src='<%= "data:image/png;base64,#{step_image}" %>' alt="" class="img-responsive step_image" onclick='<%= "openImageNewTab(\"#{step_image}\")" %>'>
+                    <% else %>
+                      <div class="not_available">
+                        NO IMAGE AVAILABLE
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- Closes screenshots row -->
+    <% end %>
   </div>
-  <% end %>
 
   <script src="../../assets/js/jquery-3.2.1.min.js" ></script>
   <script src="../../assets/js/bootstrap.min.js"></script>
@@ -136,39 +169,48 @@
   <script src="../../assets/js/dataTables.responsive.min.js"></script>
   <script src="../../assets/js/Chart.min.js"></script>
   <script>
-  $(document).ready(function () {
-    passed_scenarios = parseInt("<%= passed_scenarios(@feature).count %>")
-    failed_scenarios = parseInt("<%= failed_scenarios(@feature).count %>")
+    function openImageNewTab(imageData) {
+      var im = new Image();
+      im.src = "data:image/png;base64," + imageData
+      var w = window.open("",'_blank');
+      w.document.write(im.outerHTML);
+      w.document.close();
+    }
 
-    scenarios_data = [passed_scenarios,failed_scenarios];
-    var scenarioOptions = {
-      legend: false,
-      responsive: false
-    };
+    $(document).ready(function () {
 
-    new Chart(document.getElementById("scenario-chart"), {
-      type: 'doughnut',
-      tooltipFillColor: "rgba(51, 51, 51, 0.55)",
-      data: {
-        labels: [
-          "Passed",
-          "Failed"
-        ],
-        datasets: [{
-          data: scenarios_data,
-          backgroundColor: [
-            "#26B99A",
-            "#E74C3C"
-          ]
-        }]
-      },
-      options: scenarioOptions
+      passed_scenarios = parseInt("<%= passed_scenarios(@feature).count %>")
+      failed_scenarios = parseInt("<%= failed_scenarios(@feature).count %>")
+
+      scenarios_data = [passed_scenarios,failed_scenarios];
+      var scenarioOptions = {
+        legend: false,
+        responsive: false
+      };
+
+      new Chart(document.getElementById("scenario-chart"), {
+        type: 'doughnut',
+        tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+        data: {
+          labels: [
+            "Passed",
+            "Failed"
+          ],
+          datasets: [{
+            data: scenarios_data,
+            backgroundColor: [
+              "#26B99A",
+              "#E74C3C"
+            ]
+          }]
+        },
+        options: scenarioOptions
+      });
+
+      $('body').tooltip({
+        selector: '[data-toggle="tooltip"]'
+      });
     });
-
-    $('body').tooltip({
-      selector: '[data-toggle="tooltip"]'
-    });
-  });
 </script>
 </body>
 </html>

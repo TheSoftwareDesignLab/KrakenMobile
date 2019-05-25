@@ -110,6 +110,13 @@
                 return 10;
               })
               .style("fill", e)
+              .style("cursor", function(t) {
+                if(t.image) {
+                  return "pointer";
+                } else {
+                  return "default";
+                }
+              })
               .on("mouseover", function(t) {
                 mouseover(t, i);
               }).on("mouseout", function(t) {

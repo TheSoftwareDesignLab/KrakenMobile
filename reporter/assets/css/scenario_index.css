@@ -459,3 +459,23 @@ background-color: #E74C3C;
 padding: 50px 0;
 text-align: center;
 }
+
+.step_title {
+  margin-bottom: 10px;
+  white-space:nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.step_title_icon {
+  margin-right: 5px;
+}
+
+.not_available {
+  text-align: center;
+  width: 100%;
+}
+
+.step_image {
+  cursor: pointer;
+}
