@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.authors     = ['William Ravelo M']
   s.email       = ['drummerwilliam@gmail.com']
-  s.homepage    = 'https://github.com/ravelinx22/KrakenMobile'
+  s.homepage    = 'https://github.com/TheSoftwareDesignLab/KrakenMobile'
   s.required_ruby_version = '>= 2.2.0'
   s.summary     = %q{Automated E2E mobile testing involving intercommunication scenarios. }
   s.description = %q{Automated E2E testing involving intercommunication between two or more mobile applications running in different devices or emulators. }
