@@ -476,6 +476,7 @@ function mouseover(d, contexter) {
       .attr("x", ixPosition)
       .attr("y", iyPosition)
       .attr("height", 100)
+      .attr("width", 50)
       .style("width", "auto")
       .attr("xlink:href", this.src)
       .attr("transform", null)
