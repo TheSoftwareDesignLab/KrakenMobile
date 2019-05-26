@@ -452,7 +452,7 @@ function mouseover(d, contexter) {
   computedHeight = boundingRect.height;
 
   let xPosition = d.x + margins.left + d.dx + 10;
-  let yPosition = margins.top;
+  let yPosition = d.y + d.dy/2;
   let endXPosition = xPosition + computedWidth;
 
   if(endXPosition > width) {
@@ -467,38 +467,49 @@ function mouseover(d, contexter) {
     im.id = "scene" + d.id;
     im.src = "data:image/png;base64," + d.image
     im.onload = function(e) {
-      var w = this.width;
-      var h = this.height;
+      var h = 100;
       var ixPosition = d.x + margins.left + d.dx + 10; // 10 of separation from node
-      var iyPosition = computedHeight + 10; // 10 of separation from label
-      let endiXPosition = ixPosition + w;
-      let endiYPosition = iyPosition + h;
+      var iyPosition = d.y + d.dy/2 + 10; // 10 of separation from label
 
-      var i = 1
-      while(w/i > 100 || h/i > 100) {
-        i++;
-      }
-
-      h = h/i;
-      w = w/i;
-
-      endiXPosition = ixPosition + w;
-      endiYPosition = iyPosition + h;
-
-      if(endiXPosition > width) {
-        ixPosition -= (endiXPosition-width)
-      }
-
-      contexter.base.append("image")
+      image = contexter.base.append("image")
       .data([this])
       .attr("x", ixPosition)
       .attr("y", iyPosition)
+      .attr("height", 100)
+      .style("width", "auto")
       .attr("xlink:href", this.src)
       .attr("transform", null)
       .attr("id", this.id)
       .attr("class", "scene-image")
-      .attr("width", w)
-      .attr("height", h)
+
+      imageBoundingRect = image.node().getBoundingClientRect();
+      computedImageWidth = imageBoundingRect.width;
+      computedImageHeight = imageBoundingRect.height;
+      let endImageXPosition = ixPosition + computedImageWidth;
+      let endImageYPosition = iyPosition + computedImageHeight;
+
+      if(endImageXPosition > width) {
+        ixPosition -= (endImageXPosition-width)
+      }
+
+      if(endImageYPosition > height + margins.bottom) {
+        iyPosition -= (endImageYPosition-(height+margins.bottom))
+      }
+
+      image.attr("x", ixPosition)
+      .attr("y", iyPosition);
+
+      text.attr("y", iyPosition - 10);
+
+      contexter.base.append('rect')
+      .attr('class', 'scene-image')
+      .attr('width', computedImageWidth)
+      .attr('height', computedImageHeight)
+      .attr('fill', 'transparent')
+      .attr('stroke', 'black')
+      .style('opacity', 0.25)
+      .attr("x", ixPosition)
+      .attr("y", iyPosition);
     }
   }
 }
