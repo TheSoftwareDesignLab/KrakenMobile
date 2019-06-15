@@ -61,15 +61,15 @@ After identifying what number each device has, you can write your test case givi
 ```Gherkin
 Feature: Example feature
   
-@user1
-Scenario: As a first user I say hi to a second user
-Given I wait
-Then I send a signal to user 2 containing "hi"
+  @user1
+  Scenario: As a first user I say hi to a second  user
+  Given I wait
+  Then I send a signal to user 2 containing "hi"
 
-@user2
-Scenario: As a second user I wait for user 1 to say hi
-Given I wait for a signal containing "hi"
-Then I wait
+  @user2
+  Scenario: As a second user I wait for user 1  to say hi
+  Given I wait for a signal containing "hi"
+  Then I wait
 ```
 
 # Kraken steps
@@ -98,7 +98,7 @@ Then /^I send a signal to user (\d+) containing "([^\"]*)"$/
 
 Kraken internal implementation of the signaling steps use the following functions.
 
-```
+```ruby
 readSignal(channel, content, timeout)
 ```
 
@@ -106,7 +106,7 @@ Waits for a signal with the specified content in the channel passed by parameter
 
  **Note: The channel parameter has to be the number of a device such as @user1, @user2, @userN**
 
-```
+```ruby
 writeSignal(channel, content)
 ```
 
@@ -118,7 +118,9 @@ Writes content to a channel passed by parameter.
 
 To run your test:
 
-    kraken-mobile run <apk>
+```shell
+$ kraken-mobile run <apk>
+```
 
 Kraken with the help of Calabash-Android will install an instrumentation along with your app and will start your tests in all devices connected (Check Kraken Settings section in order to learn how to specify in what devices your tests should be run).
 
@@ -130,11 +132,15 @@ Kraken uses kraken_mobile_settings.json to specify in what devices the tests sho
 
 The following command will show you the available connected devices or emulators and let you choose which ones you want to use.
 
-    kraken-mobile setup
+```shell
+$ kraken-mobile setup
+```
 
 ### Run tests with settings file
 
-    kraken-mobile run <apk> --configuration=<kraken_mobile_settings_path>
+``` shell
+$ kraken-mobile run <apk> --configuration=<kraken_mobile_settings_path>
+```
 
 # Properties file
 
@@ -144,28 +150,37 @@ Kraken uses properties files to store sensitive data such as passwords or api ke
 
 The properties files should be a manually created json file with the following structure.
 
-    {
-      "@user1": {
-        "PASSWORD": "test"
-      },
-      "@user2": {
-        "PASSWORD": "test2"
-      }
-    }
+```json
+{
+  "@user1": {
+    "PASSWORD": "test"
+  },
+  "@user2": {
+    "PASSWORD": "test2"
+  }
+}
+```
     
 ### Use properties file in your test
 
 You can use the specified properties using the following sintax.
 
-    @user1
-    Scenario: As a kjkhdkjds
-        Given I wait
-        Then I see the text "<PASSWORD>"
+```Gherkin
+@user1
+Scenario: As a kjkhdkjds
+    Given I wait
+    Then I see the text "<PASSWORD>"
+```
 
 ### Run tests with settings file
 
-    kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
+```
+kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
+```
 
 # Examples
 
-This is a placeholder
+| Application  | Feature File | Properties file | Settings File | Report Link |
+|:-------------|:------------------|:-------|:-------|:-------|
+| Infinite Words | [infinite_words.feature](/examples/infinite-words/infinite_words.feature) | ---  | ---  | [report](/examples/infinite-words/report/index.html) |
+| QuizUp | [quizup.feature](/examples/quizup/quizup.feature) | [quizup.json](/examples/quizup/quizup.json) |  [quizup.properties](/examples/quizup/quizup.properties) | [asd]()  |
