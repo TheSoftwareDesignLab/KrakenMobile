@@ -166,3 +166,7 @@ You can use the specified properties using the following sintax.
 ### Run tests with settings file
 
     kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
+
+## Examples
+
+This is a placeholder
