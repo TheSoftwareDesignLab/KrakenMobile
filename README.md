@@ -182,5 +182,5 @@ kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
 
 | Application  | Feature File | Properties file | Settings File | Report Link |
 |:-------------|:------------------|:-------|:-------|:-------|
-| Infinite Words | [infinite_words.feature](/examples/infinite-words/infinite_words.feature) | ---  | ---  | [report](/examples/infinite-words/report/index.html) |
-| QuizUp | [quizup.feature](/examples/quizup/quizup.feature) | [quizup.json](/examples/quizup/quizup.json) |  [quizup.properties](/examples/quizup/quizup.properties) | [asd]()  |
+| Infinite Words | [.feature](/examples/infinite-words/infinite_words.feature) | ---  | ---  | [report](/examples/infinite-words/report/index.html) |
+| QuizUp | [.feature](/examples/quizup/quizup.feature) | [.json](/examples/quizup/quizup.json) |  [.properties](/examples/quizup/quizup.properties) | [asd]()  |
