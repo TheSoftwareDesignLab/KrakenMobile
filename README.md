@@ -6,25 +6,26 @@
 
 Kraken is an open source automated android E2E testing tool that supports and validates scenarios that involve the inter-communication between two or more users. It works in a Black Box manner meaning that it’s not required to have access to the source code of the application but instead it can be run with the APK (Android package file format). Kraken uses signaling for coordinating the communication between the devices using a file based protocol.
 
-## Technologies
+# Technologies
 
-<p align="justify">Kraken uses [calabash-android](https://github.com/calabash/calabash-android) for running automated E2E tests in each device or emulator and [cucumber](https://github.com/cucumber/cucumber-ruby) for running your feature files written with Gherkin sintax. </p>
+Kraken uses [calabash-android](https://github.com/calabash/calabash-android) for running automated E2E tests in each device or emulator and [cucumber](https://github.com/cucumber/cucumber-ruby) for running your feature files written with Gherkin sintax.
 
-## Installation
+
+# Installation
 
 ### Prerequisites
 
-<p align="justify">Kraken requires Ruby 2.20 or higher but we recommend using ~2.3 version. We use calabash-android as runner, you can check their prerequisites at this [link](https://github.com/calabash/calabash-android/blob/master/documentation/installation.md). Installing and managing a Gem is done through the gem command. To install Kraken's gem run the following command. </p>
+Kraken requires Ruby 2.20 or higher but we recommend using ~2.3 version. We use calabash-android as runner, you can check their prerequisites at this [link](https://github.com/calabash/calabash-android/blob/master/documentation/installation.md). Installing and managing a Gem is done through the gem command. To install Kraken's gem run the following command.
 
 ```shell
 $ gem install kraken-mobile
 ```
 
-## Signaling
+# Signaling
 
-<p align="justify">Signaling is a protocol used for the communication of two or more devices running in parallel. It’s based in the idea that each emulator or real device has a communication channel where he can receive signals sent from other devices which contain information or actions that are supposed to be executed. This type of protocol is commonly used in automated mobile E2E testing tools that validate scenarios involving the inter-communication and collaboration of two or more applications.</p>
+Signaling is a protocol used for the communication of two or more devices running in parallel. It’s based in the idea that each emulator or real device has a communication channel where he can receive signals sent from other devices which contain information or actions that are supposed to be executed. This type of protocol is commonly used in automated mobile E2E testing tools that validate scenarios involving the inter-communication and collaboration of two or more applications.
 
-## Writing your first test
+# Writing your first test
 
 ### Generate cucumber feature skeleton
 
@@ -43,11 +44,11 @@ features
 
 ### Write a test
 
-<p align="justify">The features goes in the features foler and should have the ".feature" extension. You can start out by looking at `features/my_first.feature`. You should also check calabash [predefined steps](https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md).</p>
+The features goes in the features foler and should have the ".feature" extension. You can start out by looking at `features/my_first.feature`. You should also check calabash [predefined steps](https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md).
 
 ### Syntax
 
-<p align="justify">In Kraken each feature is a test and each scenario within a feature is a test case that is run in a device. Each device is identified as an user and numbered from 1 to N. Ex: @user1, @user2, @user3. To check what is the number of a given device you should run `kraken-mobile devices`. </p>
+In Kraken each feature is a test and each scenario within a feature is a test case that is run in a device. Each device is identified as an user and numbered from 1 to N. Ex: @user1, @user2, @user3. To check what is the number of a given device you should run `kraken-mobile devices`.
 
 ```shell
 List of devices attached
@@ -71,41 +72,49 @@ Given I wait for a signal containing "hi"
 Then I wait
 ```
 
-## Kraken steps
+# Kraken steps
 
 Kraken offers two main steps to help synchronizing your devices.
 
 ### Signaling steps
 
 To wait for a signal coming from another device for 10 seconds that is Kraken default timeout use the following step.
-
-    Then /^I wait for a signal containing "([^\"]*)"$/
-
+```
+Then /^I wait for a signal containing "([^\"]*)"$/
+```
 To wait for a signal coming from another device for an specified number of seconds use the following step
 
-    Then /^I wait for a signal containing "([^\"]*)" for (\d+) seconds$/
+```
+Then /^I wait for a signal containing "(  [^\"]*)" for (\d+) seconds$/
+```
 
 To send a signal to another specified device use the following step
 
-    Then /^I send a signal to user (\d+) containing "([^\"]*)"$/
+```
+Then /^I send a signal to user (\d+) containing "([^\"]*)"$/
+```
 
 ### Signaling functions
 
 Kraken internal implementation of the signaling steps use the following functions.
 
-#### readSignal(channel, content, timeout)
+```
+readSignal(channel, content, timeout)
+```
 
 Waits for a signal with the specified content in the channel passed by parameter. This functions waits for the specified number of seconds in the timeout parameter before throwing an exception.
 
-**Note: The channel parameter has to be the number of a device such as @user1, @user2, @userN**
+ **Note: The channel parameter has to be the number of a device such as @user1, @user2, @userN**
 
-#### writeSignal(channel, content)
+```
+writeSignal(channel, content)
+```
 
 Writes content to a channel passed by parameter.
 
 **Note: The channel parameter has to be the number of a device such as @user1, @user2, @userN**
 
-## Running your tests
+# Running your tests
 
 To run your test:
 
@@ -113,7 +122,7 @@ To run your test:
 
 Kraken with the help of Calabash-Android will install an instrumentation along with your app and will start your tests in all devices connected (Check Kraken Settings section in order to learn how to specify in what devices your tests should be run).
 
-## Kraken Settings
+# Kraken Settings
 
 Kraken uses kraken_mobile_settings.json to specify in what devices the tests should be run.
 
@@ -127,7 +136,7 @@ The following command will show you the available connected devices or emulators
 
     kraken-mobile run <apk> --configuration=<kraken_mobile_settings_path>
 
-## Properties file
+# Properties file
 
 Kraken uses properties files to store sensitive data such as passwords or api keys that should be used in your test cases.
 
@@ -157,6 +166,6 @@ You can use the specified properties using the following sintax.
 
     kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
 
-## Examples
+# Examples
 
 This is a placeholder
