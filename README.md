@@ -180,7 +180,7 @@ kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
 
 # Examples
 
-| Application  | Feature File | Properties file | Settings File | Report Link |
-|:-------------|:------------------|:-------|:-------|:-------|
-| Infinite Words | [.feature](/examples/infinite-words/infinite_words.feature) | ---  | ---  | [report](/examples/infinite-words/report/index.html) |
-| QuizUp | [.feature](/examples/quizup/quizup.feature) | [.json](/examples/quizup/quizup.json) |  [.properties](/examples/quizup/quizup.properties) | [report](/examples/quizup/report/index.html)  |
+| Application  | Video | Feature File | Properties file | Settings File | Report Link |
+|:-------------|:-------------|:------------------|:-------|:-------|:-------|
+| Infinite Words | [video](https://www.youtube.com/watch?v=MgIy9FA-cjk&list=PLF5U8kfVgRcJ3RCHt7cWmwlqN93brbVW-&index=4&t=0s)|[.feature](/examples/infinite-words/infinite_words.feature) | ---  | ---  | [report](/examples/infinite-words/report/index.html) |
+| QuizUp | [video](https://www.youtube.com/watch?v=b0iA16KSk4k&list=PLF5U8kfVgRcJ3RCHt7cWmwlqN93brbVW-&index=5) | [.feature](/examples/quizup/quizup.feature) | [.json](/examples/quizup/quizup.json) |  [.properties](/examples/quizup/quizup.properties) | [report](/examples/quizup/report/index.html)  |
