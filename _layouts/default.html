@@ -20,10 +20,10 @@
           <p align="center"><img src="{{site.logo | relative_url}}" alt="Logo" style="height: 150px" /></p>
         {% endif %}
 
-        <p>{{ site.description | default: site.github.project_tagline }}</p>
+        <p style="margin-bottom: 7px">{{ site.description | default: site.github.project_tagline }}</p>
 
         {% if site.show_downloads %}
-        <ul class="downloads" style="margin: 0">
+        <ul class="downloads" style="margin-bottom: 7px">
           <li><a href="{{ site.github.zip_url }}">Download <strong>ZIP File</strong></a></li>
           <li><a href="{{ site.github.tar_url }}">Download <strong>TAR Ball</strong></a></li>
           <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
