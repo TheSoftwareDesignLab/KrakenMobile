@@ -1,4 +1,4 @@
-require 'kraken-mobile/runners/calabash/android/Operations'
+require 'kraken-mobile/runners/calabash/android/operations'
 
 Before do |scenario|
   start_kraken_test_server_in_background scenario
