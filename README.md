@@ -4,7 +4,7 @@
 
 <!-- <h3 align="center">Kraken Mobile</h3> -->
 
-Kraken is an open source automated android E2E testing tool that supports and validates scenarios that involve the inter-communication between two or more users. It works in a Black Box manner meaning that it’s not required to have access to the source code of the application but instead it can be run with the APK (Android package file format). Kraken uses signaling for coordinating the communication between the devices using a file based protocol.
+Kraken is an open source automated android E2E testing tool that supports and validates scenarios that involve the inter-communication between two or more users. It works in a Black Box manner meaning that it is not required to have access to the source code of the application but instead it can be run with the APK (Android package file format). Kraken uses signaling for coordinating the communication between the devices using a file based protocol.
 
 <p align=center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Y220t1BHji0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
@@ -26,7 +26,7 @@ $ gem install kraken-mobile
 
 # Signaling
 
-Signaling is a protocol used for the communication of two or more devices running in parallel. It’s based in the idea that each emulator or real device has a communication channel where he can receive signals sent from other devices which contain information or actions that are supposed to be executed. This type of protocol is commonly used in automated mobile E2E testing tools that validate scenarios involving the inter-communication and collaboration of two or more applications.
+Signaling is a protocol used for the communication of two or more devices running in parallel. It is based in the idea that each emulator or real device has a communication channel where he can receive signals sent from other devices which contain information or actions that are supposed to be executed. This type of protocol is commonly used in automated mobile E2E testing tools that validate scenarios involving the inter-communication and collaboration of two or more applications.
 
 # Writing your first test
 
@@ -151,7 +151,7 @@ Kraken uses properties files to store sensitive data such as passwords or api ke
 
 ### Generate properties file
 
-The properties files should be a manually created json file with the following structure.
+The properties files should be a manually created JSON file with the following structure.
 
 ```json
 {
@@ -183,7 +183,7 @@ kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
 
 # Examples
 
-| Application  | Feature File | Properties file | Settings File | Report Link |
-|:-------------|:------------------|:-------|:-------|:-------|
-| Infinite Words | [.feature](/examples/infinite-words/infinite_words.feature) | ---  | ---  | [report](/examples/infinite-words/report/index.html) |
-| QuizUp | [.feature](/examples/quizup/quizup.feature) | [.json](/examples/quizup/quizup.json) |  [.properties](/examples/quizup/quizup.properties) | [report](/examples/quizup/report/index.html)  |
+| Application  | Video | Feature File | Properties file | Settings File | Report Link |
+|:-------------|:-------------|:------------------|:-------|:-------|:-------|
+| Infinite Words | [video](https://www.youtube.com/watch?v=MgIy9FA-cjk&list=PLF5U8kfVgRcJ3RCHt7cWmwlqN93brbVW-&index=4&t=0s)|[.feature](/examples/infinite-words/infinite_words.feature) | ---  | ---  | [report](/examples/infinite-words/report/index.html) |
+| QuizUp | [video](https://www.youtube.com/watch?v=b0iA16KSk4k&list=PLF5U8kfVgRcJ3RCHt7cWmwlqN93brbVW-&index=5) | [.feature](/examples/quizup/quizup.feature) | [.json](/examples/quizup/quizup.json) |  [.properties](/examples/quizup/quizup.properties) | [report](/examples/quizup/report/index.html)  |
