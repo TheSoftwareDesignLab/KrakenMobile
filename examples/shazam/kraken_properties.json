@@ -1,0 +1,11 @@
+{
+  "@user1": {
+    "EMAIL": "INSERT_EMAIL",
+    "PASSWORD": "INSERT_PASSWORD",
+    "SONG": "Ride"
+  },
+  "@user2": {
+    "SONG": "Ride",
+    "BAND_NAME": "Twenty One Pilots"
+  }
+}

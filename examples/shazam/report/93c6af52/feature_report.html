@@ -1,0 +1,270 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Report</title>
+
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../assets/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/responsive.dataTables.min.css" rel="stylesheet">
+  <link href="../assets/css/feature_index.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container-fluid">
+      <p class="navbar-text">Report</p>
+    </div>
+  </nav>
+
+  <div class="main_conainer">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-xs-12">
+        <div class="x_panel fixed_height_320">
+          <div class="x_title">
+            <h2>Features</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table class="chart">
+              <tr>
+                <th>
+                  <p>Chart</p>
+                </th>
+                <th>
+                  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                    <p class="">Status</p>
+                  </div>
+                  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                    <p class="">Progress</p>
+                  </div>
+                </th>
+              </tr> <!-- Row Names -->
+              <tr>
+                <td class="chart">
+                  <canvas id="feature-chart"></canvas>
+                  <div class="total">1</div>
+                </td>
+                <td>
+                  <table class="tile_info">
+                    <tr>
+                      <td>
+                        <p data-toggle="tooltip" data-placement="left" title="Features passed">
+                          <i class="fa fa-check-circle passed-color"></i>
+                          Passed
+                        </p>
+                      </td>
+                      <td class="percentage">100.0 %</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p data-toggle="tooltip" data-placement="left" title="Features failed">
+                          <i class="fa fa-exclamation-circle failed-color"></i>
+                          Failed
+                        </p>
+                      </td>
+                      <td class="percentage">0.0 %</td>
+                    </tr>
+          </table>
+        </td>
+      </tr> <!-- Row values -->
+    </table>
+  </div>
+</div>
+</div> <!-- Left data -->
+<div class="col-md-6 col-lg-6 col-xs-12">
+  <div class="x_panel fixed_height_320">
+    <div class="x_title">
+      <h2>Scenarios</h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <table class="chart">
+        <tr>
+          <th>
+            <p>Chart</p>
+          </th>
+          <th>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+              <p class="">Status</p>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+              <p class="">Progress</p>
+            </div> <!-- Row Names -->
+          </th>
+        </tr>
+        <tr>
+          <td class="chart">
+            <canvas id="scenario-chart"></canvas>
+            <div class="total">1</div>
+          </td>
+          <td>
+            <table class="tile_info">
+              <tr>
+                <td>
+                  <p data-toggle="tooltip" data-placement="left" title="Scenario passed">
+                    <i class="fa fa-check-circle passed-color"></i>
+                    Passed
+                  </p>
+                </td>
+                <td class="percentage">100.0 %</td>
+              </tr>
+              <tr>
+                <td>
+                  <p data-toggle="tooltip" data-placement="left" title="Scenario failed">
+                    <i class="fa fa-exclamation-circle failed-color"></i>
+                    Failed
+                  </p>
+                </td>
+                <td class="percentage">0.0 %</td>
+              </tr> <!-- Row values -->
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+</div> <!-- Right data -->
+
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Features overview</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <div class="table-responsive">
+          <table id="features-table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
+          width="100%">
+          <thead>
+            <tr>
+              <th>Feature name</th>
+              <th>Status</th>
+              <th>Device</th>
+              <th>OS</th>
+              <th>App</th>
+              <th>Duration</th>
+              <th>Total</th>
+              <th>Passed</th>
+              <th>Failed</th>
+            </tr>
+          </thead> <!-- Table Header -->
+          <tbody>
+            
+            <tr>
+              <td>
+                <a href='./features_report/a31d01811f89d2e94f2b6fdc17248a4457614003ffbe3a999672f73d0b3788dd.html'>
+                  Example feature
+                </a>
+              </td>
+              <td class="text-center">
+                
+                  <i class="fa fa-check-circle passed-color fa-lg" data-toggle="tooltip" data-placement="top" title="Passed">
+                      <span>check-circle passed-color</span>
+                  </i>
+                
+              </td>
+              <td>
+                ONEPLUS_A6013 - 93c6af52
+              </td>
+              <td>
+                <i class="fa fa-android fa-lg"><span>android</span></i>
+              </td>
+              <td>
+                /Users/williamravelo/Desktop/krak/shazam/shazam.apk
+              </td>
+              <td>0m 48.062s</td>
+              <td class="text-right ">1</td>
+              <td class="text-right none">1</td>
+              <td class="text-right none">0</td>
+            </tr> <!-- Feature Row -->
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<script src="../assets/js/jquery-3.2.1.min.js" ></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/jquery.dataTables.min.js"></script>
+<script src="../assets/js/dataTables.bootstrap.min.js"></script>
+<script src="../assets/js/dataTables.responsive.min.js"></script>
+<script src="../assets/js/Chart.min.js"></script>
+<script>
+$(document).ready(function () {
+  total_passed_features = parseInt("1");
+  total_failed_features = parseInt("0");
+  total_passed_scenarios = parseInt("1");
+  total_failed_scenarios = parseInt("0");
+
+  feature_data = [total_passed_features,total_failed_features];
+  scenario_data = [total_passed_scenarios,total_failed_scenarios]
+
+  $('#features-table').dataTable({
+    "order": [[0, "asc"]],
+    "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+    "stateSave": true
+  });
+
+  var featureOptions = {
+    legend: false,
+    responsive: false
+  };
+
+  new Chart(document.getElementById("feature-chart"), {
+    type: 'doughnut',
+    tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+    data: {
+      labels: [
+        "Passed",
+        "Failed"
+      ],
+      datasets: [{
+        data: feature_data,
+        backgroundColor: [
+          "#26B99A",
+          "#E74C3C"
+        ]
+      }]
+    },
+    options: featureOptions
+  });
+
+  var scenarioOptions = {
+    legend: false,
+    responsive: false
+  };
+
+  new Chart(document.getElementById("scenario-chart"), {
+    type: 'doughnut',
+    tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+    data: {
+      labels: [
+        "Passed",
+        "Failed"
+      ],
+      datasets: [{
+        data: scenario_data,
+        backgroundColor: [
+          "#26B99A",
+          "#E74C3C"
+        ]
+      }]
+    },
+    options: scenarioOptions
+  });
+
+  $('body').tooltip({
+    selector: '[data-toggle="tooltip"]'
+  });
+});
+</script>
+</body>
+</html>

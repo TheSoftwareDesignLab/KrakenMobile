@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Report</title>
+
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+  <link href="./assets/css/font-awesome.min.css" rel="stylesheet">
+  <link href="./assets/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <style>
+  body {
+    color: #73879C;
+    background: #F7F7F7;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.471;
+  }
+
+  .main_conainer {
+    padding: 10px 20px 0;
+  }
+
+  i span {
+    display: none;
+  }
+
+  /* Navigation */
+  nav.navbar {
+    background: #EDEDED;
+    border-bottom: 1px solid #D9DEE4;
+    margin-bottom: 10px;
+  }
+
+  nav .navbar-brand {
+    border-right: 1px solid #D9DEE4;
+    color: #5A738E;
+  }
+
+  nav .navbar-text {
+    font-size: 18px;
+    height: 50px;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 15px 0;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+  }
+
+  table.chart tr th:first-of-type {
+    width: 33.333%;
+  }
+
+  .table > thead > tr > th {
+    background: #F5F7FA;
+  }
+
+  table.tile h3, table.tile h4, table.tile span {
+    font-weight: bold;
+    vertical-align: middle !important;
+  }
+
+  table.tile th, table.tile td {
+    text-align: center;
+  }
+
+  table.tile th {
+    border-bottom: 1px solid #E6ECEE;
+  }
+
+  table.tile td {
+    padding: 5px 0;
+  }
+
+  table.tile td ul {
+    text-align: left;
+    padding-left: 0;
+  }
+
+  table.tile td ul li {
+    list-style: none;
+    width: 100%;
+  }
+
+  table.tile td ul li a {
+    width: 100%;
+  }
+
+  table.tile td ul li a big {
+    right: 0;
+    float: right;
+    margin-right: 13px;
+  }
+
+  table.tile_info {
+    width: 100%;
+  }
+
+  table.tile_info td {
+    text-align: left;
+    padding: 1px;
+    font-size: 15px;
+  }
+
+  table.tile_info td p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    line-height: 28px;
+  }
+
+  table.tile_info td i {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 17px;
+    float: left;
+    width: 18px;
+    line-height: 28px;
+    text-align: center;
+  }
+
+  table.tile_info td:first-child {
+    width: 65%;
+  }
+
+  td span {
+    line-height: 28px;
+  }
+
+  table.tile_info td.percentage {
+    text-align: right;
+
+  }
+
+  /* chart in table */
+  table td.chart {
+    display: inline-block;
+    position: relative;
+  }
+
+  table td.chart #feature-chart,
+  table td.chart #scenario-chart,
+  table td.chart .total {
+    height: 140px;
+    margin: 15px 10px 10px 0;
+    width: 140px;
+  }
+
+  table td.chart .total {
+    display: inline-block;
+    position: absolute;
+    font-size: 2em;
+    height: 50px;
+    line-height: 50px;
+    top: 45px;
+    left: 45px;
+    text-align: center;
+    vertical-align: middle;
+    width: 50px;
+  }
+
+  /* colors */
+  .ambiguous-color {
+    color: #E74C3C !important;
+  }
+
+  .failed-color {
+    color: #E74C3C !important;
+  }
+
+  .not-defined-color {
+    color: #F39C12 !important;
+  }
+
+  .passed-color {
+    color: #1ABB9C !important;
+  }
+
+  .pending-color {
+    color: #FFD119 !important;
+  }
+
+  .skipped-color {
+    color: #3498DB !important;
+  }
+
+  /* backgrounds */
+  .ambiguous-background {
+    background: #b73122 !important;
+  }
+
+  .failed-background {
+    background: #E74C3C !important;
+  }
+
+  .not-defined-background {
+    background: #F39C12 !important;
+  }
+
+  .passed-background {
+    background: #1ABB9C !important;
+  }
+
+  .pending-background {
+    background: #FFD119 !important;
+  }
+
+  .skipped-background {
+    background: #3498DB !important;
+  }
+
+  /* general */
+  .x_panel {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px 17px;
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #E6E9ED;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    opacity: 1;
+    transition: all .2s ease;
+  }
+
+  .x_title {
+    border-bottom: 2px solid #E6E9ED;
+    padding: 1px 5px 6px;
+    margin-bottom: 10px;
+  }
+
+  .x_title .filter {
+    width: 40%;
+    float: right;
+  }
+
+  .x_title h2 {
+    margin: 5px 0 6px;
+    float: left;
+    font-size: 24px;
+    font-weight: 400;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .fixed_height_320 {
+    height: 320px;
+  }
+
+  .x_title h2 small {
+    margin-left: 10px;
+  }
+
+  .x_title span {
+    color: #BDBDBD;
+  }
+
+  .x_content {
+    padding: 0 5px 6px;
+    position: relative;
+    width: 100%;
+    float: left;
+    clear: both;
+    margin-top: 5px;
+    overflow-x: scroll;
+  }
+
+  .x_content h4 {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .panel_toolbox {
+    float: right;
+    margin: 5px 0 0;
+    min-width: 70px;
+  }
+
+  .panel_toolbox > li {
+    float: right;
+  }
+
+  .panel_toolbox > li > a {
+    cursor: pointer;
+  }
+
+  .panel_toolbox > li > a {
+    padding: 5px;
+    color: #C5C7CB;
+    font-size: 14px;
+  }
+
+  .panel_toolbox > li > a:hover {
+    background: #F5F7FA;
+  }
+
+  .page-title {
+    width: 100%;
+    padding: 10px 0 30px 0;
+  }
+
+  .page-title {
+    display: block;
+  }
+
+  .page-title h1 {
+    margin: 9px 0;
+  }
+
+  .page-title .title_right {
+    width: 55%;
+    float: left;
+    display: block;
+  }
+
+  .page-title .title_right .pull-right {
+    margin: 10px 0;
+  }
+
+  .page-title p {
+    margin-left: 15px;
+  }
+
+  .dashboard-widget-content {
+    padding-top: 9px;
+  }
+
+  .dashboard-widget-content .sidebar-widget {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    background: #fff;
+    border: 1px solid #abd9ea;
+    border-radius: 5px;
+    text-align: center;
+    float: right;
+    padding: 2px;
+    margin-top: 10px;
+  }
+
+  ul.quick-list {
+    padding-left: 0;
+    display: inline-block;
+  }
+
+  ul.quick-list li,
+  table.quick-list tr {
+    padding-left: 10px;
+    list-style: none;
+    margin: 0;
+    padding-bottom: 6px;
+    padding-top: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  ul.quick-list li .meta-data-title,
+  table.quick-list td.meta-data-title {
+    display: inline-block;
+    min-width: 75px;
+    font-weight: bold;
+  }
+
+  ul.quick-list li span,
+  table.quick-list td {
+    line-height: 28px;
+  }
+
+  ul.quick-list li,
+  table.quick-list tr {
+    border-bottom: 1px solid #efefef;
+    padding: 0.5em 0;
+  }
+
+  ul.quick-list li:last-child,
+  table.quick-list tr:last-child {
+    border-bottom: none;
+  }
+
+  ul.quick-list li i {
+    padding-right: 10px;
+    color: #757679;
+  }
+
+  .screenshot{
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  /* Features / Scenarios */
+  ul.panel_toolbox li .step {
+    border-radius: 50%;
+    color: #ffffff;
+    display: block;
+    font-size: 14px;
+    height: 30px;
+    margin-right: 5px;
+    padding: 5px;
+    text-align: center;
+    width: 30px;
+  }
+
+  .scenario-step-container {
+    margin-bottom: 10px;
+  }
+
+  .scenario-step-container .label {
+    display: inline-block;
+    text-align: center;
+    width: 30px;
+  }
+
+  .scenario-step-container .text {
+    display: inline;
+  }
+
+  .scenario-step-container .duration {
+    position: relative;
+    float: right;
+  }
+
+  .scenario-step-container .text .keyword.highlight {
+    font-size: 1.2em;
+    font-weight: 700;
+  }
+
+  .scenario-scroll-bar {
+    overflow-x: scroll;
+  }
+
+  .scenario-step-collapse,
+  .scenario-scroll-bar .arguments {
+    margin-left: 30px;
+    width: auto;
+  }
+
+  /* media */
+  @media (max-width: 1200px) {
+    .x_title h2 {
+      width: 70%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .x_title h2 {
+      width: 100%;
+    }
+  }
+
+  /* override */
+  table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
+  table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
+    background-color: #1ABB9C;
+  }
+
+  table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before {
+    background-color: #E74C3C;
+  }
+
+  .created-by {
+    padding: 50px 0;
+    text-align: center;
+  }
+
+  .x_title {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  .feature-flow {
+    background-color: white;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.07);
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.07);
+  }
+
+  .feature-flow-content {
+    overflow-x: scroll;
+  }
+
+  /* Device List */
+
+  .ui-card {
+    background: #fff;
+    border: 1px solid #dfe5ef;
+    border-radius: 8px;
+    margin: 0 20px 20px 20px;
+    padding: 70px 5px 50px 10px;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.07);
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.07);
+  }
+
+  .ui-card:hover {
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.15);
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.15);
+  }
+
+  .device-container {
+    width: 100%;
+  }
+
+  .ui-card {
+    text-align: center;
+  }
+
+  .device-os-icon i {
+    color: #324057;
+    font-size: 28px;
+  }
+
+  .device-title {
+    word-wrap: break-word;
+    font-size: 28px;
+    font-weight: 300;
+    color: #324057;
+    margin-top: 25px;
+    margin-bottom: 50px;
+  }
+
+  .device-info {
+    font-size: 14px;
+    font-weight: 300;
+    color: #8492a6;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+
+  .result-btn {
+    margin-top: 35px;
+  }
+
+  .phone_container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.07);
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.07);
+  }
+
+  .phone {
+    margin: 0 auto;
+    border: 15px solid #000000;
+    border-radius: 36px;
+    height: 270px;
+    width: 160px;
+    overflow: hidden;
+  }
+
+  .phone_image {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+  }
+</style>
+
+<script src="./assets/js/d3.v3.min.js"></script>
+<script src="./assets/js/first-sankey.js"></script>
+<script src="./assets/js/d3.chart.min.js"></script>
+<script src="./assets/js/sankey.js"></script>
+<style>
+#chart {
+  font: 13px sans-serif;
+  height: 500px;
+}
+.node rect {
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+  stroke-width: 0;
+}
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+</style>
+</head>
+<body>
+  <div class="main_conainer">
+    <div class="container-fluid devices-list">
+      <div class="x_title">
+        <h2>Devices List</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="row">
+        
+        <div class="ui-card col-md-3">
+          <div class="container device-container">
+            <div class="row device-os-icon">
+              <i class="fa fa-android fa-lg"></i>
+            </div>
+            <div class="row device-title">ONEPLUS_A6013</div>
+            <div class="row device-info">ID - 93c6af52</div>
+            <div class="row device-info">SDK Version - 28
+</div>
+            <div class="row device-info">Screen Size - 2340x1080</div>
+            <div class="row device-info result-btn">
+              <a href='./93c6af52/feature_report.html'>See Results</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ui-card col-md-3">
+          <div class="container device-container">
+            <div class="row device-os-icon">
+              <i class="fa fa-android fa-lg"></i>
+            </div>
+            <div class="row device-title">Android_SDK_built_for_x86</div>
+            <div class="row device-info">ID - emulator-5554</div>
+            <div class="row device-info">SDK Version - 26
+</div>
+            <div class="row device-info">Screen Size - 1920x1080</div>
+            <div class="row device-info result-btn">
+              <a href='./emulator-5554/feature_report.html'>See Results</a>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="container-fluid">
+      <div class="row">
+        <div class="x_title">
+          <h2 id="chart_row1"></h2>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="row feature-flow">
+        <div id="chart1"></div>
+      </div>
+    </div>
+    
+  </div>
+
+  <script src="./assets/js/jquery-3.2.1.min.js" ></script>
+  <script src="./assets/js/bootstrap.min.js"></script>
+  <script>
+  d3.json("./assets/js/data.json", function(error, json) {
+    for(var i = 0; i < json.length; i++) {
+      let jsonObject = json[i];
+      let devicesSet = new Set([]);
+      let devicesHash = {};
+      for(var k = 0; k < jsonObject.links.length; k++) {
+        let link = jsonObject.links[k];
+        devicesSet.add(link.owner);
+        devicesHash[link.owner] = link.owner_model
+      }
+      devices = Array.from(devicesSet);
+      // GRAPH
+      let devicesLength = devices.length > 1 ? (devices.length-1) : 1;
+      var height = 150*devicesLength;
+      var c20c = d3.scale.category10();
+      d3.select("#chart_row" + (i+1))
+      .text(jsonObject["name"])
+
+      let chartId = "#chart" + (i+1);
+      var svg = d3.select(chartId)
+      .style("height", height + "px")
+      .append("svg");
+
+      var chart = svg.chart("Sankey.Path");
+
+      chart
+      .name(label)
+      .colorNodes(function(name, node) {
+        color = "#ff6961";
+        if(node.id == "empty") {
+          color = "#9f9fa3"
+        } else if(node.status === "passed") {
+          color = "#77dd77";
+        }
+        return color;
+      })
+      .colorLinks(function(link) {
+        return c20c(link.owner);
+      })
+      .nodeWidth(10)
+      .nodePadding(10)
+      .spread(true)
+      .draw(jsonObject);
+
+      // LEGEND
+      let legendRectSize = 10;
+      let legendSpacing = 10
+
+      var legend = svg
+      .append("g")
+      .selectAll("g")
+      .data(Object.keys(devicesHash))
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function(d, i) {
+        var height = legendRectSize;
+        var x = 10;
+        var y = 10 + (i * height) + i*5;
+        return 'translate(' + x + ',' + y + ')';
+      });
+
+      legend.append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', function(d) {
+        return c20c(d);
+      })
+      .style('opacity', .2)
+
+      legend.append('text')
+      .attr('x', legendRectSize + 5)
+      .attr('y', 10)
+      .text(function(d) { return devicesHash[d]; });
+    }
+  });
+  </script>
+</body>
+</html>

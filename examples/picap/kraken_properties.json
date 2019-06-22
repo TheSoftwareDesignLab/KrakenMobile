@@ -1,0 +1,10 @@
+{
+  "@user1": {
+    "EMAIL": "INSERT_EMAIL_1",
+    "PASSWORD": "INSERT_PASSWORD_1"
+  },
+  "@user2": {
+    "EMAIL": "INSERT_EMAIL_2",
+    "PASSWORD": "INSERT_PASSWORD_2"
+  }
+}
