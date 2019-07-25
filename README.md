@@ -2,12 +2,18 @@
     <img src="./reporter/assets/images/kraken.png" alt="kraken logo" width="140" height="193">
 
 
-<h2 align="center">Kraken Mobile</h2>
+<h1 align="center">Kraken Mobile</h1>
 
 Kraken is an open source automated android E2E testing tool that supports and validates scenarios that involve the inter-communication between two or more users. It works in a Black Box manner meaning that it is not required to have access to the source code of the application but instead it can be run with the APK (Android package file format). Kraken uses signaling for coordinating the communication between the devices using a file based protocol.
 
+**Kraken is partially supported by a Google Latin America Research Award (LARA) 2018**
+
 # Video
 [![krakenThumbnail](./reporter/assets/images/krakenThumbnail.jpg)](https://www.youtube.com/watch?v=hv5gFIpW3gM&list=PLF5U8kfVgRcJ3RCHt7cWmwlqN93brbVW-&index=1)
+
+# Publications
+
+- _"Kraken-Mobile: Cross-Device Interaction-based Testing of Android Apps"_, [William Ravelo-Méndez](https://ravelinx22.github.io/), [Camilo Escobar-Velásquez](https://caev03.github.io), and  [Mario Linares-Vásquez](https://profesores.virtual.uniandes.edu.co/mlinaresv/en/inicio-en/), _Proceedings of the 35th IEEE International Conference  on Software Maintenance and Evolution ([ICSME'19](https://icsme2019.github.io/))_, Tool Demo Track, Cleveland, OH, USA, September 30th - October 4th, 2019, to appear 4 pages (52% Acceptance Rate) [[pdf](https://thesoftwaredesignlab.github.io/KrakenMobile/assets/pdfs/icsme19.pdf)][[bibtex](https://thesoftwaredesignlab.github.io/KrakenMobile/assets/pdfs/icsme19.bib)]
 
 # Technologies
 
