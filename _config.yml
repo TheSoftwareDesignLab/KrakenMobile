@@ -3,3 +3,4 @@ show_downloads: ["true"]
 logo: /assets/imgs/kraken.png
 title: Kraken Mobile
 tsdllogo: /assets/imgs/horizontalLightBrackgrounds.png
+google_analytics: UA-144589961-1
