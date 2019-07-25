@@ -14,10 +14,10 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1 align="center"><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
+        <h1 align="center" style="margin-bottom: 10px;"><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
         
         {% if site.logo %}
-          <p align="center"><img src="{{site.logo | relative_url}}" alt="Logo" style="height: 150px" /></p>
+          <p align="center" style="margin-bottom: 0px;"><img src="{{site.logo | relative_url}}" alt="Logo" style="height: 130px" /></p>
         {% endif %}
 
         <p style="margin-bottom: 7px">{{ site.description | default: site.github.project_tagline }}</p>
@@ -61,8 +61,8 @@
         {% if site.github.is_project_page %}
         <p>This project is maintained by <a href="https://thesoftwaredesignlab.github.io/"><img src="{{site.tsdllogo | relative_url}}" alt="{{ site.github.owner_name }}" srcset="" style="width: 200px"></a></p>
         {% endif %}
-        <p><small>Hosted on GitHub Pages - Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
         <p><small>Kraken is partially supported by a Google Latin America Research Award (LARA) 2018</small></p>
+        <p><small>Hosted on GitHub Pages - Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
