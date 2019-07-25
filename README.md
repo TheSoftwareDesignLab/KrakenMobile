@@ -6,15 +6,17 @@
 
 Kraken is an open source automated android E2E testing tool that supports and validates scenarios that involve the inter-communication between two or more users. It works in a Black Box manner meaning that it is not required to have access to the source code of the application but instead it can be run with the APK (Android package file format). Kraken uses signaling for coordinating the communication between the devices using a file based protocol.
 
+> Kraken is partially supported by a Google Latin America Research Award (LARA) 2018
+
 <p align="center">
 <iframe width="500" height="282" src="https://www.youtube.com/embed/hv5gFIpW3gM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 # Publications
 
 - _Kraken-Mobile: Cross-Device Interaction-based Testing of Android Apps_  
-  &#8640; [William Ravelo-Méndez](https://ravelinx22.github.io/), [Camilo Escobar-Velásquez](https://caev03.github.io), and  [Mario Linares-Vásquez](https://profesores.virtual.uniandes.edu.co/mlinaresv/en/inicio-en/)  
-  &#8640; _Proceedings of the 35th IEEE International Conference on Software Maintenance and Evolution ([ICSME'19](https://icsme2019.github.io/))_, Tool Demo Track, Cleveland, OH, USA, September 30th - October 4th, 2019, to appear 4 pages (52% Acceptance Rate)  
-  &#8640; [[pdf](/assets/pdfs/icsme19.pdf) | [software](https://github.com/TheSoftwareDesignLab/KrakenMobile/releases/tag/1.0.3)]
+&#8640; [William Ravelo-Méndez](https://ravelinx22.github.io/), [Camilo Escobar-Velásquez](https://caev03.github.io), and  [Mario Linares-Vásquez](https://profesores.virtual.uniandes.edu.co/mlinaresv/en/inicio-en/)  
+&#8640; _Proceedings of the 35th IEEE International Conference  on Software Maintenance and Evolution ([ICSME'19](https://icsme2019.github.io/))_, Tool Demo Track, Cleveland, OH, USA, September 30th - October 4th, 2019, to appear 4 pages (52% Acceptance Rate)  
+&#8640; [[pdf](/assets/pdfs/icsme19.pdf) | [software](https://github.com/TheSoftwareDesignLab/KrakenMobile/releases/tag/1.0.3)]
 
 # Technologies
 
