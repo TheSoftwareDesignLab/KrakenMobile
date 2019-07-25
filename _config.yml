@@ -2,4 +2,4 @@ theme: jekyll-theme-minimal
 show_downloads: ["true"]
 logo: /assets/imgs/kraken.png
 title: Kraken Mobile
-tsdllogo: https://raw.githubusercontent.com/TheSoftwareDesignLab/tsdlBrand/master/horizontalLightBrackgrounds.png?token=ABLXT77OTCGTLL6HC57WVNS5BZ2X6
+tsdllogo: /assets/imgs/horizontalLightBrackgrounds.png
