@@ -72,7 +72,7 @@ module KrakenMobile
         default_device = operations_module::Device.new(operations_module, ENV["ADB_DEVICE_ARG"], ENV["TEST_SERVER_PORT"], ENV["APP_PATH"], ENV["TEST_APP_PATH"])
         install_app_with_calabash
         default_device.start_test_server_in_background
-        run_intelligent_monkey "#@user#{process_number}", 20
+        run_kraken_monkey "#@user#{process_number}", 20
         default_device.shutdown_test_server
         uninstall_app_with_calabash
 				puts "\n****** PROCESS #{process_number} COMPLETED ******\n\n"

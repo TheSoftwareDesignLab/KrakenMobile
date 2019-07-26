@@ -5,8 +5,8 @@ module KrakenMobile
   module CalabashAndroid
     module MonkeyHelper
 
-      # Runs inteligent monkey
-      def run_intelligent_monkey channel, number_of_events
+      # Runs kraken monkey
+      def run_kraken_monkey channel, number_of_events
         device_id = channel_to_device_id channel
         logger = open("./#{device_id}.txt", 'w')
         number_of_events.times do |i|
