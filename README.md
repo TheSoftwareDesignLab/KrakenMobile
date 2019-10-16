@@ -11,7 +11,7 @@ Kraken is an open source automated android E2E testing tool that supports and va
 
 # Publications
 
-- _"Kraken-Mobile: Cross-Device Interaction-based Testing of Android Apps"_, [William Ravelo-Méndez](https://ravelinx22.github.io/), [Camilo Escobar-Velásquez](https://caev03.github.io), and  [Mario Linares-Vásquez](https://profesores.virtual.uniandes.edu.co/mlinaresv/en/inicio-en/), _Proceedings of the 35th IEEE International Conference  on Software Maintenance and Evolution ([ICSME'19](https://icsme2019.github.io/))_, Tool Demo Track, Cleveland, OH, USA, September 30th - October 4th, 2019, to appear 4 pages (52% Acceptance Rate) [[pdf](/assets/pdfs/icsme19.pdf)][[bibtex](/assets/pdfs/icsme19.bib)]
+- _"Kraken-Mobile: Cross-Device Interaction-based Testing of Android Apps"_, [William Ravelo-Méndez](https://ravelinx22.github.io/), [Camilo Escobar-Velásquez](https://caev03.github.io), and  [Mario Linares-Vásquez](https://profesores.virtual.uniandes.edu.co/mlinaresv/en/inicio-en/), _Proceedings of the 35th IEEE International Conference  on Software Maintenance and Evolution ([ICSME'19](https://icsme2019.github.io/))_, Tool Demo Track, Cleveland, OH, USA, September 30th - October 4th, 2019, to appear 4 pages (52% Acceptance Rate) [[pdf](/assets/pdfs/ravelo2019kraken.pdf)][[bibtex](/assets/pdfs/ravelo2019kraken.bib)]
 
 # Technologies
 
