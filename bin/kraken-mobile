@@ -4,7 +4,7 @@ require File.join(File.dirname(__FILE__), "kraken-mobile-helpers")
 require File.join(File.dirname(__FILE__), "kraken-mobile-setup")
 require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
 $LOAD_PATH << File.expand_path("../../lib", __FILE__)
-require 'kraken-mobile'
+require 'kraken_mobile'
 require 'kraken-mobile/constants'
 
 #-------------------------------

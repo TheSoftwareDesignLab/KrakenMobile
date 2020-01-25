@@ -65,19 +65,19 @@ def handle_calabash_android cmd, protocol, configuration, properties
         runner: KrakenMobile::Constants::CALABASH_ANDROID,
         protocol: protocol
       }
-      if configuration
-        ensure_configuration_is_valid File.expand_path(configuration)
-        options[:config_path] = File.expand_path(configuration)
-      else
-        ensure_apk_is_specified
-        options[:apk_path] = ARGV.first
-      end
-      if properties
-        ensure_properties_is_valid File.expand_path(properties)
-        options[:properties_path] = File.expand_path(properties)
-      end
-      kraken = KrakenMobile::App.new(options)
-      kraken.run_in_parallel
+      #if configuration
+      #  ensure_configuration_is_valid File.expand_path(configuration)
+      #  options[:config_path] = File.expand_path(configuration)
+      #else
+      #  ensure_apk_is_specified
+      #  options[:apk_path] = ARGV.first
+      #end
+      #if properties
+      #  ensure_properties_is_valid File.expand_path(properties)
+      #  options[:properties_path] = File.expand_path(properties)
+      #end
+      kraken = KrakenApp.new
+      kraken.start
     else
       puts "Invalid command '#{cmd}'"
       print_usage
