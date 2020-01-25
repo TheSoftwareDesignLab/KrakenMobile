@@ -4,7 +4,9 @@ require 'kraken-mobile/constants'
 module KrakenMobile
   module DevicesHelper
     class AdbHelper
-      # ADB command that returns all phones and emulators connected to the computer.
+      # ADB command that returns all phones and
+      # emulators connected to the computer.
+
       def adb_devices_l
         `adb devices -l`
       end
