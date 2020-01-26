@@ -34,4 +34,10 @@ class MobileProcess < DeviceProcess
       file.puts("#{id}#{K::SEPARATOR}#{device}")
     end
   end
+
+  def notify_ready_to_start
+    File.open(K::DIRECTORY_PATH, 'a') do |file|
+      file.puts("#{id}#{K::SEPARATOR}#{device}")
+    end
+  end
 end

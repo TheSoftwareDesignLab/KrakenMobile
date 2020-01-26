@@ -24,6 +24,7 @@ class TestScenario
   #-------------------------------
   def before_execution
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
+    File.delete(K::DEVICES_READY_PATH) if File.exist?(K::DEVICES_READY_PATH)
   end
 
   def run
@@ -34,6 +35,7 @@ class TestScenario
 
   def after_execution
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
+    File.delete(K::DEVICES_READY_PATH) if File.exist?(K::DEVICES_READY_PATH)
   end
 
   #-------------------------------
@@ -48,6 +50,14 @@ class TestScenario
         device: device,
         test_scenario: self
       ).run
+    end
+  end
+
+  def self.ready_to_start?
+    process_ids = DeviceProcess.registered_process_ids
+    processes_ready = DeviceProcess.processes_ready
+    process_ids.all? do |process_id|
+      processes_ready.include? process_id
     end
   end
 
