@@ -1,3 +1,5 @@
+require 'kraken-mobile/device_process'
+
 class Device
   #-------------------------------
   # Fields
@@ -29,16 +31,16 @@ class Device
   end
 
   def self.find_by_process_id(id)
-    raise 'ERROR: Empty direcotry' unless File.exist?(K::DIRECTORY_PATH)
+    DeviceProcess.directory.each do |process_info|
+      info = process_info.strip.split(K::SEPARATOR)
+      process_id = info[0]
+      next unless process_id.to_s == id.to_s
 
-    File.open(K::DIRECTORY_PATH, 'r') do |file|
-      file.each_line.each do |line|
-        directory_info = line.strip.split(';') # TODO, change for separator
-        process_id = directory_info[0]
-
-        return AndroidDevice.new(id: directory_info[1], model: nil) if process_id.to_s == id.to_s
-      end
+      return AndroidDevice.new(
+        id: info[1], model: info[2]
+      )
     end
+
     nil
   end
 end

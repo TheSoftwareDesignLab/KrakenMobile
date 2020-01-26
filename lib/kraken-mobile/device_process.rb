@@ -12,4 +12,18 @@ class DeviceProcess
     @device = device
     @test_scenario = test_scenario
   end
+
+  #-------------------------------
+  # Constructors
+  #-------------------------------
+  def self.directory
+    return [] unless File.exist?(K::DIRECTORY_PATH)
+
+    directory = nil
+    File.open(K::DIRECTORY_PATH, 'r') do |file|
+      directory = file.each_line.map(&:to_s)
+    end
+
+    directory || []
+  end
 end
