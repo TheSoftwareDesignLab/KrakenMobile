@@ -16,10 +16,14 @@ class Device
   end
 
   #-------------------------------
-  # Helpers
+  # Signaling
   #-------------------------------
-  def screenshot_prefix
-    @id.gsub('.', '_').gsub(/:(.*)/, '').to_s + '_'
+  def create_inbox
+    raise 'ERROR: create_inbox not implemented.'
+  end
+
+  def delete_inbox
+    raise 'ERROR: delete_inbox not implemented.'
   end
 
   def write_signal(_signal)
@@ -28,6 +32,13 @@ class Device
 
   def read_signal(_signal)
     raise 'ERROR: read_signal not implemented.'
+  end
+
+  #-------------------------------
+  # Helpers
+  #-------------------------------
+  def screenshot_prefix
+    @id.gsub('.', '_').gsub(/:(.*)/, '').to_s + '_'
   end
 
   def self.find_by_process_id(id)

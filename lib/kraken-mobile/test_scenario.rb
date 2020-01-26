@@ -45,7 +45,7 @@ class TestScenario
         id: index + 1,
         device: device,
         test_scenario: self
-      ).execute_process
+      ).run
     end
   end
 end

@@ -14,7 +14,28 @@ class DeviceProcess
   end
 
   #-------------------------------
-  # Constructors
+  # Required methods
+  #-------------------------------
+  def before_execute
+    raise 'ERROR: before_execute not implemented.'
+  end
+
+  def execute
+    raise 'ERROR: execute not implemented.'
+  end
+
+  def after_execute
+    raise 'ERROR: after_execute not implemented.'
+  end
+
+  def run
+    before_execute
+    execute
+    after_execute
+  end
+
+  #-------------------------------
+  # Methods
   #-------------------------------
   def self.directory
     return [] unless File.exist?(K::DIRECTORY_PATH)
