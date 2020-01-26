@@ -29,7 +29,9 @@ class TestScenario
     after_execution
   end
 
-  def after_execution; end
+  def after_execution
+    File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
+  end
 
   #-------------------------------
   # Methods
