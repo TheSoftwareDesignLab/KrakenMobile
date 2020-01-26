@@ -1,5 +1,6 @@
 require 'kraken-mobile/mobile/mobile_process'
 require 'kraken-mobile/mobile/adb'
+require 'kraken-mobile/models/feature_file'
 require 'kraken-mobile/utils/k'
 require 'parallel'
 
@@ -7,13 +8,15 @@ class TestScenario
   #-------------------------------
   # Fields
   #-------------------------------
-  attr_accessor :feature_file_path
+  attr_accessor :feature_file
+  attr_accessor :devices
 
   #-------------------------------
   # Constructors
   #-------------------------------
   def initialize(feature_file_path)
-    @feature_file_path = feature_file_path
+    @feature_file = FeatureFile.new(file_path: feature_file_path)
+    @devices = sample_devices
   end
 
   #-------------------------------
@@ -37,9 +40,8 @@ class TestScenario
   # Methods
   #-------------------------------
   def execute
-    devices = ADB.connected_devices
     Parallel.map_with_index(
-      devices, in_threads: devices.count
+      @devices, in_threads: @devices.count
     ) do |device, index|
       MobileProcess.new(
         id: index + 1,
@@ -47,5 +49,16 @@ class TestScenario
         test_scenario: self
       ).run
     end
+  end
+
+  private
+
+  def number_of_required_devices
+    @feature_file.number_of_required_devices
+  end
+
+  def sample_devices
+    devices = ADB.connected_devices
+    devices.sample(number_of_required_devices)
   end
 end
