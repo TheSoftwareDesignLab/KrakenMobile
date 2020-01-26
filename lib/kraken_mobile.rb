@@ -1,5 +1,6 @@
 require 'kraken-mobile/feature_reader'
 require 'kraken-mobile/test_scenario'
+require 'byebug'
 
 class KrakenApp
   include Utils::FeatureReader
@@ -14,7 +15,7 @@ class KrakenApp
   # Constructors
   #-------------------------------
   def initialize
-    @scenarios_queue = Queue.new
+    @scenarios_queue = []
     build_scenarios_queue
   end
 
@@ -26,11 +27,15 @@ class KrakenApp
 
   def build_scenarios_queue
     feature_files.each do |feature_path|
-      scenarios_queue << TestScenario.new(feature_path)
+      scenarios_queue.unshift(
+        TestScenario.new(feature_path)
+      )
     end
   end
 
   def execute_next_scenario
+    return if scenarios_queue.count.zero?
+
     scenario = scenarios_queue.pop
     scenario.execute
     scenario

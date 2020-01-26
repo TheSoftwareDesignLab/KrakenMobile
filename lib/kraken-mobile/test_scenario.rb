@@ -1,3 +1,6 @@
+require 'kraken-mobile/helpers/devices_helper/adb_helper.rb' # TODO, Remove this
+require 'kraken-mobile/mobile_process.rb'
+
 class TestScenario
   #-------------------------------
   # Fields
@@ -16,5 +19,9 @@ class TestScenario
   # Methods
   #-------------------------------
   def execute
+    adb = KrakenMobile::DevicesHelper::AdbHelper.new
+    adb.connected_devices.each do |_device|
+      MobileProcess.new
+    end
   end
 end
