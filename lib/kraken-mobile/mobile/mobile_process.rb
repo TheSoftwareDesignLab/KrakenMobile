@@ -2,17 +2,10 @@ require 'kraken-mobile/device_process.rb'
 
 class MobileProcess < DeviceProcess
   #-------------------------------
-  # Constructor
-  #-------------------------------
-  def initialize(*args)
-    super(*args)
-    register_process_to_directory
-  end
-
-  #-------------------------------
   # Required methods
   #-------------------------------
   def before_execute
+    register_process_to_directory
     device.create_inbox
   end
 
