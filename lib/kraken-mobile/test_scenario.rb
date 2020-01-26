@@ -69,11 +69,11 @@ class TestScenario
 
   def self.ready_to_finish?
     process_ids = DeviceProcess.registered_process_ids
-    processes_ready = DeviceProcess.processes_in_state(
+    processes_finished = DeviceProcess.processes_in_state(
       K::PROCESS_STATES[:ready_to_finish]
     )
     process_ids.all? do |process_id|
-      processes_ready.include? process_id
+      processes_finished.include? process_id
     end
   end
 
