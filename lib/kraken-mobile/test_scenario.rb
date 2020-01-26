@@ -24,7 +24,9 @@ class TestScenario
   #-------------------------------
   def before_execution
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
-    File.delete(K::DEVICES_READY_PATH) if File.exist?(K::DEVICES_READY_PATH)
+    K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
+      File.delete(file_path) if File.exist?(file_path)
+    end
   end
 
   def run
@@ -35,7 +37,9 @@ class TestScenario
 
   def after_execution
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
-    File.delete(K::DEVICES_READY_PATH) if File.exist?(K::DEVICES_READY_PATH)
+    K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
+      File.delete(file_path) if File.exist?(file_path)
+    end
   end
 
   #-------------------------------
@@ -57,6 +61,16 @@ class TestScenario
     process_ids = DeviceProcess.registered_process_ids
     processes_ready = DeviceProcess.processes_in_state(
       K::PROCESS_STATES[:ready_to_start]
+    )
+    process_ids.all? do |process_id|
+      processes_ready.include? process_id
+    end
+  end
+
+  def self.ready_to_finish?
+    process_ids = DeviceProcess.registered_process_ids
+    processes_ready = DeviceProcess.processes_in_state(
+      K::PROCESS_STATES[:ready_to_finish]
     )
     process_ids.all? do |process_id|
       processes_ready.include? process_id
