@@ -1,7 +1,10 @@
 require 'kraken-mobile/device_process.rb'
 
 class MobileProcess < DeviceProcess
-  def initialize; end
+  def initialize(*args)
+    super(*args)
+    register_process_to_directory
+  end
 
   def execute_process
     # TODO, Change command
@@ -14,5 +17,11 @@ class MobileProcess < DeviceProcess
     $CHILD_STATUS.exitstatus
   rescue EOFError
     nil
+  end
+
+  def register_process_to_directory
+    File.open('./.device_directory', 'a') do |file|
+      file.puts("#{id};#{device.id}")
+    end
   end
 end

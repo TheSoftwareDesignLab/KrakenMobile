@@ -1,5 +1,6 @@
-require 'kraken-mobile/mobile/mobile_process.rb'
-require 'kraken-mobile/mobile/adb.rb'
+require 'kraken-mobile/mobile/mobile_process'
+require 'kraken-mobile/mobile/adb'
+require 'kraken-mobile/utils/k'
 require 'parallel'
 
 class TestScenario
@@ -16,6 +17,21 @@ class TestScenario
   end
 
   #-------------------------------
+  # Lifecycle
+  #-------------------------------
+  def before_execution
+    File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
+  end
+
+  def run
+    before_execution
+    execute
+    after_execution
+  end
+
+  def after_execution; end
+
+  #-------------------------------
   # Methods
   #-------------------------------
   def execute
@@ -23,11 +39,12 @@ class TestScenario
     Parallel.map_with_index(
       devices, in_threads: devices.count
     ) do |device, index|
-      process = MobileProcess.new
-      process.id = index + 1 # Start from 1
-      process.test_scenario = self
-      process.device = device
-      process.execute_process
+      process = MobileProcess.new(
+        id: index + 1,
+        device: device,
+        test_scenario: self
+      )
+      #process.execute_process
     end
   end
 end

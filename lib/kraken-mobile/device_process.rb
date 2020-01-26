@@ -7,7 +7,9 @@ class DeviceProcess
   #-------------------------------
   # Constructors
   #-------------------------------
-  def initialize
-    raise 'ERROR: Can\'t instantiate this abstract class'
+  def initialize(id:, device:, test_scenario:)
+    @id = id
+    @device = device
+    @test_scenario = test_scenario
   end
 end

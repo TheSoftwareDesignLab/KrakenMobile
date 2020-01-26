@@ -37,7 +37,7 @@ class KrakenApp
     return if scenarios_queue.count.zero?
 
     scenario = scenarios_queue.pop
-    scenario.execute
+    scenario.run
     scenario
   end
 end
