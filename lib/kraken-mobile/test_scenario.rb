@@ -1,6 +1,5 @@
-require 'kraken-mobile/helpers/devices_helper/adb_helper.rb' # TODO, Remove this
-require 'kraken-mobile/mobile_process.rb'
-require 'kraken-mobile/adb.rb'
+require 'kraken-mobile/mobile/mobile_process.rb'
+require 'kraken-mobile/mobile/adb.rb'
 require 'parallel'
 
 class TestScenario

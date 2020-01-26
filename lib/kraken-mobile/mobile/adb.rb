@@ -1,6 +1,6 @@
 require 'kraken-mobile/models/android_device'
 require 'kraken-mobile/constants'
-require 'kraken-mobile/android_commands.rb'
+require 'kraken-mobile/mobile/android_commands.rb'
 
 class ADB
   class << self
