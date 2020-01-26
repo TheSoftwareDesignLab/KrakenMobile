@@ -30,8 +30,9 @@ class MobileProcess < DeviceProcess
   # Methods
   #-------------------------------
   def register_process_to_directory
+    # TODO, Change this file name to a constant
     File.open('./.device_directory', 'a') do |file|
-      file.puts("#{id};#{device.id}")
+      file.puts("#{id};#{device.id}") # TODO, use separator constant and device.to_s
     end
   end
 end
