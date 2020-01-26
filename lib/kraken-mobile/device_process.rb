@@ -56,22 +56,27 @@ class DeviceProcess
     end.compact.uniq
   end
 
-  def self.processes_ready
-    return [] unless File.exist?(K::DEVICES_READY_PATH)
+  def self.notify_process_state(process_id:, state:)
+    raise 'ERROR: Process id can\'t be nil.' if process_id.nil?
+
+    file_path = K::PROCESS_STATE_FILE_PATH[state]
+    raise 'ERROR: State does not exist.' if file_path.nil?
+
+    File.open(file_path, 'a') do |file|
+      file.puts(process_id)
+    end
+  end
+
+  def self.processes_in_state(state)
+    file_path = K::PROCESS_STATE_FILE_PATH[state]
+    return [] if file_path.nil?
+    return [] unless File.exist?(file_path)
 
     devices_ready = nil
-    File.open(K::DEVICES_READY_PATH, 'r') do |file|
+    File.open(file_path, 'r') do |file|
       devices_ready = file.each_line.map(&:to_s).map(&:strip)
     end
 
     devices_ready || []
-  end
-
-  def self.notify_ready_to_start(process_id)
-    raise 'ERROR: Process id can\'t be nil.' if process_id.nil?
-
-    File.open(K::DEVICES_READY_PATH, 'a') do |file|
-      file.puts(process_id)
-    end
   end
 end

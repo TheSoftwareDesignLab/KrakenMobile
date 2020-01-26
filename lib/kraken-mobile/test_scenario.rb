@@ -55,7 +55,9 @@ class TestScenario
 
   def self.ready_to_start?
     process_ids = DeviceProcess.registered_process_ids
-    processes_ready = DeviceProcess.processes_ready
+    processes_ready = DeviceProcess.processes_in_state(
+      K::PROCESS_STATES[:ready_to_start]
+    )
     process_ids.all? do |process_id|
       processes_ready.include? process_id
     end

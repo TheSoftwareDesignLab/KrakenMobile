@@ -7,7 +7,10 @@ def start_test_kraken_server_in_backgrouond
   tag_process_id = @scenario_tags.grep(/@user/).first
   process_id = tag_process_id.delete_prefix('@user')
 
-  DeviceProcess.notify_ready_to_start(process_id)
+  DeviceProcess.notify_process_state(
+    process_id: process_id,
+    state: K::PROCESS_STATES[:ready_to_start]
+  )
   sleep(1) until TestScenario.ready_to_start?
 end
 
