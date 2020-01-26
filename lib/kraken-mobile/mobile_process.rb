@@ -1,16 +1,7 @@
 require 'kraken-mobile/device_process.rb'
 
 class MobileProcess < DeviceProcess
-  # Overriding super init
-  def initialize
-    start_process
-  end
-
-  def start_process
-    Thread.new do
-      execute_process
-    end.join
-  end
+  def initialize; end
 
   def execute_process
     # TODO, Change command

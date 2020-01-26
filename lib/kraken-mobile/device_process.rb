@@ -1,6 +1,6 @@
 # Abstract class
 class DeviceProcess
-  attr_accessor :test_scenario  
+  attr_accessor :test_scenario
 
   #-------------------------------
   # Constructors
