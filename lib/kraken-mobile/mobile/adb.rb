@@ -13,7 +13,7 @@ class ADB
         model = extract_device_model(line)
         next if id.nil? || model.nil?
 
-        devices << AndroidDevice.new(id, model)
+        devices << AndroidDevice.new(id: id, model: model)
       end
       devices
     rescue StandardError => _e

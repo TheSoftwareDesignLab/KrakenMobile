@@ -39,12 +39,11 @@ class TestScenario
     Parallel.map_with_index(
       devices, in_threads: devices.count
     ) do |device, index|
-      process = MobileProcess.new(
+      MobileProcess.new(
         id: index + 1,
         device: device,
         test_scenario: self
-      )
-      #process.execute_process
+      ).execute_process
     end
   end
 end
