@@ -21,9 +21,13 @@ class TestScenario
   #-------------------------------
   def execute
     devices = ADB.connected_devices
-    Parallel.map(devices, in_threads: 1) do |_device|
+    Parallel.map_with_index(
+      devices, in_threads: devices.count
+    ) do |device, index|
       process = MobileProcess.new
+      process.id = index + 1 # Start from 1
       process.test_scenario = self
+      process.device = device
       process.execute_process
     end
   end

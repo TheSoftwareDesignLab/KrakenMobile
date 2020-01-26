@@ -1,5 +1,7 @@
 # Abstract class
 class DeviceProcess
+  attr_accessor :id
+  attr_accessor :device
   attr_accessor :test_scenario
 
   #-------------------------------

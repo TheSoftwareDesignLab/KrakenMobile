@@ -5,7 +5,7 @@ class MobileProcess < DeviceProcess
 
   def execute_process
     # TODO, Change command
-    open('|calabash-android run ~/Desktop/app.apk', 'r') do |output|
+    open("|ADB_DEVICE_ARG=#{device.id} calabash-android run ~/Desktop/app.apk --tags @user#{id}", 'r') do |output|
       loop do
         $stdout.print output.readline.to_s
         $stdout.flush
