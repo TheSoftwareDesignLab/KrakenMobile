@@ -1,4 +1,4 @@
-require 'kraken-mobile/models/device'
+require 'kraken-mobile/models/android_device'
 require 'kraken-mobile/constants'
 require 'kraken-mobile/android_commands.rb'
 
@@ -13,7 +13,7 @@ class ADB
         model = extract_device_model(line)
         next if id.nil? || model.nil?
 
-        devices << KrakenMobile::Models::Device.new(id, model)
+        devices << AndroidDevice.new(id, model)
       end
       devices
     rescue StandardError => _e
