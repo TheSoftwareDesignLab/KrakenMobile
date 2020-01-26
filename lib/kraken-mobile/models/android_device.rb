@@ -8,23 +8,33 @@ class AndroidDevice < Device
   def create_inbox
     raise 'ERROR: Device is disconnected.' unless connected?
 
-    device_id = @id
-    ADB.create_file_with_name_in_device(device_id, K::INBOX_FILE_NAME)
+    ADB.create_file_with_name_in_device(
+      device_id: @id,
+      file_name: K::INBOX_FILE_NAME
+    )
   end
 
   def delete_inbox
     raise 'ERROR: Device is disconnected.' unless connected?
 
-    device_id = @id
-    ADB.delete_file_with_name_in_device(device_id, K::INBOX_FILE_NAME)
+    ADB.delete_file_with_name_in_device(
+      device_id: @id,
+      file_name: K::INBOX_FILE_NAME
+    )
   end
 
   def write_signal(signal)
-    puts signal
+    ADB.write_content_to_file_with_name_in_device(
+      content: signal,
+      device_id: @id,
+      file_name: K::INBOX_FILE_NAME
+    )
   end
 
   def read_signal(signal)
-    puts signal
+    Timeout.timeout(K::DEFAULT_TIMEOUT_SECONDS, RuntimeError) do
+      sleep(1) until inbox_last_signal == signal
+    end
   end
 
   #-------------------------------
@@ -36,5 +46,9 @@ class AndroidDevice < Device
     ADB.connected_devices.any? do |device|
       device.id == @id
     end
+  end
+
+  def inbox_last_signal
+    ADB.file_content(device_id: @id, file_name: K::INBOX_FILE_NAME).strip
   end
 end

@@ -6,6 +6,7 @@ module K
   DIRECTORY_PATH = '.device_directory' unless defined? DIRECTORY_PATH
   INBOX_FILE_NAME = 'inbox.txt' unless defined? INBOX_FILE_NAME
   FEATURES_PATH = './features' unless defined? FEATURES_PATH
+  DEFAULT_TIMEOUT_SECONDS = 30 unless defined? DEFAULT_TIMEOUT_SECONDS
 
   unless defined? DEVICES_READY_PATH
     DEVICES_READY_PATH = '.devices_ready_to_start'
