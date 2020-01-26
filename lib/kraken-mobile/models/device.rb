@@ -37,6 +37,10 @@ class Device
   #-------------------------------
   # Helpers
   #-------------------------------
+  def to_s
+    @id + K::SEPARATOR + @model
+  end
+
   def screenshot_prefix
     @id.gsub('.', '_').gsub(/:(.*)/, '').to_s + '_'
   end
