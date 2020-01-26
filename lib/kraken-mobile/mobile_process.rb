@@ -7,10 +7,9 @@ class MobileProcess < DeviceProcess
   end
 
   def start_process
-    execution_thread = Thread.new do
+    Thread.new do
       execute_process
-    end
-    execution_thread.join
+    end.join
   end
 
   def execute_process
