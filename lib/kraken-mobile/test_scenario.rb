@@ -8,15 +8,17 @@ class TestScenario
   #-------------------------------
   # Fields
   #-------------------------------
-  attr_accessor :feature_file
   attr_accessor :devices
+  attr_accessor :kraken_app
+  attr_accessor :feature_file
 
   #-------------------------------
   # Constructors
   #-------------------------------
-  def initialize(feature_file_path)
+  def initialize(kraken_app:, feature_file_path:)
     @feature_file = FeatureFile.new(file_path: feature_file_path)
     @devices = sample_devices
+    @kraken_app = kraken_app
   end
 
   #-------------------------------
@@ -40,6 +42,7 @@ class TestScenario
     K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
       File.delete(file_path) if File.exist?(file_path)
     end
+    notify_scenario_finished
   end
 
   #-------------------------------
@@ -88,5 +91,9 @@ class TestScenario
   def sample_devices
     devices = ADB.connected_devices
     devices.sample(number_of_required_devices)
+  end
+
+  def notify_scenario_finished
+    @kraken_app.on_test_scenario_finished
   end
 end

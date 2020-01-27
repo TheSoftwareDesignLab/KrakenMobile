@@ -14,8 +14,7 @@ class MobileProcess < DeviceProcess
   end
 
   def execute
-    # TODO, Change command
-    open("|ADB_DEVICE_ARG=#{device.id} calabash-android run ~/Desktop/app.apk --tags @user#{id}", 'r') do |output|
+    open(execution_command, 'r') do |output|
       loop do
         $stdout.print output.readline.to_s
         $stdout.flush
@@ -39,5 +38,18 @@ class MobileProcess < DeviceProcess
     File.open(K::DIRECTORY_PATH, 'a') do |file|
       file.puts("#{id}#{K::SEPARATOR}#{device}")
     end
+  end
+
+  private
+
+  def execution_command
+    feature_path = test_scenario.feature_file.file_path
+    raise 'ERROR: Invalid feature file path' if feature_path.nil?
+
+    apk_path = '~/Desktop/app.apk'
+    raise 'ERROR: Invalid APK file path' if apk_path.nil?
+
+    "|ADB_DEVICE_ARG=#{device.id} calabash-android run #{apk_path} \
+    #{feature_path} --tags @user#{id}"
   end
 end

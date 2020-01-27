@@ -23,12 +23,22 @@ class KrakenApp
     execute_next_scenario
   end
 
+  #-------------------------------
+  # Observers
+  #-------------------------------
+  def on_test_scenario_finished
+    execute_next_scenario
+  end
+
   private
 
   def build_scenarios_queue
     feature_files.each do |feature_path|
       scenarios_queue.unshift(
-        TestScenario.new(feature_path)
+        TestScenario.new(
+          kraken_app: self,
+          feature_file_path: feature_path
+        )
       )
     end
   end
