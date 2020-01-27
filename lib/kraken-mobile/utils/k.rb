@@ -8,6 +8,14 @@ module K
   FEATURES_PATH = './features' unless defined? FEATURES_PATH
   DEFAULT_TIMEOUT_SECONDS = 30 unless defined? DEFAULT_TIMEOUT_SECONDS
 
+  unless defined? DEFAULT_START_TIMEOUT_SECONDS
+    DEFAULT_START_TIMEOUT_SECONDS = 600 # 10.minutes
+  end
+
+  unless defined? DEFAULT_FINISH_TIMEOUT_SECONDS
+    DEFAULT_FINISH_TIMEOUT_SECONDS = 600 # 10.minutes
+  end
+
   unless defined? DEVICES_READY_PATH
     DEVICES_READY_PATH = '.devices_ready_to_start'
   end

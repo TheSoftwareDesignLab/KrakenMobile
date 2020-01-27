@@ -9,7 +9,10 @@ def start_test_kraken_server_in_backgrouond
     process_id: process_id,
     state: K::PROCESS_STATES[:ready_to_start]
   )
-  sleep(1) until TestScenario.ready_to_start? # TODO, add timeout
+
+  Timeout.timeout(K::DEFAULT_START_TIMEOUT_SECONDS, RuntimeError) do
+    sleep(1) until TestScenario.ready_to_start?
+  end
 end
 
 def shutdown_test_kraken_server
@@ -17,7 +20,10 @@ def shutdown_test_kraken_server
     process_id: process_id,
     state: K::PROCESS_STATES[:ready_to_finish]
   )
-  sleep(1) until TestScenario.ready_to_finish? # TODO, add timeout
+
+  Timeout.timeout(K::DEFAULT_FINISH_TIMEOUT_SECONDS, RuntimeError) do
+    sleep(1) until TestScenario.ready_to_finish?
+  end
 
   shutdown_test_server
 end

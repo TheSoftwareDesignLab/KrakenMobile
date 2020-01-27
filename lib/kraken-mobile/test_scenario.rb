@@ -64,7 +64,8 @@ class TestScenario
       K::PROCESS_STATES[:ready_to_start]
     )
     process_ids.all? do |process_id|
-      processes_ready.include? process_id
+      processes_ready.include?(process_id) ||
+        Device.find_by_process_id(process_id)&.connected? == false
     end
   end
 
@@ -75,7 +76,8 @@ class TestScenario
       K::PROCESS_STATES[:ready_to_finish]
     )
     process_ids.all? do |process_id|
-      processes_finished.include? process_id
+      processes_finished.include?(process_id) ||
+        Device.find_by_process_id(process_id)&.connected? == false
     end
   end
 

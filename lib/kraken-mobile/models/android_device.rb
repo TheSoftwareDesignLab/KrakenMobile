@@ -37,16 +37,16 @@ class AndroidDevice < Device
     end
   end
 
-  #-------------------------------
-  # Helprs
-  #-------------------------------
-  private
-
   def connected?
     ADB.connected_devices.any? do |device|
       device.id == @id
     end
   end
+
+  #-------------------------------
+  # Helprs
+  #-------------------------------
+  private
 
   def inbox_last_signal
     ADB.file_content(device_id: @id, file_name: K::INBOX_FILE_NAME).strip

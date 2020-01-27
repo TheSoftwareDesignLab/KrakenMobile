@@ -35,6 +35,13 @@ class Device
   end
 
   #-------------------------------
+  # More interface methods
+  #-------------------------------
+  def connected?
+    raise 'ERROR: connected? not implemented.'
+  end
+
+  #-------------------------------
   # Helpers
   #-------------------------------
   def to_s
