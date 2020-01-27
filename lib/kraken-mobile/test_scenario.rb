@@ -57,7 +57,6 @@ class TestScenario
     end
   end
 
-  # TODO, take into account disconnected devices
   def self.ready_to_start?
     process_ids = DeviceProcess.registered_process_ids
     processes_ready = DeviceProcess.processes_in_state(
@@ -69,7 +68,6 @@ class TestScenario
     end
   end
 
-  # TODO, take into account disconnected devices
   def self.ready_to_finish?
     process_ids = DeviceProcess.registered_process_ids
     processes_finished = DeviceProcess.processes_in_state(

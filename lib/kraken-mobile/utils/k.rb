@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# TODO, Fix use of defined?
 module K
   SEPARATOR = ';' unless defined? SEPARATOR
   DIRECTORY_PATH = '.device_directory' unless defined? DIRECTORY_PATH
