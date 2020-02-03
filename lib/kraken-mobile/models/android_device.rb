@@ -1,7 +1,12 @@
 require 'kraken-mobile/models/device'
 require 'kraken-mobile/mobile/adb'
+require 'kraken-mobile/monkeys/mobile/kraken_android_monkey'
+require 'kraken-mobile/monkeys/mobile/android_monkey'
 
 class AndroidDevice < Device
+  include KrakenAndroidMonkey
+  include AndroidMonkey
+
   #-------------------------------
   # Signaling
   #-------------------------------
@@ -71,7 +76,7 @@ class AndroidDevice < Device
   end
 
   def run_kraken_monkey_with_number_of_events(number_of_events)
-    super(number_of_events)
+    execute_kraken_monkey(number_of_events)
   end
 
   #-------------------------------

@@ -1,9 +1,6 @@
 require 'kraken-mobile/device_process'
-require 'kraken-mobile/monkeys/monkey'
 
 class Device
-  include Monkey
-
   #-------------------------------
   # Fields
   #-------------------------------

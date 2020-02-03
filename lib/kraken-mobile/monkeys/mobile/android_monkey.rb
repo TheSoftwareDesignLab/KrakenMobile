@@ -2,7 +2,7 @@ require 'calabash-android/environment_helpers.rb'
 require 'calabash-android/monkey_helpers'
 require 'calabash-android/operations'
 
-module Monkey
+module AndroidMonkey
   include Calabash::Android::Operations
   include Calabash::Android::MonkeyHelpers
 
