@@ -1,6 +1,9 @@
 require 'kraken-mobile/device_process'
+require 'kraken-mobile/monkeys/monkey'
 
 class Device
+  include Monkey
+
   #-------------------------------
   # Fields
   #-------------------------------
@@ -35,10 +38,29 @@ class Device
   end
 
   #-------------------------------
+  # Random testing
+  #-------------------------------
+  def run_monkey_with_number_of_events(_number_of_events)
+    raise 'ERROR: run_monkey_with_number_of_events not implemented.'
+  end
+
+  def run_kraken_monkey_with_number_of_events(_number_of_events)
+    raise 'ERROR: run_kraken_monkey_with_number_of_events not implemented.'
+  end
+
+  #-------------------------------
   # More interface methods
   #-------------------------------
   def connected?
     raise 'ERROR: connected? not implemented.'
+  end
+
+  def orientation
+    raise 'ERROR: orientation not implemented.'
+  end
+
+  def screen_size
+    raise 'ERROR: screen_size not implemented.'
   end
 
   #-------------------------------

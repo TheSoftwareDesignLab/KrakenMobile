@@ -20,6 +20,13 @@ class ADB
       raise 'ERROR: Can\'t read Android devices connected.'
     end
 
+    def device_screen_size(device_id:)
+      adb_size = screen_size_for_device_with_id(device_id: device_id)
+      extract_device_screen_size_info(adb_size)
+    rescue StandardError => _e
+      raise "ERROR: Can\'t read Android device #{device_id} screen size."
+    end
+
     private
 
     def extract_device_id(line)
@@ -30,6 +37,14 @@ class ADB
       return unless line.match(/device(?!s)/)
 
       line.scan(/model:(.*) device/).flatten.first
+    end
+
+    def extract_device_screen_size_info(line)
+      parts = line.strip!.split(' ')
+      size = parts[parts.count - 1]
+      return [0, 0] unless size.include?('x')
+
+      size.split('x').map(&:to_i)
     end
   end
 end

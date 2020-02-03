@@ -37,15 +37,57 @@ class AndroidDevice < Device
     end
   end
 
+  #-------------------------------
+  # More interface methods
+  #-------------------------------
   def connected?
     ADB.connected_devices.any? do |device|
       device.id == @id
     end
   end
 
+  def orientation
+    ADB.device_orientation(
+      device_id: @id
+    ).strip!.to_i
+  rescue StandardError => _e
+    K::ANDROID_PORTRAIT
+  end
+
+  def screen_size
+    size = ADB.device_screen_size(device_id: @id)
+
+    height = orientation == K::ANDROID_PORTRAIT ? size[1] : size[0]
+    width = orientation == K::ANDROID_PORTRAIT ? size[0] : size[1]
+
+    [height, width]
+  end
+
+  #-------------------------------
+  # Random testing
+  #-------------------------------
+  def run_monkey_with_number_of_events(number_of_events)
+    execute_monkey(number_of_events)
+  end
+
+  def run_kraken_monkey_with_number_of_events(number_of_events)
+    super(number_of_events)
+  end
+
   #-------------------------------
   # Helprs
   #-------------------------------
+  def calabash_default_device
+    operations_module = Calabash::Android::Operations
+    operations_module::Device.new(
+      operations_module,
+      ENV['ADB_DEVICE_ARG'],
+      ENV['TEST_SERVER_PORT'],
+      ENV['APP_PATH'],
+      ENV['TEST_APP_PATH']
+    )
+  end
+
   private
 
   def inbox_last_signal
