@@ -1,6 +1,8 @@
 require 'kraken-mobile/mobile/mobile_process'
-require 'kraken-mobile/mobile/adb'
 require 'kraken-mobile/models/feature_file'
+require 'kraken-mobile/models/web_device'
+require 'kraken-mobile/web/web_process'
+require 'kraken-mobile/mobile/adb'
 require 'kraken-mobile/utils/k'
 require 'parallel'
 
@@ -52,11 +54,11 @@ class TestScenario
     Parallel.map_with_index(
       @devices, in_threads: @devices.count
     ) do |device, index|
-      MobileProcess.new(
-        id: index + 1,
-        device: device,
-        test_scenario: self
-      ).run
+      user_id = index + 1
+      start_process_for_user_id_in_device(
+        user_id,
+        device
+      )
     end
   end
 
@@ -84,16 +86,66 @@ class TestScenario
 
   private
 
-  def number_of_required_devices
-    @feature_file.number_of_required_devices
+  def start_process_for_user_id_in_device(user_id, device)
+    if user_id_is_mobile?(user_id)
+      start_mobile_process_for_user_id_in_device(user_id, device)
+    elsif user_id_is_web?(user_id)
+      start_web_process_for_user_id_in_device(user_id, device)
+    else
+      raise 'ERROR: Platform not supported'
+    end
+  end
+
+  def start_mobile_process_for_user_id_in_device(user_id, device)
+    MobileProcess.new(
+      id: user_id,
+      device: device,
+      test_scenario: self
+    ).run
+  end
+
+  def start_web_process_for_user_id_in_device(user_id, device)
+    WebProcess.new(
+      id: user_id,
+      device: device,
+      test_scenario: self
+    ).run
   end
 
   def sample_devices
-    devices = ADB.connected_devices
-    devices.sample(number_of_required_devices)
+    (sample_mobile_devices + sample_web_devices).flatten
+  end
+
+  def sample_mobile_devices
+    android_devices = ADB.connected_devices
+    android_devices.sample(
+      @feature_file.number_of_required_mobile_devices
+    )
+  end
+
+  def sample_web_devices
+    web_devices = []
+    @feature_file.number_of_required_web_devices.times do
+      web_devices << WebDevice.factory_create
+    end
+    web_devices
   end
 
   def notify_scenario_finished
     @kraken_app.on_test_scenario_finished
+  end
+
+  def user_id_is_mobile?(user_id)
+    complement_tags = @feature_file.tags_for_user_id(user_id).map(
+      &:downcase
+    )
+    complement_tags.include?('@mobile')
+  end
+
+  def user_id_is_web?(user_id)
+    complement_tags = @feature_file.tags_for_user_id(user_id).map(
+      &:downcase
+    )
+    complement_tags.include?('@web')
   end
 end

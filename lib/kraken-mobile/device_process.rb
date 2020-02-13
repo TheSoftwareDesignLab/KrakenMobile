@@ -37,6 +37,18 @@ class DeviceProcess
   #-------------------------------
   # Methods
   #-------------------------------
+  def register_process_to_directory
+    File.open(K::DIRECTORY_PATH, 'a') do |file|
+      file.puts("#{id}#{K::SEPARATOR}#{device}")
+    end
+  end
+
+  def notify_ready_to_start
+    File.open(K::DIRECTORY_PATH, 'a') do |file|
+      file.puts("#{id}#{K::SEPARATOR}#{device}")
+    end
+  end
+
   def self.directory
     return [] unless File.exist?(K::DIRECTORY_PATH)
 

@@ -18,6 +18,21 @@ ParameterType(
   }
 )
 
+ParameterType(
+  name:        'property',
+  regexp:      /[^\"]*/,
+  type:        String,
+  transformer: ->(s) {
+    channel = @scenario_tags.grep(/@user/).first
+    if ENV["PROPERTIES_PATH"] && channel && s.start_with?("<") && s.end_with?(">")
+      s.slice!('$')
+      return properties[channel][s]
+    else
+      return s
+    end
+  }
+)
+
 Then /^I wait for a signal containing "([^\"]*)"$/ do |string|
   channel = @scenario_tags.grep(/@user/).first
   readSignal(channel, string, KrakenMobile::Constants::DEFAULT_TIMEOUT)

@@ -22,9 +22,29 @@ class FeatureFile
   #-------------------------------
   # Helpers
   #-------------------------------
+  def number_of_required_mobile_devices
+    all_tags = @scenarios.map(&:tags).flatten.uniq
+    all_tags.select { |tag| tag == '@mobile' }.count
+  end
+
+  def number_of_required_web_devices
+    all_tags = @scenarios.map(&:tags).flatten.uniq
+    all_tags.select { |tag| tag == '@web' }.count
+  end
+
   def number_of_required_devices
     all_tags = @scenarios.map(&:tags).flatten.uniq
     all_tags.select { |tag| tag.start_with?('@user') }.count
+  end
+
+  def tags_for_user_id(user_id)
+    user_tag = "@user#{user_id}"
+    user_scenario = @scenarios.select do |scenario|
+      scenario.tags.include?(user_tag)
+    end.first
+    return [] if user_scenario.nil? || user_scenario.tags.nil?
+
+    user_scenario.tags.reject { |tag| tag == user_tag }
   end
 
   private
