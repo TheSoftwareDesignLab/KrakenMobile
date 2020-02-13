@@ -87,9 +87,9 @@ class TestScenario
   private
 
   def start_process_for_user_id_in_device(user_id, device)
-    if user_id_is_mobile?(user_id)
+    if device.is_a? AndroidDevice
       start_mobile_process_for_user_id_in_device(user_id, device)
-    elsif user_id_is_web?(user_id)
+    elsif device.is_a? WebDevice
       start_web_process_for_user_id_in_device(user_id, device)
     else
       raise 'ERROR: Platform not supported'

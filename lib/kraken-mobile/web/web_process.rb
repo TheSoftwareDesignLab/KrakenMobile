@@ -6,11 +6,11 @@ class WebProcess < DeviceProcess
   #-------------------------------
   def before_execute
     register_process_to_directory
-    #device.create_inbox
+    device.create_inbox
   end
 
   def after_execute
-    #device.delete_inbox
+    device.delete_inbox
   end
 
   def execute
@@ -31,9 +31,8 @@ class WebProcess < DeviceProcess
     feature_path = test_scenario.feature_file.file_path
     raise 'ERROR: Invalid feature file path' if feature_path.nil?
 
-    url_path = 'www.google.com'
-    raise 'ERROR: Invalid URL path' if url_path.nil?
-
-    "|cucumber"
+    # TODO, only execute one file
+    "|cucumber --tags @user#{id}\
+    --require features/web_step_definitions/web_steps.rb"
   end
 end

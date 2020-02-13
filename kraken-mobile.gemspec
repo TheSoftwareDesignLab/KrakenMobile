@@ -30,6 +30,8 @@ Gem::Specification.new do |s|
   s.add_dependency( 'parallel', '1.14.0')
   s.add_dependency( 'tty-prompt', '0.18.1')
   s.add_development_dependency 'byebug', '~> 11.1'
+  s.add_dependency( 'capybara', '3.31.0')
+  s.add_dependency( 'selenium-webdriver', '3.142.7')
 
   s.require_paths = ['lib']
 end
