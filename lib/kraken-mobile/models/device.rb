@@ -60,11 +60,15 @@ class Device
     raise 'ERROR: screen_size not implemented.'
   end
 
+  def type
+    raise 'ERROR: Unsupported device'
+  end
+
   #-------------------------------
   # Helpers
   #-------------------------------
   def to_s
-    @id + K::SEPARATOR + @model
+    @id + K::SEPARATOR + @model + K::SEPARATOR + type
   end
 
   def screenshot_prefix
@@ -77,11 +81,26 @@ class Device
       process_id = info[0]
       next unless process_id.to_s == id.to_s
 
-      return AndroidDevice.new(
-        id: info[1], model: info[2]
+      return device_from_type(
+        id: info[1], model: info[2],
+        device_type: info[3]
       )
     end
 
     nil
+  end
+
+  def self.device_from_type(id:, model:, device_type:)
+    device_class = nil
+    if device_type == K::ANDROID_DEVICE
+      device_class = AndroidDevice
+    elsif device_type == K::WEB_DEVICE
+      device_class = WebDevice
+    end
+    raise 'ERROR: Unsupported device' if device_class.nil?
+
+    device_class.new(
+      id: id, model: model
+    )
   end
 end

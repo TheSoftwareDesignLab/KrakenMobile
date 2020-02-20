@@ -5,18 +5,19 @@ class WebDevice < Device
   # Signaling
   #-------------------------------
   def create_inbox
-    File.open(".#{@id}_#{K::INBOX_FILE_NAME}", 'w')
+    File.open(inbox_file_path, 'w')
   end
 
   def delete_inbox
-    file_name = ".#{@id}_#{K::INBOX_FILE_NAME}"
-    return unless File.exist? file_name
+    return unless File.exist? inbox_file_path
 
-    File.delete(file_name)
+    File.delete(inbox_file_path)
   end
 
   def write_signal(signal)
-    signal # TODO, implement
+    File.open(inbox_file_path, 'a') do |file|
+      file.puts(signal)
+    end
   end
 
   def read_signal(signal)
@@ -43,6 +44,10 @@ class WebDevice < Device
     [height, width]
   end
 
+  def type
+    K::WEB_DEVICE
+  end
+
   #-------------------------------
   # Random testing
   #-------------------------------
@@ -55,7 +60,7 @@ class WebDevice < Device
   end
 
   #-------------------------------
-  # Helprs
+  # Helpers
   #-------------------------------
   def self.factory_create
     WebDevice.new(
@@ -66,7 +71,12 @@ class WebDevice < Device
 
   private
 
+  def inbox_file_path
+    ".#{@id}_#{K::INBOX_FILE_NAME}"
+  end
+
   def inbox_last_signal
-    'test' # TODO, implement
+    lines = File.open(inbox_file_path).to_a
+    lines.last&.strip
   end
 end

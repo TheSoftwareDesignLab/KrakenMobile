@@ -1,6 +1,7 @@
 require 'kraken-mobile/test_scenario'
 
 def start_test_kraken_server_in_background(scenario:)
+  @scenario_tags = scenario.source_tag_names
   DeviceProcess.notify_process_state(
     process_id: process_id(scenario: scenario),
     state: K::PROCESS_STATES[:ready_to_start]
@@ -12,6 +13,7 @@ def start_test_kraken_server_in_background(scenario:)
 end
 
 def shutdown_test_kraken_server(scenario:)
+  @scenario_tags = scenario.source_tag_names
   DeviceProcess.notify_process_state(
     process_id: process_id(scenario: scenario),
     state: K::PROCESS_STATES[:ready_to_finish]

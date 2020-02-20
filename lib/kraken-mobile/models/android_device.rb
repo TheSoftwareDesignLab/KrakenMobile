@@ -68,6 +68,10 @@ class AndroidDevice < Device
     [height, width]
   end
 
+  def type
+    K::ANDROID_DEVICE
+  end
+
   #-------------------------------
   # Random testing
   #-------------------------------
