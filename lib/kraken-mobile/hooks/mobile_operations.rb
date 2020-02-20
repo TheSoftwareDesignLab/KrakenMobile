@@ -2,7 +2,7 @@ require 'calabash-android/management/adb'
 require 'calabash-android/operations'
 require 'kraken-mobile/test_scenario'
 
-def start_test_kraken_server_in_backgrouond
+def start_test_kraken_server_in_background
   start_test_server_in_background
 
   DeviceProcess.notify_process_state(

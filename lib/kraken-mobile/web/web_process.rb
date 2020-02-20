@@ -33,6 +33,7 @@ class WebProcess < DeviceProcess
 
     # TODO, only execute one file
     "|cucumber --tags @user#{id}\
-    --require features/web_step_definitions/web_steps.rb"
+    --require features/web/step_definitions/web_steps.rb \
+    --require features/web/support/app_life_cycle_hooks.rb"
   end
 end
