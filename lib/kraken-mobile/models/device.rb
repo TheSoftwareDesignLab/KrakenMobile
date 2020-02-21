@@ -30,7 +30,7 @@ class Device
     raise 'ERROR: write_signal not implemented.'
   end
 
-  def read_signal(_signal)
+  def read_signal(_signal, _timeout = K::DEFAULT_TIMEOUT_SECONDS)
     raise 'ERROR: read_signal not implemented.'
   end
 

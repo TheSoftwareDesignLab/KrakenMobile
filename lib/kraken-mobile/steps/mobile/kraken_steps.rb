@@ -24,6 +24,18 @@ Then(/^I wait for a signal containing "([^\"]*)"$/) do |signal|
   device.read_signal(signal)
 end
 
+Then(
+  /^I wait for a signal containing "([^\"]*)" for (\d+) seconds$/
+) do |signal, seconds|
+  raise 'ERROR: Invalid scenario tag' if @scenario_tags.nil?
+  raise 'ERROR: Invalid scenario tag' if @scenario_tags.grep(/@user/).none?
+
+  device = Device.find_by_process_id(current_process_id)
+  raise 'ERROR: Device not found' if device.nil?
+
+  device.read_signal(signal, seconds)
+end
+
 Then(/^I start a monkey with (\d+) events$/) do |number_of_events|
   raise 'ERROR: Invalid scenario tag' if @scenario_tags.nil?
   raise 'ERROR: Invalid scenario tag' if @scenario_tags.grep(/@user/).none?

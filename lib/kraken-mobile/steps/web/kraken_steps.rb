@@ -1,21 +1,42 @@
 require 'selenium-webdriver'
 require 'faker'
+require 'uri'
 
-driver = Selenium::WebDriver.for :firefox
+driver = Selenium::WebDriver.for :chrome
 
-Given(/^We navigate to the homepage$/) do
-  driver.navigate.to 'http://mock.agiletrailblazers.com/'
+Given(/^I navigate to page "([^\"]*)"$/) do |web_url|
+  raise 'ERROR: Invalid URL' if web_url.nil?
+  raise 'ERROR: Invalid URL' unless web_url =~ URI::DEFAULT_PARSER.make_regexp
+
+  driver.navigate.to web_url
+  sleep 2
 end
 
-When(/^We search for the word agile$/) do
-  sleep 5
-  driver.find_element(:id, 's').send_keys('buenas')
-  sleep 5
-  driver.find_element(:id, 'submit-button').click
+Then(/^I enter "([^\"]*)" into input field having id "([^\"]*)"$/) do |text, id|
+  driver.find_element(:id, id).send_keys(text)
+  sleep 2
 end
 
-Then(/^The results for the search will be displayed$/) do
-  sleep 10
+Then(
+  /^I enter "([^\"]*)" into input field having css selector "([^\"]*)"$/
+) do |text, selector|
+  driver.find_element(:css, selector).send_keys(text)
+  sleep 2
+end
+
+Then(/^I click on element having id "(.*?)"$/) do |id|
+  driver.find_element(:id, id).click
+  sleep 2
+end
+
+Then(/^I wait for (\d+) seconds$/) do |seconds|
+  return if seconds.nil?
+
+  sleep seconds.to_i
+end
+
+Then(/^I should see text "(.*?)"$/) do |text|
+  driver.page_source.include?(text)
 end
 
 # Kraken Steps
@@ -39,6 +60,18 @@ Then(/^I wait for a signal containing "([^\"]*)"$/) do |signal|
   raise 'ERROR: Device not found' if device.nil?
 
   device.read_signal(signal)
+end
+
+Then(
+  /^I wait for a signal containing "([^\"]*)" for (\d+) seconds$/
+) do |signal, seconds|
+  raise 'ERROR: Invalid scenario tag' if @scenario_tags.nil?
+  raise 'ERROR: Invalid scenario tag' if @scenario_tags.grep(/@user/).none?
+
+  device = Device.find_by_process_id(current_process_id)
+  raise 'ERROR: Device not found' if device.nil?
+
+  device.read_signal(signal, seconds)
 end
 
 private

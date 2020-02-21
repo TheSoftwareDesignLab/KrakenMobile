@@ -20,8 +20,8 @@ class WebDevice < Device
     end
   end
 
-  def read_signal(signal)
-    Timeout.timeout(K::DEFAULT_TIMEOUT_SECONDS, RuntimeError) do
+  def read_signal(signal, timeout = K::DEFAULT_TIMEOUT_SECONDS)
+    Timeout.timeout(timeout, RuntimeError) do
       sleep(1) until inbox_last_signal == signal
     end
   end
