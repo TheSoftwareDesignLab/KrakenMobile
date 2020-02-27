@@ -9,9 +9,7 @@
 def handle_calabash_android(configuration, properties)
   require 'kraken-mobile/constants'
   require 'calabash-android/helpers'
-  options = {
-    feature_folder: @features_dir,
-  }
+  #options = {}
   #if configuration
   #  ensure_configuration_is_valid File.expand_path(configuration)
   #  options[:config_path] = File.expand_path(configuration)
@@ -23,6 +21,8 @@ def handle_calabash_android(configuration, properties)
   #  ensure_properties_is_valid File.expand_path(properties)
   #  options[:properties_path] = File.expand_path(properties)
   #end
-  kraken = KrakenApp.new
+  kraken = KrakenApp.new(
+    apk_path: user_entered_apk_path
+  )
   kraken.start
 end

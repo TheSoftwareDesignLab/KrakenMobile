@@ -31,10 +31,14 @@ class MobileProcess < DeviceProcess
     feature_path = test_scenario.feature_file.file_path
     raise 'ERROR: Invalid feature file path' if feature_path.nil?
 
-    apk_path = '~/Desktop/test.apk' # TODO, load good
-    raise 'ERROR: Invalid APK file path' if apk_path.nil?
+    process_apk_path = apk_path
+    raise 'ERROR: Invalid APK file path' if process_apk_path.nil?
 
-    "|ADB_DEVICE_ARG=#{device.id} calabash-android run #{apk_path} \
+    "|ADB_DEVICE_ARG=#{device.id} calabash-android run #{process_apk_path} \
     #{feature_path} --tags @user#{id}"
+  end
+
+  def apk_path
+    @test_scenario&.kraken_app&.apk_path_for_process_id(@id)
   end
 end

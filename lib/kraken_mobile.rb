@@ -9,18 +9,27 @@ class KrakenApp
   # Fields
   #-------------------------------
 
+  attr_accessor :apk_path
   attr_accessor :scenarios_queue
 
   #-------------------------------
   # Constructors
   #-------------------------------
-  def initialize
+  def initialize(apk_path:)
+    @apk_path = apk_path
     @scenarios_queue = []
     build_scenarios_queue
   end
 
   def start
     execute_next_scenario
+  end
+
+  #-------------------------------
+  # Helpers
+  #-------------------------------
+  def apk_path_for_process_id(process_id)
+    @apk_path
   end
 
   #-------------------------------

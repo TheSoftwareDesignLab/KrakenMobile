@@ -32,6 +32,15 @@ def read_properties
 end
 
 #-------------------------------
+# Helpers
+#-------------------------------
+
+def user_entered_apk_path
+  ensure_apk_is_specified
+  File.expand_path(ARGV.first)
+end
+
+#-------------------------------
 # Command reader
 #-------------------------------
 
@@ -52,9 +61,8 @@ else
     scaffold_folder_structure
   when 'resign'
     require 'calabash-android/helpers'
-    ensure_apk_is_specified
     puts 'Resigning APK with Calabash-Android'
-    resign_apk(File.expand_path(ARGV.first))
+    resign_apk(user_entered_apk_path)
   when 'run'
     require File.join(File.dirname(__FILE__), 'kraken_mobile_calabash_android')
     configuration = read_configuration
