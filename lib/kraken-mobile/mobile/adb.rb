@@ -27,6 +27,15 @@ class ADB
       raise "ERROR: Can\'t read Android device #{device_id} screen size."
     end
 
+    def save_snapshot_for_device_with_id_in_file_path(device_id:, file_path:)
+      save_snapshot_for_device_with_id_in_path(
+        device_id: device_id,
+        file_path: file_path
+      )
+    rescue StandardError => _e
+      raise "ERROR: Can\'t save snapshot for device #{device_id}."
+    end
+
     private
 
     def extract_device_id(line)

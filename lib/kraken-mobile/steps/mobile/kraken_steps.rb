@@ -56,6 +56,16 @@ Then(/^I start kraken monkey with (\d+) events$/) do |number_of_events|
   device.run_kraken_monkey_with_number_of_events(number_of_events)
 end
 
+Then(/^I save device snapshot in file with path "([^\"]*)"$/) do |file_path|
+  raise 'ERROR: Invalid scenario tag' if @scenario_tags.nil?
+  raise 'ERROR: Invalid scenario tag' if @scenario_tags.grep(/@user/).none?
+
+  device = Device.find_by_process_id(current_process_id)
+  raise 'ERROR: Device not found' if device.nil?
+
+  device.save_snapshot_in_file_path(file_path)
+end
+
 private
 
 def current_process_id

@@ -72,6 +72,18 @@ class AndroidDevice < Device
     K::ANDROID_DEVICE
   end
 
+  def save_snapshot_in_file_path(file_path)
+    raise 'ERROR: Invalid snapshot file path' if file_path.nil?
+
+    absolute_path = File.expand_path(file_path)
+    raise 'ERROR: File already exists' if File.file?(absolute_path)
+
+    ADB.save_snapshot_for_device_with_id_in_file_path(
+      device_id: @id,
+      file_path: absolute_path
+    )
+  end
+
   #-------------------------------
   # Random testing
   #-------------------------------

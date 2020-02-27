@@ -64,6 +64,10 @@ class Device
     raise 'ERROR: Unsupported device'
   end
 
+  def save_snapshot_in_path(_file_path)
+    raise 'ERROR: save_snapshot_in_path not implemented.'
+  end
+
   #-------------------------------
   # Helpers
   #-------------------------------

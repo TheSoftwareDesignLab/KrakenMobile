@@ -31,5 +31,9 @@ module Android
     def screen_size_for_device_with_id(device_id:)
       `adb -s #{device_id} shell wm size`
     end
+
+    def save_snapshot_for_device_with_id_in_path(device_id:, file_path:)
+      `adb -s #{device_id} shell cat /sdcard/window_dump.xml > #{file_path}`
+    end
   end
 end
