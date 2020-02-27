@@ -2,7 +2,7 @@
 
 require File.join(File.dirname(__FILE__), 'kraken_mobile_helpers')
 require File.join(File.dirname(__FILE__), 'kraken_mobile_setup')
-require File.join(File.dirname(__FILE__), 'kraken-mobile-calabash-android')
+require File.join(File.dirname(__FILE__), 'kraken_mobile_calabash_android')
 $LOAD_PATH << File.expand_path('../lib', __dir__)
 require 'kraken_mobile'
 require 'kraken-mobile/constants'
@@ -50,11 +50,16 @@ else
     KrakenSetup.new.run
   when 'gen'
     scaffold_folder_structure
+  when 'resign'
+    require 'calabash-android/helpers'
+    ensure_apk_is_specified
+    puts 'Resigning APK with Calabash-Android'
+    resign_apk(File.expand_path(ARGV.first))
   when 'run'
-    require File.join(File.dirname(__FILE__), 'kraken-mobile-calabash-android')
+    require File.join(File.dirname(__FILE__), 'kraken_mobile_calabash_android')
     configuration = read_configuration
     properties = read_properties
-    handle_calabash_android(cmd, configuration, properties)
+    handle_calabash_android(configuration, properties)
   else
     print_usage
   end

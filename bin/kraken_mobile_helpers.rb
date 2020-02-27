@@ -64,3 +64,28 @@ def scaffold_folder_structure
     puts "features subdirectory created. \n"
   end
 end
+
+def ensure_apk_is_specified
+  return if !ARGV.empty? && apk_file?(ARGV.first)
+
+  puts 'The first parameter must be the path to a valid apk file.'
+  exit 1
+end
+
+def ensure_configuration_is_valid(configuration)
+  return if File.exist?(configuration) &&
+            File.file?(configuration) &&
+            configuration.end_with?('.json')
+
+  puts 'The path of the configuration file is not valid.'
+  exit 1
+end
+
+def ensure_properties_is_valid(properties)
+  return if File.exist?(properties) &&
+            File.file?(properties) &&
+            !properties.end_with?('.json')
+
+  puts 'The path of the properties file is not valid.'
+  exit 1
+end

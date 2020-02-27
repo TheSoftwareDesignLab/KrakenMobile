@@ -1,11 +1,10 @@
 require 'io/console'
 require 'tty-prompt'
 
-WEB_IDENTIFIER = 'Web'.freeze
-IS_WEB_AVAILABLE_FOR_SELECTION = false
-@prompt = TTY::Prompt.new
-
 class KrakenSetup
+  WEB_IDENTIFIER = 'Web'.freeze
+  IS_WEB_AVAILABLE_FOR_SELECTION = false
+
   attr_accessor :prompt
   attr_accessor :devices_connected_id
   attr_accessor :settings
