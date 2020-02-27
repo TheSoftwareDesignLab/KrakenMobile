@@ -3,7 +3,7 @@
 # Helpers
 #-------------------------------
 def ensure_apk_is_specified
-  if ARGV.empty? || !is_apk_file?(ARGV.first)
+  if ARGV.empty? || !apk_file?(ARGV.first)
     puts "The first parameter must be the path to a valid apk file."
     exit 1
   end
@@ -33,9 +33,6 @@ end
 
 def handle_calabash_android cmd, protocol, configuration, properties
   case cmd
-    when 'gen'
-      require File.join(File.dirname(__FILE__), "kraken-mobile-generate")
-      kraken_scaffold()
     when 'resign'
       require 'calabash-android/helpers'
       ensure_apk_is_specified

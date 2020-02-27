@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
-require File.join(File.dirname(__FILE__), "kraken-mobile-helpers")
-require File.join(File.dirname(__FILE__), "kraken-mobile-setup")
-require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-$LOAD_PATH << File.expand_path("../../lib", __FILE__)
+require File.join(File.dirname(__FILE__), 'kraken_mobile_helpers')
+require File.join(File.dirname(__FILE__), 'kraken_mobile_setup')
+require File.join(File.dirname(__FILE__), 'kraken-mobile-calabash-android')
+$LOAD_PATH << File.expand_path('../lib', __dir__)
 require 'kraken_mobile'
 require 'kraken-mobile/constants'
 
@@ -11,81 +11,51 @@ require 'kraken-mobile/constants'
 # AGV reader helper
 #-------------------------------
 
-def read_specified_runner
-  runner_command = ARGV.select { |arg| arg.include?("--runner=") }.first
-  if runner_command
-    formatted_runner_command = runner_command.strip.downcase
-    formatted_runner_command.slice!("--runner=")
-    formatted_runner_command
-  end
-end
-
-def read_specified_protocol
-  protocol_command = ARGV.select { |arg| arg.include?("--protocol=") }.first
-  if protocol_command
-    formatted_protocol_command = protocol_command.strip.downcase
-    formatted_protocol_command.slice!("--protocol=")
-    if KrakenMobile::Constants::SUPPORTED_PROTOCOLS.include?(formatted_protocol_command)
-      formatted_protocol_command
-    else # Protocol not supported.
-      raise "Specified protocol not supported."
-    end
-  else # If protocol not specified use file based as default.
-    KrakenMobile::Constants::FILE_PROTOCOL
-  end
-end
-
 def read_configuration
-  configuration_command = ARGV.select { |arg| arg.include?("--configuration=") }.first
-  if configuration_command
-    configuration_command = configuration_command.strip.downcase
-    configuration_command.slice!("--configuration=")
-    configuration_command
-  end
+  configuration_command = ARGV.select do |arg|
+    arg.include?('--configuration=')
+  end.first
+  return if configuration_command.nil?
+
+  configuration_command = configuration_command.strip.downcase
+  configuration_command.slice!('--configuration=')
+  configuration_command
 end
 
 def read_properties
-  properties_command = ARGV.select { |arg| arg.include?("--properties=") }.first
-  if properties_command
-    properties_command = properties_command.strip.downcase
-    properties_command.slice!("--properties=")
-    properties_command
-  end
+  properties_command = ARGV.select { |arg| arg.include?('--properties=') }.first
+  return if properties_command.nil?
+
+  properties_command = properties_command.strip.downcase
+  properties_command.slice!('--properties=')
+  properties_command
 end
 
 #-------------------------------
 # Command reader
 #-------------------------------
 
-if ARGV.length == 0
-    print_usage
+if ARGV.length.zero?
+  print_usage
 else
   cmd = ARGV.shift
   case cmd
-    when 'version'
-      require 'kraken-mobile/version'
-      puts KrakenMobile::VERSION
-    when 'devices'
-      require 'kraken-mobile/helpers/devices_helper/manager'
-      print_devices
-    when 'setup'
-      kraken_setup
-    else
-      runner_command = read_specified_runner()
-      protocol = read_specified_protocol()
-      configuration = read_configuration()
-      properties = read_properties()
-      if runner_command
-          case runner_command
-            when KrakenMobile::Constants::CALABASH_ANDROID
-              require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-              handle_calabash_android(cmd, protocol, configuration, properties)
-            else
-              raise "Specified runner not supported."
-          end
-      else # If runner not specified use calabash android as default.
-        require File.join(File.dirname(__FILE__), "kraken-mobile-calabash-android")
-        handle_calabash_android(cmd, protocol, configuration, properties)
-      end
+  when 'version'
+    require 'kraken-mobile/version'
+    puts KrakenMobile::VERSION
+  when 'devices'
+    require 'kraken-mobile/helpers/devices_helper/manager'
+    print_devices
+  when 'setup'
+    KrakenSetup.new.run
+  when 'gen'
+    scaffold_folder_structure
+  when 'run'
+    require File.join(File.dirname(__FILE__), 'kraken-mobile-calabash-android')
+    configuration = read_configuration
+    properties = read_properties
+    handle_calabash_android(cmd, configuration, properties)
+  else
+    print_usage
   end
 end
