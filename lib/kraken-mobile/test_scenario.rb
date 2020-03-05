@@ -28,6 +28,7 @@ class TestScenario
   # Lifecycle
   #-------------------------------
   def before_execution
+    delete_all_web_inboxes
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
     K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
       File.delete(file_path) if File.exist?(file_path)
@@ -153,5 +154,11 @@ class TestScenario
       &:downcase
     )
     complement_tags.include?('@web')
+  end
+
+  def delete_all_web_inboxes
+    Dir.glob(".*_#{K::INBOX_FILE_NAME}").each do |file|
+      File.delete(file)
+    end
   end
 end
