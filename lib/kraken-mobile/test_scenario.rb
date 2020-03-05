@@ -91,6 +91,10 @@ class TestScenario
     end
   end
 
+  def requires_predefined_devices?
+    !ENV[K::CONFIG_PATH].nil?
+  end
+
   private
 
   def start_process_for_user_id_in_device(user_id, device)
@@ -120,6 +124,8 @@ class TestScenario
   end
 
   def sample_devices
+    return predefined_devices if requires_predefined_devices?
+
     (sample_mobile_devices + sample_web_devices).flatten
   end
 
@@ -159,6 +165,20 @@ class TestScenario
   def delete_all_web_inboxes
     Dir.glob(".*_#{K::INBOX_FILE_NAME}").each do |file|
       File.delete(file)
+    end
+  end
+
+  def predefined_devices
+    config_absolute_path = File.expand_path(ENV[K::CONFIG_PATH])
+    file = open(config_absolute_path)
+    content = file.read
+    devices_json = JSON.parse(content).values
+
+    devices_json.map do |device_json|
+      AndroidDevice.new(
+        id: device_json['id'],
+        model: device_json['model']
+      )
     end
   end
 end

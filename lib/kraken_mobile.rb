@@ -15,28 +15,21 @@ class KrakenApp
   #-------------------------------
   # Constructors
   #-------------------------------
-  def initialize(apk_path:, properties_path: nil)
+  def initialize(apk_path:, properties_path: nil, config_path: nil)
     @apk_path = apk_path
     @scenarios_queue = []
-    build_scenarios_queue
-
     save_path_in_environment_variable_with_name(
-      name: 'PROPERTIES_PATH',
-      path: properties_path
+      name: K::PROPERTIES_PATH, path: properties_path
     )
+    save_path_in_environment_variable_with_name(
+      name: K::CONFIG_PATH, path: config_path
+    )
+
+    build_scenarios_queue
   end
 
   def start
     execute_next_scenario
-  end
-
-  #-------------------------------
-  # Helpers
-  #-------------------------------
-  def apk_path_for_process_id(_process_id)
-    raise 'ERROR: Invalid APK file path' if @apk_path.nil?
-
-    @apk_path
   end
 
   #-------------------------------

@@ -119,14 +119,14 @@ def handle_property(property)
 end
 
 def all_user_properties_as_json
-  raise 'ERROR: No properties file found' if ENV['PROPERTIES_PATH'].nil?
+  raise 'ERROR: No properties file found' if ENV[K::PROPERTIES_PATH].nil?
 
-  properties_aboslute_path = File.expand_path(ENV['PROPERTIES_PATH'])
+  properties_absolute_path = File.expand_path(ENV[K::PROPERTIES_PATH])
   raise 'ERROR: Properties file not found' unless File.file?(
-    properties_aboslute_path
+    properties_absolute_path
   )
 
-  file = open(properties_aboslute_path)
+  file = open(properties_absolute_path)
   content = file.read
   JSON.parse(content)
 end

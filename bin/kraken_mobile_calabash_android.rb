@@ -6,20 +6,14 @@
   'calabash-android-features-skeleton'
 )
 
-def handle_calabash_android(configuration, properties_path)
+def handle_calabash_android(config_path, properties_path)
   require 'kraken-mobile/constants'
   require 'calabash-android/helpers'
-  #options = {}
-  #if configuration
-  #  ensure_configuration_is_valid File.expand_path(configuration)
-  #  options[:config_path] = File.expand_path(configuration)
-  #else
-  #  ensure_apk_is_specified
-  #  options[:apk_path] = ARGV.first
-  #end
+
   kraken = KrakenApp.new(
     apk_path: user_entered_apk_path,
-    properties_path: format_properties(properties_path)
+    properties_path: format_properties(properties_path),
+    config_path: format_config(config_path)
   )
   kraken.start
 end
@@ -33,4 +27,13 @@ def format_properties(properties_path)
   ensure_properties_is_valid(properties_absolute_path)
 
   properties_absolute_path
+end
+
+def format_config(config_path)
+  return if config_path.nil?
+
+  config_absolute_path = File.expand_path(config_path)
+  ensure_configuration_is_valid(config_absolute_path)
+
+  config_absolute_path
 end

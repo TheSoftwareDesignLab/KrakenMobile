@@ -38,7 +38,39 @@ class MobileProcess < DeviceProcess
     #{feature_path} --tags @user#{id}"
   end
 
+  #-------------------------------
+  # Helpers
+  #-------------------------------
+
   def apk_path
-    @test_scenario&.kraken_app&.apk_path_for_process_id(@id)
+    return config_apk_path if @test_scenario.requires_predefined_devices?
+
+    path = @test_scenario&.kraken_app&.apk_path
+    raise 'ERROR: Invalid APK file path' if path.nil?
+
+    path
+  end
+
+  def config_json
+    config_absolute_path = File.expand_path(ENV[K::CONFIG_PATH])
+    file = open(config_absolute_path)
+    content = file.read
+    JSON.parse(content)[@id.to_s] || {}
+  end
+
+  def config_apk_path
+    device_config_json = config_json
+    return if device_config_json['config'].nil?
+    return if device_config_json['config']['apk_path'].nil?
+
+    absolute_config_apk_path = File.expand_path(
+      device_config_json['config']['apk_path']
+    )
+
+    raise 'ERROR: Invalid config apk path' unless File.file?(
+      absolute_config_apk_path
+    )
+
+    absolute_config_apk_path
   end
 end

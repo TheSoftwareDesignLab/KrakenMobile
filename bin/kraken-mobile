@@ -38,7 +38,10 @@ end
 def user_entered_apk_path
   return nil if ARGV.first.nil?
 
-  File.expand_path(ARGV.first)
+  first_argument = ARGV.first
+  return nil if first_argument.start_with?('--') # Is argument parameter not apk
+
+  File.expand_path(first_argument)
 end
 
 #-------------------------------
