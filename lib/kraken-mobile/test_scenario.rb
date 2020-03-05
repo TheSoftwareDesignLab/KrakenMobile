@@ -30,6 +30,7 @@ class TestScenario
   def before_execution
     delete_all_web_inboxes
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
+    File.delete(K::DICTIONARY_PATH) if File.exist?(K::DICTIONARY_PATH)
     K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
       File.delete(file_path) if File.exist?(file_path)
     end
@@ -48,6 +49,7 @@ class TestScenario
 
   def after_execution
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
+    File.delete(K::DICTIONARY_PATH) if File.exist?(K::DICTIONARY_PATH)
     K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
       File.delete(file_path) if File.exist?(file_path)
     end

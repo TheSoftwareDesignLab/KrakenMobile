@@ -3,6 +3,7 @@
 module K
   SEPARATOR = ';' unless defined? SEPARATOR
   DIRECTORY_PATH = '.device_directory' unless defined? DIRECTORY_PATH
+  DICTIONARY_PATH = 'dictionary.json' unless defined? DICTIONARY_PATH
   INBOX_FILE_NAME = 'inbox.txt' unless defined? INBOX_FILE_NAME
   FEATURES_PATH = './features' unless defined? FEATURES_PATH
   DEFAULT_TIMEOUT_SECONDS = 30 unless defined? DEFAULT_TIMEOUT_SECONDS

@@ -1,3 +1,5 @@
+require 'kraken-mobile/helpers/kraken_faker'
+
 ParameterType(
   name: 'property',
   regexp: /[^\"]*/,
@@ -7,6 +9,8 @@ ParameterType(
       string.slice!('<')
       string.slice!('>')
       handle_property(string)
+    elsif string_is_a_faker_reuse?(string)
+      handle_faker_reuse(string)
     elsif string_is_a_faker?(string)
       handle_faker(string)
     else
@@ -31,7 +35,11 @@ def string_is_a_property?(string)
 end
 
 def string_is_a_faker?(string)
-  string.start_with?('$') || string.start_with?('$$')
+  string.start_with?('$')
+end
+
+def string_is_a_faker_reuse?(string)
+  string.start_with?('$$')
 end
 
 def handle_property(property)
@@ -59,6 +67,16 @@ def all_user_properties_as_json
   JSON.parse(content)
 end
 
-def handle_faker(faker)
-  nil
+def handle_faker(key)
+  faker = KrakenFaker.new(process_id: current_process_id)
+  faker.generate_value_for_key(
+    key: key
+  )
+end
+
+def handle_faker_reuse(key)
+  faker = KrakenFaker.new(process_id: current_process_id)
+  faker.reuse_value_for_key(
+    key: key
+  )
 end

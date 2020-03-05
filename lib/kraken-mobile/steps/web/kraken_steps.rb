@@ -1,5 +1,4 @@
 require 'selenium-webdriver'
-require 'faker'
 require 'uri'
 
 driver = Selenium::WebDriver.for :chrome
