@@ -29,6 +29,8 @@ class KrakenApp
   # Helpers
   #-------------------------------
   def apk_path_for_process_id(_process_id)
+    raise 'ERROR: Invalid APK file path' if @apk_path.nil?
+
     @apk_path
   end
 
