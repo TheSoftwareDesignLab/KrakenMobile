@@ -28,7 +28,7 @@ class KrakenApp
   #-------------------------------
   # Helpers
   #-------------------------------
-  def apk_path_for_process_id(process_id)
+  def apk_path_for_process_id(_process_id)
     @apk_path
   end
 

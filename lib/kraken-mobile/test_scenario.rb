@@ -1,3 +1,4 @@
+require 'kraken-mobile/helpers/feature_analyzer'
 require 'kraken-mobile/mobile/mobile_process'
 require 'kraken-mobile/models/feature_file'
 require 'kraken-mobile/models/web_device'
@@ -34,6 +35,11 @@ class TestScenario
   end
 
   def run
+    unless @feature_file.right_syntax?
+      raise "ERROR: Verify feature file #{@file_path} has one unique @user tag"\
+      ' for each scenario'
+    end
+
     before_execution
     execute
     after_execution

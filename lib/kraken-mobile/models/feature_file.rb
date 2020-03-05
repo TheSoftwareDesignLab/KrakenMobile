@@ -47,6 +47,45 @@ class FeatureFile
     user_scenario.tags.reject { |tag| tag == user_tag }
   end
 
+  def right_syntax?
+    all_scenarios_have_a_user_tag? &&
+      only_one_user_tag_for_each_scenario? &&
+      !duplicate_tags_for_a_user?
+  end
+
+  def duplicate_tags_for_a_user?
+    taken_user_tags = {}
+    scenarios.each do |scenario|
+      user_tag = scenario.tags.select do |tag|
+        tag.start_with?('@user')
+      end.first
+      return true unless taken_user_tags[user_tag].nil?
+
+      taken_user_tags[user_tag] = user_tag
+    end
+    false
+  end
+
+  def only_one_user_tag_for_each_scenario?
+    scenarios.each do |scenario|
+      user_tags = scenario.tags.select do |tag|
+        tag.start_with?('@user')
+      end
+      return false if user_tags.count != 1
+    end
+    true
+  end
+
+  def all_scenarios_have_a_user_tag?
+    scenarios.each do |scenario|
+      user_tag = scenario.tags.select do |tag|
+        tag.start_with?('@user')
+      end.first
+      return false if user_tag.nil?
+    end
+    true
+  end
+
   private
 
   def read_content
