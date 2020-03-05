@@ -15,10 +15,15 @@ class KrakenApp
   #-------------------------------
   # Constructors
   #-------------------------------
-  def initialize(apk_path:)
+  def initialize(apk_path:, properties_path: nil)
     @apk_path = apk_path
     @scenarios_queue = []
     build_scenarios_queue
+
+    save_path_in_environment_variable_with_name(
+      name: 'PROPERTIES_PATH',
+      path: properties_path
+    )
   end
 
   def start
@@ -60,5 +65,21 @@ class KrakenApp
     scenario = scenarios_queue.pop
     scenario.run
     scenario
+  end
+
+  def save_path_in_environment_variable_with_name(name:, path:)
+    return if path.nil?
+
+    absolute_path = File.expand_path(path)
+    save_value_in_environmant_variable_with_name(
+      name: name,
+      value: absolute_path
+    )
+  end
+
+  def save_value_in_environmant_variable_with_name(name:, value:)
+    return if name.nil? || value.nil?
+
+    ENV[name] = value
   end
 end

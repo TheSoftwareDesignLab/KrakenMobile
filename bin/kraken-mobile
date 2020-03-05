@@ -22,7 +22,7 @@ def read_configuration
   configuration_command
 end
 
-def read_properties
+def read_user_entered_properties_path
   properties_command = ARGV.select { |arg| arg.include?('--properties=') }.first
   return if properties_command.nil?
 
@@ -68,8 +68,8 @@ else
   when 'run'
     require File.join(File.dirname(__FILE__), 'kraken_mobile_calabash_android')
     configuration = read_configuration
-    properties = read_properties
-    handle_calabash_android(configuration, properties)
+    user_entered_properties_path = read_user_entered_properties_path
+    handle_calabash_android(configuration, user_entered_properties_path)
   else
     print_usage
   end

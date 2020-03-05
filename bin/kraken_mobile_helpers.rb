@@ -27,7 +27,7 @@ end
 def print_devices
   puts 'List of devices attached'
   ADB.connected_devices.each_with_index do |device, index|
-    puts "user#{index + 1} - #{device}"
+    puts "user#{index + 1} - #{device.to_s.split(K::SEPARATOR).join(' - ')}"
   end
 end
 
@@ -84,7 +84,7 @@ end
 def ensure_properties_is_valid(properties)
   return if File.exist?(properties) &&
             File.file?(properties) &&
-            !properties.end_with?('.json')
+            properties.end_with?('.json')
 
   puts 'The path of the properties file is not valid.'
   exit 1
