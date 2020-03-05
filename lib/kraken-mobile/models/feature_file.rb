@@ -24,7 +24,12 @@ class FeatureFile
   #-------------------------------
   def number_of_required_mobile_devices
     all_tags = @scenarios.map(&:tags).flatten.uniq
-    all_tags.select { |tag| tag == '@mobile' }.count
+    mobile_tagged_count = all_tags.select { |tag| tag == '@mobile' }.count
+    empty_tagged_scenarios = @scenarios.select do |scenario|
+      !scenario.tags.include?('@mobile') &&
+        !scenario.tags.include?('@web')
+    end
+    mobile_tagged_count + empty_tagged_scenarios.count
   end
 
   def number_of_required_web_devices

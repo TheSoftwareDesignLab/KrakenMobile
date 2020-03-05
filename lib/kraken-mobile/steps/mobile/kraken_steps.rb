@@ -66,6 +66,10 @@ Then(/^I save device snapshot in file with path "([^\"]*)"$/) do |file_path|
   device.save_snapshot_in_file_path(file_path)
 end
 
+Then(/^I enter text "([^\"]*)"$/) do |text|
+  keyboard_enter_text(text, {})
+end
+
 private
 
 def current_process_id
