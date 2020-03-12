@@ -1,6 +1,5 @@
 require 'kraken-mobile/utils/feature_reader'
 require 'kraken-mobile/test_scenario'
-require 'byebug'
 
 class KrakenApp
   include Utils::FeatureReader

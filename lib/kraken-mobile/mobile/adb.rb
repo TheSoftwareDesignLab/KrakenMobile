@@ -36,6 +36,13 @@ class ADB
       raise "ERROR: Can\'t save snapshot for device #{device_id}."
     end
 
+    def device_sdk_version(device_id:)
+      version = sdk_version_for_device_with_id(device_id: device_id)
+      version.strip
+    rescue StandardError => _e
+      raise "ERROR: Can\'t get SDK version for device #{device_id}."
+    end
+
     private
 
     def extract_device_id(line)

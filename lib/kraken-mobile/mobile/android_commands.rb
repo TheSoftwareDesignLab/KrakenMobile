@@ -35,5 +35,9 @@ module Android
     def save_snapshot_for_device_with_id_in_path(device_id:, file_path:)
       `adb -s #{device_id} shell cat /sdcard/window_dump.xml > #{file_path}`
     end
+
+    def sdk_version_for_device_with_id(device_id:)
+      `adb -s #{device_id} shell getprop ro.build.version.sdk`
+    end
   end
 end

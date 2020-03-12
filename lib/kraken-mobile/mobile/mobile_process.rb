@@ -1,4 +1,5 @@
 require 'kraken-mobile/device_process.rb'
+require 'kraken-mobile/utils/k'
 
 class MobileProcess < DeviceProcess
   #-------------------------------
@@ -25,21 +26,8 @@ class MobileProcess < DeviceProcess
     nil
   end
 
-  private
-
-  def execution_command
-    feature_path = test_scenario.feature_file.file_path
-    raise 'ERROR: Invalid feature file path' if feature_path.nil?
-
-    process_apk_path = apk_path
-    raise 'ERROR: Invalid APK file path' if process_apk_path.nil?
-
-    "|ADB_DEVICE_ARG=#{device.id} calabash-android run #{process_apk_path} \
-    #{feature_path} --tags @user#{id}"
-  end
-
   #-------------------------------
-  # Helpers
+  # Methods
   #-------------------------------
 
   def apk_path
@@ -50,6 +38,24 @@ class MobileProcess < DeviceProcess
 
     path
   end
+
+  private
+
+  def execution_command
+    feature_path = test_scenario.feature_file.file_path
+    raise 'ERROR: Invalid feature file path' if feature_path.nil?
+
+    process_apk_path = apk_path
+    raise 'ERROR: Invalid APK file path' if process_apk_path.nil?
+
+    "|ADB_DEVICE_ARG=#{device.id} calabash-android run #{process_apk_path} "\
+    "#{feature_path} --tags @user#{id} --format pretty --format json -o "\
+    "#{K::REPORT_PATH}/#{@test_scenario.execution_id}/#{device.id}/#{K::FILE_REPORT_NAME}" # TODO, folder to save all things
+  end
+
+  #-------------------------------
+  # Helpers
+  #-------------------------------
 
   def config_json
     config_absolute_path = File.expand_path(ENV[K::CONFIG_PATH])

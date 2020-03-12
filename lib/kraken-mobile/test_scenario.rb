@@ -3,6 +3,7 @@ require 'kraken-mobile/mobile/mobile_process'
 require 'kraken-mobile/models/feature_file'
 require 'kraken-mobile/models/web_device'
 require 'kraken-mobile/web/web_process'
+require 'kraken-mobile/utils/reporter'
 require 'kraken-mobile/mobile/adb'
 require 'kraken-mobile/utils/k'
 require 'parallel'
@@ -14,6 +15,8 @@ class TestScenario
   attr_accessor :devices
   attr_accessor :kraken_app
   attr_accessor :feature_file
+  attr_accessor :execution_id
+  attr_accessor :reporter
 
   #-------------------------------
   # Constructors
@@ -22,6 +25,8 @@ class TestScenario
     @feature_file = FeatureFile.new(file_path: feature_file_path)
     @devices = sample_devices
     @kraken_app = kraken_app
+    @execution_id = Digest::SHA256.hexdigest(Time.now.to_f.to_s)
+    @reporter = Reporter.new(test_scenario: self)
   end
 
   #-------------------------------
@@ -34,6 +39,7 @@ class TestScenario
     K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
       File.delete(file_path) if File.exist?(file_path)
     end
+    @reporter.create_report_folder_requirements
   end
 
   def run
@@ -53,6 +59,7 @@ class TestScenario
     K::PROCESS_STATE_FILE_PATH.each do |_state, file_path|
       File.delete(file_path) if File.exist?(file_path)
     end
+    @reporter.save_report
     notify_scenario_finished
   end
 

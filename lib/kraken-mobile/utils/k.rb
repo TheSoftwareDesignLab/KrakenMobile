@@ -15,6 +15,17 @@ module K
   ANDROID_DEVICE = 'ANDROID_DEVICE' unless defined? ANDROID_DEVICE
   PROPERTIES_PATH = 'PROPERTIES_PATH' unless defined? PROPERTIES_PATH
   CONFIG_PATH = 'CONFIG_PATH' unless defined? CONFIG_PATH
+  REPORT_PATH = './reports' unless defined? REPORT_PATH
+  FILE_REPORT_NAME = 'report.json' unless defined? FILE_REPORT_NAME
+  D3_DATA_FILE_NAME = 'data.json' unless defined? D3_DATA_FILE_NAME
+
+  unless defined? DEVICES_REPORT_FILE_NAME
+    DEVICES_REPORT_FILE_NAME = 'devices.json'
+  end
+
+  unless defined? REPORT_ASSETS_PATH
+    REPORT_ASSETS_PATH = '../../../../reporter/assets/'
+  end
 
   unless defined? DEFAULT_START_TIMEOUT_SECONDS
     DEFAULT_START_TIMEOUT_SECONDS = 600 # 10.minutes

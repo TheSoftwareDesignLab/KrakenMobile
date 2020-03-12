@@ -44,6 +44,10 @@ class WebDevice < Device
     [height, width]
   end
 
+  def sdk_version
+    1.0 # Default
+  end
+
   def type
     K::WEB_DEVICE
   end

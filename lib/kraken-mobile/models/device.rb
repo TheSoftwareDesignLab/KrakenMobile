@@ -60,6 +60,10 @@ class Device
     raise 'ERROR: screen_size not implemented.'
   end
 
+  def sdk_version
+    raise 'ERROR: sdk_version not implemented.'
+  end
+
   def type
     raise 'ERROR: Unsupported device'
   end

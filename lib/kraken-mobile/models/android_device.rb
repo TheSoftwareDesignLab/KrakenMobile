@@ -68,6 +68,10 @@ class AndroidDevice < Device
     [height, width]
   end
 
+  def sdk_version
+    ADB.device_sdk_version(device_id: @id)
+  end
+
   def type
     K::ANDROID_DEVICE
   end

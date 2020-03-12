@@ -595,18 +595,18 @@
         <div class="clearfix"></div>
       </div>
       <div class="row">
-        <% @devices.each do |device| %>
+        <% devices_json.each do |device| %>
         <div class="ui-card col-md-3">
           <div class="container device-container">
             <div class="row device-os-icon">
               <i class="fa fa-android fa-lg"></i>
             </div>
-            <div class="row device-title"><%= device['model'] %></div>
-            <div class="row device-info">ID - <%= device['id'] %></div>
-            <div class="row device-info">SDK Version - <%= device['sdk'] %></div>
-            <div class="row device-info">Screen Size - <%= "#{device['screen_height']}x#{device['screen_width']}" %></div>
+            <div class="row device-title"><%= device[:model] %></div>
+            <div class="row device-info">ID - <%= device[:id] %></div>
+            <div class="row device-info">SDK Version - <%= device[:sdk] %></div>
+            <div class="row device-info">Screen Size - <%= "#{device[:screen_height]}x#{device[:screen_width]}" %></div>
             <div class="row device-info result-btn">
-              <a href='<%= "./#{device['id']}/feature_report.html" %>'>See Results</a>
+              <a href='<%= "./#{device[:id]}/feature_report.html" %>'>See Results</a>
             </div>
           </div>
         </div>
