@@ -176,7 +176,7 @@ You can use the specified properties using the following sintax.
 
 ```Gherkin
 @user1
-Scenario: As a kjkhdkjds
+Scenario: As a user
     Given I wait
     Then I see the text "<PASSWORD>"
 ```
@@ -185,6 +185,40 @@ Scenario: As a kjkhdkjds
 
 ```
 kraken-mobile run <apk> --properties=<kraken_mobile_properties_path>
+```
+
+# Use fake strings in tests
+
+Kraken offers a Fake string generator thanks to the Ruby gem [Faker](https://github.com/faker-ruby/faker), the list of supported faker types are listed as follows:
+
+* Name
+* Number
+* Email
+* String
+* String Date
+
+### Use a faker in a test
+
+Kraken keeps a record of every Fake string generated, thats why each string will have an id associated. To generate a Faker string you need to follow the structure "$FAKERNAME_ID".
+
+```Gherkin
+@user1
+Scenario: As a user
+    Given I wait
+    Then I enter text "$name_1" into field with id "view"
+```
+
+### Reusing a fake string
+
+As mentioned before, Kraken keeps record of every string generated with an id given to each string, this gives you the possibility of reusing this string later in your scenario. To reuse a string you can you need to append a $ character to the fake string as follows:
+
+```Gherkin
+@user1
+Scenario: As a user
+    Given I wait
+    Then I enter text "$name_1" into field with id "view"
+    Then I press "add_button"
+    Then I should see "$$name_1"
 ```
 
 # Examples
