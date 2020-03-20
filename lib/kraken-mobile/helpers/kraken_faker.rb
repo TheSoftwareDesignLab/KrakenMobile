@@ -86,7 +86,7 @@ class KrakenFaker
   # Generators
   #-------------------------------
   def generate_name
-    Faker::Name.name
+    Faker::Name.first_name
   end
 
   def generate_number
