@@ -1,11 +1,9 @@
-require 'kraken-mobile/runners/calabash/android/operations'
+require 'kraken-mobile/hooks/mobile_operations'
 
 Before do |scenario|
-  start_kraken_test_server_in_background scenario
-  @scenario_tags
+  start_test_kraken_server_in_background
 end
 
 After do |scenario|
-  shutdown_kraken_test_server scenario
-  uninstall_app_with_calabash
+  shutdown_test_kraken_server
 end

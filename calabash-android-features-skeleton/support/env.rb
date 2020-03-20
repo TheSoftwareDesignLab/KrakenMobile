@@ -1,1 +1,1 @@
-require 'kraken-mobile/runners/calabash/android/cucumber'
+require 'kraken-mobile/utils/mobile_cucumber'
