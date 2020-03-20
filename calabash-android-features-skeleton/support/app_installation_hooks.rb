@@ -1,11 +1,13 @@
 require 'calabash-android/management/app_installation'
 
-AfterConfiguration do |config|
+AfterConfiguration do |_config|
   FeatureMemory.feature = nil
 end
 
 Before do |scenario|
-  scenario = scenario.scenario_outline if scenario.respond_to?(:scenario_outline)
+  scenario = scenario.scenario_outline if scenario.respond_to?(
+    :scenario_outline
+  )
 
   feature = scenario.feature
   if FeatureMemory.feature != feature || ENV['RESET_BETWEEN_SCENARIOS'] == '1'

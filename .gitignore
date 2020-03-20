@@ -1,3 +1,7 @@
 /kraken-mobile-*.gem
 /example
 /Gemfile.lock
+.byebug_history
+.DS_Store
+/features
+/test_servers
