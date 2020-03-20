@@ -176,7 +176,7 @@ You can use the specified properties using the following sintax.
 
 ```Gherkin
 @user1
-Scenario: As a kjkhdkjds
+Scenario: As a user
     Given I wait
     Then I see the text "<PASSWORD>"
 ```
@@ -203,7 +203,7 @@ Kraken keeps a record of every Fake string generated, thats why each string will
 
 ```Gherkin
 @user1
-Scenario: As a kjkhdkjds
+Scenario: As a user
     Given I wait
     Then I enter text "$name_1" into field with id "view"
 ```
@@ -214,7 +214,7 @@ As mentioned before, Kraken keeps record of every string generated with an id gi
 
 ```Gherkin
 @user1
-Scenario: As a kjkhdkjds
+Scenario: As a user
     Given I wait
     Then I enter text "$name_1" into field with id "view"
     Then I press "add_button"
