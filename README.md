@@ -221,6 +221,38 @@ Scenario: As a user
     Then I should see "$$name_1"
 ```
 
+# Monkey execution
+
+Kraken offers the possibility of generating random GUI events by using Android ADB monkey as well as its own implementation based in the idea of sending and reading random signals.
+
+## Android's ADB Monkey
+
+To execute ADB monkey Kraken offers the following command specifying the number of events to be executed:
+
+```Gherkin
+Then I start a monkey with (\d+) events
+```
+
+## Kraken's own monkey
+
+Kraken extended the ADB monkey behavior by sending and writing random signals as well as executing GUI events only in buttons and clickable views or inputs by offering the following command:
+
+```Gherkin
+Then I start kraken monkey with (\d+) events
+```
+
+# XML snapshot
+
+Kraken makes it possible to save the XML presented by the current view in a specific device, this is convenient to identify view ids, asserting the correct XML is presented after an action has being completed or running static analyzing tools.
+
+## Saving the snapshot
+
+To save the snapshot of the current view, Kraken offers the following step specifying where the file is going to be saved:
+
+```Gherkin
+Then I save device snapshot in file with path "([^\"]*)"
+```
+
 # Examples
 
 
