@@ -63,13 +63,13 @@ class KrakenApp
     return if path.nil?
 
     absolute_path = File.expand_path(path)
-    save_value_in_environmant_variable_with_name(
+    save_value_in_environment_variable_with_name(
       name: name,
       value: absolute_path
     )
   end
 
-  def save_value_in_environmant_variable_with_name(name:, value:)
+  def save_value_in_environment_variable_with_name(name:, value:)
     return if name.nil? || value.nil?
 
     ENV[name] = value

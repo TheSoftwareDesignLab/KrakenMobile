@@ -22,9 +22,20 @@ class FeatureFile
   #-------------------------------
   # Helpers
   #-------------------------------
-  def number_of_required_mobile_devices
+  def user_tags
     all_tags = @scenarios.map(&:tags).flatten.uniq
-    mobile_tagged_count = all_tags.select { |tag| tag == '@mobile' }.count
+    all_tags.select { |tag| tag.start_with?('@user') }
+  end
+
+  def system_tags
+    all_tags = @scenarios.map(&:tags).flatten
+    all_tags.select do |tag|
+      tag.start_with?('@web') || tag.start_with?('@mobile')
+    end
+  end
+
+  def number_of_required_mobile_devices
+    mobile_tagged_count = system_tags.select { |tag| tag == '@mobile' }.count
     empty_tagged_scenarios = @scenarios.select do |scenario|
       !scenario.tags.include?('@mobile') &&
         !scenario.tags.include?('@web')
@@ -33,13 +44,22 @@ class FeatureFile
   end
 
   def number_of_required_web_devices
-    all_tags = @scenarios.map(&:tags).flatten.uniq
-    all_tags.select { |tag| tag == '@web' }.count
+    system_tags.select { |tag| tag == '@web' }.count
   end
 
   def number_of_required_devices
-    all_tags = @scenarios.map(&:tags).flatten.uniq
-    all_tags.select { |tag| tag.start_with?('@user') }.count
+    user_tags.count
+  end
+
+  def required_devices
+    users = user_tags
+    systems = system_tags
+    users.map do |user|
+      {
+        user_id: user.delete_prefix('@user'),
+        system_type: systems.shift || '@mobile'
+      }
+    end
   end
 
   def tags_for_user_id(user_id)

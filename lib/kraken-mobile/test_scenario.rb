@@ -26,6 +26,9 @@ class TestScenario
     @devices = sample_devices
     @kraken_app = kraken_app
     @execution_id = Digest::SHA256.hexdigest(Time.now.to_f.to_s)
+
+    ensure_apk_specified_if_necessary
+
     @reporter = Reporter.new(test_scenario: self)
   end
 
@@ -135,7 +138,13 @@ class TestScenario
   def sample_devices
     return predefined_devices if requires_predefined_devices?
 
-    (sample_mobile_devices + sample_web_devices).flatten
+    mobile = sample_mobile_devices
+    web = sample_web_devices
+    devices = []
+    @feature_file.required_devices.sort_by do |device|
+      devices << (device[:system_type] == '@web' ? web.shift : mobile.shift)
+    end
+    devices.compact
   end
 
   def sample_mobile_devices
@@ -189,5 +198,16 @@ class TestScenario
         model: device_json['model']
       )
     end
+  end
+
+  def apk_required?
+    sample_mobile_devices.any?
+  end
+
+  def ensure_apk_specified_if_necessary
+    return unless apk_required?
+    return unless @kraken_app&.apk_path.nil?
+
+    raise 'ERROR: Invalid APK file path'
   end
 end
