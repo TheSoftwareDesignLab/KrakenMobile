@@ -1,6 +1,7 @@
+require 'kraken-mobile/steps/general_steps'
+require 'kraken-mobile/utils/k'
 require 'selenium-webdriver'
 require 'uri'
-require 'kraken-mobile/utils/k'
 
 driver = Selenium::WebDriver.for :chrome
 
@@ -78,11 +79,4 @@ AfterStep do |_scenario|
   path = "#{ENV[K::SCREENSHOT_PATH]}/#{SecureRandom.hex(12)}.png"
   driver.save_screenshot(path)
   embed(path, 'image/png', File.basename(path))
-end
-
-private
-
-def current_process_id
-  tag_process_id = @scenario_tags.grep(/@user/).first
-  tag_process_id.delete_prefix('@user')
 end
