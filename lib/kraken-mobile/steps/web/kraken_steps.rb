@@ -4,7 +4,7 @@ require 'kraken-mobile/utils/k'
 require 'selenium-webdriver'
 require 'uri'
 
-driver = Selenium::WebDriver.for :chrome
+driver = Selenium::WebDriver.for((ENV['BROWSER'] || 'firefox').to_sym)
 
 Given(/^I navigate to page "([^\"]*)"$/) do |web_url|
   raise 'ERROR: Invalid URL' if web_url.nil?
