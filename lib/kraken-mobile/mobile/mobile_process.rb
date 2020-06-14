@@ -11,6 +11,7 @@ class MobileProcess < DeviceProcess
   end
 
   def after_execute
+    unregister_process_from_directory
     device.delete_inbox
   end
 

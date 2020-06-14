@@ -1,3 +1,5 @@
+require 'fileutils'
+
 # Abstract class
 class DeviceProcess
   attr_accessor :id
@@ -41,6 +43,19 @@ class DeviceProcess
     File.open(K::DIRECTORY_PATH, 'a') do |file|
       file.puts("#{id}#{K::SEPARATOR}#{device}")
     end
+  end
+
+  def unregister_process_from_directory
+    File.open(K::DIRECTORY_PATH, 'r') do |f|
+      File.open("#{K::DIRECTORY_PATH}.tmp", 'w') do |f2|
+        f.each_line do |line|
+          f2.write(line) unless line.start_with?(
+            "#{id}#{K::SEPARATOR}#{device}"
+          )
+        end
+      end
+    end
+    FileUtils.mv("#{K::DIRECTORY_PATH}.tmp", K::DIRECTORY_PATH)
   end
 
   def notify_ready_to_start

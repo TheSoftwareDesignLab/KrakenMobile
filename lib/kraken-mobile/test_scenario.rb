@@ -190,17 +190,23 @@ class TestScenario
     file = open(config_absolute_path)
     content = file.read
     devices_json = JSON.parse(content).values
-
     devices_json.map do |device_json|
-      AndroidDevice.new(
-        id: device_json['id'],
-        model: device_json['model']
-      )
+      if device_json['type'] == K::ANDROID_DEVICE
+        AndroidDevice.new(
+          id: device_json['id'], model: device_json['model']
+        )
+      elsif device_json['type'] == K::WEB_DEVICE
+        WebDevice.new(
+          id: device_json['id'], model: device_json['model']
+        )
+      else
+        raise 'ERROR: Platform not supported'
+      end
     end
   end
 
   def apk_required?
-    sample_mobile_devices.any?
+    sample_mobile_devices.any? && ENV[K::CONFIG_PATH].nil?
   end
 
   def ensure_apk_specified_if_necessary
