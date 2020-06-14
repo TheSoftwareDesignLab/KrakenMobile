@@ -1,3 +1,4 @@
+require 'kraken-mobile/monkeys/web/web_monkey'
 require 'kraken-mobile/steps/general_steps'
 require 'kraken-mobile/utils/k'
 require 'selenium-webdriver'
@@ -75,6 +76,12 @@ Then(
   device.read_signal(signal, seconds)
 end
 
+Then(/^I start a monkey with (\d+) events$/) do |number_of_events|
+  monkey = WebMonkey.new(driver: driver)
+  monkey.execute_kraken_monkey(number_of_events)
+end
+
+# Hooks
 AfterStep do |_scenario|
   path = "#{ENV[K::SCREENSHOT_PATH]}/#{SecureRandom.hex(12)}.png"
   driver.save_screenshot(path)
