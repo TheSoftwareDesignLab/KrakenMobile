@@ -89,3 +89,19 @@ def ensure_properties_is_valid(properties)
   puts 'The path of the properties file is not valid.'
   exit 1
 end
+
+def ensure_android_sdk_installed
+  return unless ENV['ANDROID_HOME'].nil?
+
+  puts 'To use Kraken you need to have installed Android SDK first. '\
+        'Make sure you have the environment variable ANDROID_HOME configured'
+  exit 1
+end
+
+def ensure_java_installed
+  return unless ENV['ANDROID_HOME'].nil?
+
+  puts 'To use Kraken you need to have installed Java first.'\
+        'Make sure you have the environment variable JAVA_HOME configured'
+  exit 1
+end

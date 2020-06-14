@@ -64,11 +64,17 @@ else
   when 'gen'
     scaffold_folder_structure
   when 'resign'
+    ensure_java_installed
+    ensure_android_sdk_installed
+
     require 'calabash-android/helpers'
     puts 'Resigning APK with Calabash-Android'
     ensure_apk_is_specified
     resign_apk(user_entered_apk_path)
   when 'run'
+    ensure_java_installed
+    ensure_android_sdk_installed
+
     require File.join(File.dirname(__FILE__), 'kraken_mobile_calabash_android')
     configuration = read_configuration
     user_entered_properties_path = read_user_entered_properties_path
