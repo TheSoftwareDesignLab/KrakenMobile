@@ -175,7 +175,11 @@
                 <%= device.model %> - <%= device.id %>
               </td>
               <td>
-                <i class="fa fa-android fa-lg"><span>android</span></i>
+                <% if device.type == K::ANDROID_DEVICE %>
+                  <i class="fa fa-android fa-lg"><span>android</span></i>
+                <% else %>
+                  <i class="fa fa-globe fa-lg"><span>web</span></i>
+                <% end %>
               </td>
               <td>
                 <%= @apk_path %>

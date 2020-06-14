@@ -50,7 +50,7 @@ class MobileProcess < DeviceProcess
 
     "|ADB_DEVICE_ARG=#{device.id} calabash-android run #{process_apk_path} "\
     "#{feature_path} --tags @user#{id} --format pretty --format json -o "\
-    "#{K::REPORT_PATH}/#{@test_scenario.execution_id}/#{device.id}/#{K::FILE_REPORT_NAME}" # TODO, folder to save all things
+    "#{K::REPORT_PATH}/#{@test_scenario.execution_id}/#{device.id}/#{K::FILE_REPORT_NAME}"
   end
 
   #-------------------------------

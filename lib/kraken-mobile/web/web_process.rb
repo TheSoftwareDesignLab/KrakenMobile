@@ -34,6 +34,8 @@ class WebProcess < DeviceProcess
     # TODO, only execute one file
     "|cucumber --tags @user#{id}\
     --require features/web/step_definitions/web_steps.rb \
-    --require features/web/support/app_life_cycle_hooks.rb"
+    --require features/web/support/app_life_cycle_hooks.rb \
+    --format pretty --format json -o \
+    #{K::REPORT_PATH}/#{@test_scenario.execution_id}/#{device.id}/#{K::FILE_REPORT_NAME}"
   end
 end
