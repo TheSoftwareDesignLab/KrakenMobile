@@ -32,7 +32,6 @@ class WebProcess < DeviceProcess
     feature_path = test_scenario.feature_file.file_path
     raise 'ERROR: Invalid feature file path' if feature_path.nil?
 
-    # TODO, only execute one file
     "|cucumber #{feature_path} --tags @user#{id}\
     --require features/web/step_definitions/web_steps.rb \
     --require features/web/support/app_life_cycle_hooks.rb \
