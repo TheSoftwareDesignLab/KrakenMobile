@@ -26,10 +26,10 @@ class TestScenario
     @devices = sample_devices
     @kraken_app = kraken_app
     @execution_id = Digest::SHA256.hexdigest(Time.now.to_f.to_s)
+    @reporter = Reporter.new(test_scenario: self)
 
     ensure_apk_specified_if_necessary
-
-    @reporter = Reporter.new(test_scenario: self)
+    setup_scenario_environment_variables
   end
 
   #-------------------------------
@@ -73,11 +73,12 @@ class TestScenario
     Parallel.map_with_index(
       @devices, in_threads: @devices.count
     ) do |device, index|
-      user_id = index + 1
-      start_process_for_user_id_in_device(
-        user_id,
-        device
-      )
+      unless device.nil?
+        user_id = index + 1
+        start_process_for_user_id_in_device(
+          user_id, device
+        )
+      end
     end
   end
 
@@ -140,11 +141,9 @@ class TestScenario
 
     mobile = sample_mobile_devices
     web = sample_web_devices
-    devices = []
-    @feature_file.required_devices.sort_by do |device|
-      devices << (device[:system_type] == '@web' ? web.shift : mobile.shift)
+    @feature_file.sorted_required_devices.map do |device|
+      device[:system_type] == '@web' ? web.shift : mobile.shift
     end
-    devices.compact
   end
 
   def sample_mobile_devices
@@ -209,5 +208,13 @@ class TestScenario
     return unless @kraken_app&.apk_path.nil?
 
     raise 'ERROR: Invalid APK file path'
+  end
+
+  def setup_scenario_environment_variables
+    return if @kraken_app.nil? || @reporter.nil?
+
+    @kraken_app.save_value_in_environment_variable_with_name(
+      name: K::SCREENSHOT_PATH, value: @reporter.screenshot_path
+    )
   end
 end

@@ -607,8 +607,10 @@
             </div>
             <div class="row device-title"><%= device[:model] %></div>
             <div class="row device-info">ID - <%= device[:id] %></div>
-            <div class="row device-info">SDK Version - <%= device[:sdk] %></div>
-            <div class="row device-info">Screen Size - <%= "#{device[:screen_height]}x#{device[:screen_width]}" %></div>
+            <% if device[:type] == K::ANDROID_DEVICE %>
+              <div class="row device-info">SDK Version - <%= device[:sdk] %></div>
+              <div class="row device-info">Screen Size - <%= "#{device[:screen_height]}x#{device[:screen_width]}" %></div>
+            <% end %>
             <div class="row device-info result-btn">
               <a href='<%= "./#{device[:id]}/feature_report.html" %>'>See Results</a>
             </div>

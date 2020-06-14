@@ -27,15 +27,35 @@ class KrakenApp
     build_scenarios_queue
   end
 
-  def start
-    execute_next_scenario
-  end
-
   #-------------------------------
   # Observers
   #-------------------------------
   def on_test_scenario_finished
     execute_next_scenario
+  end
+
+  #-------------------------------
+  # Helpers
+  #-------------------------------
+
+  def start
+    execute_next_scenario
+  end
+
+  def save_path_in_environment_variable_with_name(name:, path:)
+    return if path.nil?
+
+    absolute_path = File.expand_path(path)
+    save_value_in_environment_variable_with_name(
+      name: name,
+      value: absolute_path
+    )
+  end
+
+  def save_value_in_environment_variable_with_name(name:, value:)
+    return if name.nil? || value.nil?
+
+    ENV[name] = value
   end
 
   private
@@ -57,21 +77,5 @@ class KrakenApp
     scenario = scenarios_queue.pop
     scenario.run
     scenario
-  end
-
-  def save_path_in_environment_variable_with_name(name:, path:)
-    return if path.nil?
-
-    absolute_path = File.expand_path(path)
-    save_value_in_environment_variable_with_name(
-      name: name,
-      value: absolute_path
-    )
-  end
-
-  def save_value_in_environment_variable_with_name(name:, value:)
-    return if name.nil? || value.nil?
-
-    ENV[name] = value
   end
 end

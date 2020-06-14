@@ -1,5 +1,6 @@
 require 'selenium-webdriver'
 require 'uri'
+require 'kraken-mobile/utils/k'
 
 driver = Selenium::WebDriver.for :chrome
 
@@ -74,7 +75,7 @@ Then(
 end
 
 AfterStep do |_scenario|
-  path = "./screenshot_#{SecureRandom.hex(12)}.png"
+  path = "#{ENV[K::SCREENSHOT_PATH]}/#{SecureRandom.hex(12)}.png"
   driver.save_screenshot(path)
   embed(path, 'image/png', File.basename(path))
 end

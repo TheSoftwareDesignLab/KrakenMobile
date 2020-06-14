@@ -28,19 +28,17 @@ class FeatureFile
   end
 
   def system_tags
-    all_tags = @scenarios.map(&:tags).flatten
-    all_tags.select do |tag|
-      tag.start_with?('@web') || tag.start_with?('@mobile')
+    @scenarios.map do |scenario|
+      tags = scenario.tags
+      system_tag = tags.select do |tag|
+        tag.start_with?('@web') || tag.start_with?('@mobile')
+      end.first
+      system_tag || '@mobile'
     end
   end
 
   def number_of_required_mobile_devices
-    mobile_tagged_count = system_tags.select { |tag| tag == '@mobile' }.count
-    empty_tagged_scenarios = @scenarios.select do |scenario|
-      !scenario.tags.include?('@mobile') &&
-        !scenario.tags.include?('@web')
-    end
-    mobile_tagged_count + empty_tagged_scenarios.count
+    system_tags.select { |tag| tag == '@mobile' }.count
   end
 
   def number_of_required_web_devices
@@ -54,11 +52,18 @@ class FeatureFile
   def required_devices
     users = user_tags
     systems = system_tags
+
     users.map do |user|
       {
         user_id: user.delete_prefix('@user'),
         system_type: systems.shift || '@mobile'
       }
+    end
+  end
+
+  def sorted_required_devices
+    required_devices.sort_by do |device|
+      device[:user_id].to_i
     end
   end
 

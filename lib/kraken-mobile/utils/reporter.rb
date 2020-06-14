@@ -148,6 +148,7 @@ class Reporter
   def create_report_execution_report_folder
     Dir.mkdir(K::REPORT_PATH) unless File.exist?(K::REPORT_PATH)
     Dir.mkdir("#{K::REPORT_PATH}/#{test_execution_id}")
+    Dir.mkdir(screenshot_path)
     FileUtils.cp_r(
       File.expand_path(K::REPORT_ASSETS_PATH, __FILE__),
       "#{K::REPORT_PATH}/#{test_execution_id}/"
@@ -170,6 +171,10 @@ class Reporter
         "#{device.id}"
       )
     end
+  end
+
+  def screenshot_path
+    "#{K::REPORT_PATH}/#{test_execution_id}/screenshots/"
   end
 
   private
