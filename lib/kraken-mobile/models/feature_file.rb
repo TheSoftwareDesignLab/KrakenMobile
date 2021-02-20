@@ -22,24 +22,49 @@ class FeatureFile
   #-------------------------------
   # Helpers
   #-------------------------------
-  def number_of_required_mobile_devices
+  def user_tags
     all_tags = @scenarios.map(&:tags).flatten.uniq
-    mobile_tagged_count = all_tags.select { |tag| tag == '@mobile' }.count
-    empty_tagged_scenarios = @scenarios.select do |scenario|
-      !scenario.tags.include?('@mobile') &&
-        !scenario.tags.include?('@web')
+    all_tags.select { |tag| tag.start_with?('@user') }
+  end
+
+  def system_tags
+    @scenarios.map do |scenario|
+      tags = scenario.tags
+      system_tag = tags.select do |tag|
+        tag.start_with?('@web') || tag.start_with?('@mobile')
+      end.first
+      system_tag || '@mobile'
     end
-    mobile_tagged_count + empty_tagged_scenarios.count
+  end
+
+  def number_of_required_mobile_devices
+    system_tags.select { |tag| tag == '@mobile' }.count
   end
 
   def number_of_required_web_devices
-    all_tags = @scenarios.map(&:tags).flatten.uniq
-    all_tags.select { |tag| tag == '@web' }.count
+    system_tags.select { |tag| tag == '@web' }.count
   end
 
   def number_of_required_devices
-    all_tags = @scenarios.map(&:tags).flatten.uniq
-    all_tags.select { |tag| tag.start_with?('@user') }.count
+    user_tags.count
+  end
+
+  def required_devices
+    users = user_tags
+    systems = system_tags
+
+    users.map do |user|
+      {
+        user_id: user.delete_prefix('@user'),
+        system_type: systems.shift || '@mobile'
+      }
+    end
+  end
+
+  def sorted_required_devices
+    required_devices.sort_by do |device|
+      device[:user_id].to_i
+    end
   end
 
   def tags_for_user_id(user_id)
@@ -95,7 +120,9 @@ class FeatureFile
 
   def read_content
     parser = Gherkin::Parser.new
-    file_content = File.open(file_path).read
+    file = File.open(file_path)
+    file_content = file.read
+    file.close
     gherkin_document = parser.parse(file_content)
     pickles = Gherkin::Pickles::Compiler.new.compile(gherkin_document)
     pickles.each do |scenario|

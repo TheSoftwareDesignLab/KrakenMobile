@@ -5,7 +5,8 @@ class WebDevice < Device
   # Signaling
   #-------------------------------
   def create_inbox
-    File.open(inbox_file_path, 'w')
+    file = File.open(inbox_file_path, 'w')
+    file.close
   end
 
   def delete_inbox
@@ -80,7 +81,9 @@ class WebDevice < Device
   end
 
   def inbox_last_signal
-    lines = File.open(inbox_file_path).to_a
+    file = File.open(inbox_file_path)
+    lines = file.to_a
+    file.close
     lines.last&.strip
   end
 end

@@ -9,6 +9,7 @@ ParameterType(
       s.slice!(">")
       file = open(ENV["PROPERTIES_PATH"])
       content = file.read
+      file.close
       properties = JSON.parse(content)
       raise "Property <#{s}> not found for #{channel}" if !properties[channel] || !properties[channel][s]
       return properties[channel][s]

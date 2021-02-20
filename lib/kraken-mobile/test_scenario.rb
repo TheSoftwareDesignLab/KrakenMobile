@@ -5,7 +5,7 @@ require 'kraken-mobile/models/web_device'
 require 'kraken-mobile/web/web_process'
 require 'kraken-mobile/utils/reporter'
 require 'kraken-mobile/mobile/adb'
-require 'kraken-mobile/utils/k'
+require 'kraken-mobile/utils/k.rb'
 require 'parallel'
 
 class TestScenario
@@ -27,6 +27,9 @@ class TestScenario
     @kraken_app = kraken_app
     @execution_id = Digest::SHA256.hexdigest(Time.now.to_f.to_s)
     @reporter = Reporter.new(test_scenario: self)
+
+    ensure_apk_specified_if_necessary
+    setup_scenario_environment_variables
   end
 
   #-------------------------------
@@ -70,11 +73,12 @@ class TestScenario
     Parallel.map_with_index(
       @devices, in_threads: @devices.count
     ) do |device, index|
-      user_id = index + 1
-      start_process_for_user_id_in_device(
-        user_id,
-        device
-      )
+      unless device.nil?
+        user_id = index + 1
+        start_process_for_user_id_in_device(
+          user_id, device
+        )
+      end
     end
   end
 
@@ -135,7 +139,11 @@ class TestScenario
   def sample_devices
     return predefined_devices if requires_predefined_devices?
 
-    (sample_mobile_devices + sample_web_devices).flatten
+    mobile = sample_mobile_devices
+    web = sample_web_devices
+    @feature_file.sorted_required_devices.map do |device|
+      device[:system_type] == '@web' ? web.shift : mobile.shift
+    end
   end
 
   def sample_mobile_devices
@@ -181,13 +189,39 @@ class TestScenario
     config_absolute_path = File.expand_path(ENV[K::CONFIG_PATH])
     file = open(config_absolute_path)
     content = file.read
+    file.close
     devices_json = JSON.parse(content).values
-
     devices_json.map do |device_json|
-      AndroidDevice.new(
-        id: device_json['id'],
-        model: device_json['model']
-      )
+      if device_json['type'] == K::ANDROID_DEVICE
+        AndroidDevice.new(
+          id: device_json['id'], model: device_json['model']
+        )
+      elsif device_json['type'] == K::WEB_DEVICE
+        WebDevice.new(
+          id: device_json['id'], model: device_json['model']
+        )
+      else
+        raise 'ERROR: Platform not supported'
+      end
     end
+  end
+
+  def apk_required?
+    sample_mobile_devices.any? && ENV[K::CONFIG_PATH].nil?
+  end
+
+  def ensure_apk_specified_if_necessary
+    return unless apk_required?
+    return unless @kraken_app&.apk_path.nil?
+
+    raise 'ERROR: Invalid APK file path'
+  end
+
+  def setup_scenario_environment_variables
+    return if @kraken_app.nil? || @reporter.nil?
+
+    @kraken_app.save_value_in_environment_variable_with_name(
+      name: K::SCREENSHOT_PATH, value: @reporter.screenshot_path
+    )
   end
 end

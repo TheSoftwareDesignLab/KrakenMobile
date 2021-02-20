@@ -1,4 +1,4 @@
-require 'kraken-mobile/utils/k'
+require 'kraken-mobile/utils/k.rb'
 require 'json'
 
 class Reporter
@@ -48,6 +48,7 @@ class Reporter
       "#{K::REPORT_PATH}/#{test_execution_id}/#{K::DEVICES_REPORT_FILE_NAME}"
     )
     content = report_file.read
+    report_file.close
     devices_report = report_by_devices
     @features_report = fetures_from_report_by_devices(devices_report)
     data_hash = feature_by_nodes_and_links @features_report
@@ -71,6 +72,16 @@ class Reporter
   end
 
   def generate_device_report(device, id)
+    if device.is_a? AndroidDevice
+      generate_mobile_report(device, id)
+    elsif device.is_a? WebDevice
+      generate_web_report(device, id)
+    else
+      raise 'ERROR: Platform not supported'
+    end
+  end
+
+  def generate_mobile_report(device, id)
     process = MobileProcess.new(
       id: id,
       device: device,
@@ -79,6 +90,36 @@ class Reporter
     @apk_path = process.apk_path
     report_file = open("#{K::REPORT_PATH}/#{test_execution_id}/#{device.id}/#{K::FILE_REPORT_NAME}")
     content = report_file.read
+    report_file.close
+    @features = JSON.parse(content)
+    @total_scenarios = total_scenarios @features
+    @device = device
+    @total_failed_scenarios_percentage = total_failed_scenarios_percentage @features
+    @total_passed_scenarios_percentage = total_passed_scenarios_percentage @features
+    @total_passed_features_percentage = total_passed_features_percentage @features
+    @total_failed_features_percentage = total_failed_features_percentage @features
+    erb_file = File.join(File.expand_path('../../../../reporter', __FILE__), "feature_report.html.erb")
+    html_file = File.join(File.expand_path("#{K::REPORT_PATH}/#{test_execution_id}/#{device.id}/"), File.basename(erb_file, '.erb')) #=>"page.html"
+    # Variables
+    template = File.read(erb_file)
+    result = ERB.new(template).result(binding)
+    # write result to file
+    File.open(html_file, 'w+') do |f|
+      f.write result
+    end
+    generate_features_report @features, device
+  end
+
+  def generate_web_report(device, id)
+    process = WebProcess.new(
+      id: id,
+      device: device,
+      test_scenario: @test_scenario
+    )
+    @apk_path = nil
+    report_file = open("#{K::REPORT_PATH}/#{test_execution_id}/#{device.id}/#{K::FILE_REPORT_NAME}")
+    content = report_file.read
+    report_file.close
     @features = JSON.parse(content)
     @total_scenarios = total_scenarios @features
     @device = device
@@ -110,6 +151,7 @@ class Reporter
   def create_report_execution_report_folder
     Dir.mkdir(K::REPORT_PATH) unless File.exist?(K::REPORT_PATH)
     Dir.mkdir("#{K::REPORT_PATH}/#{test_execution_id}")
+    Dir.mkdir(screenshot_path)
     FileUtils.cp_r(
       File.expand_path(K::REPORT_ASSETS_PATH, __FILE__),
       "#{K::REPORT_PATH}/#{test_execution_id}/"
@@ -132,6 +174,10 @@ class Reporter
         "#{device.id}"
       )
     end
+  end
+
+  def screenshot_path
+    "#{K::REPORT_PATH}/#{test_execution_id}/screenshots/"
   end
 
   private
@@ -170,6 +216,7 @@ class Reporter
         "#{K::REPORT_PATH}/#{test_execution_id}/#{device[:id]}/#{K::FILE_REPORT_NAME}"
       )
       content = report_file.read
+      report_file.close
       devices_report[device[:user]] = JSON.parse(content)
       devices_report[device[:user]].each do |d| d['device_model'] = device[:model] if !d['device_model'] end
       devices_report[device[:user]].each do |d| d['device_id'] = device[:id] if !d['device_id'] end
@@ -316,7 +363,7 @@ class Reporter
   def devices
     raise 'ERROR: Invalid test scenario' if @test_scenario.nil?
 
-    @test_scenario.devices
+    @test_scenario.devices.compact
   end
 
   def devices_json

@@ -26,6 +26,7 @@ module KrakenMobile
       # Variables
       report_file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{KrakenMobile::Constants::REPORT_DEVICES_FILE_NAME}.json")
       content = report_file.read
+      report_file.close
       @devices = JSON.parse(content)
       devices_report = report_by_devices(@devices)
       @features_report = fetures_from_report_by_devices devices_report
@@ -45,6 +46,7 @@ module KrakenMobile
       @apk_path = device.config["apk_path"] ? device.config["apk_path"] : @options[:apk_path]
       report_file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device.id}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json")
       content = report_file.read
+      report_file.close
       @features = JSON.parse(content)
       @total_scenarios = total_scenarios @features
       @device = device
@@ -70,6 +72,7 @@ module KrakenMobile
         next if !File.exists?("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device['id']}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json")
         report_file = open("#{KrakenMobile::Constants::REPORT_PATH}/#{@execution_id}/#{device['id']}/#{KrakenMobile::Constants::REPORT_FILE_NAME}.json")
         content = report_file.read
+        report_file.close
         devices_report[device['user']] = JSON.parse(content)
         devices_report[device['user']].each do |d| d["device_model"] = device["model"] if !d["device_model"] end
         devices_report[device['user']].each do |d| d["device_id"] = device["id"] if !d["device_id"] end

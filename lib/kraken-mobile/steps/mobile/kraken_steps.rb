@@ -1,5 +1,5 @@
 require 'calabash-android/calabash_steps'
-require 'kraken-mobile/utils/K'
+require 'kraken-mobile/utils/k.rb'
 require 'kraken-mobile/models/android_device'
 require 'kraken-mobile/steps/general_steps'
 

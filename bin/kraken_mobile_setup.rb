@@ -1,9 +1,11 @@
 require 'io/console'
 require 'tty-prompt'
+$LOAD_PATH << File.expand_path('../lib', __dir__)
+require 'kraken-mobile/utils/k.rb'
 
 class KrakenSetup
   WEB_IDENTIFIER = 'Web'.freeze
-  IS_WEB_AVAILABLE_FOR_SELECTION = false
+  IS_WEB_AVAILABLE_FOR_SELECTION = true
 
   attr_accessor :prompt
   attr_accessor :devices_connected_id
@@ -85,6 +87,7 @@ class KrakenSetup
     @settings[user_id] = {
       id: device_id,
       model: device.model,
+      type: K::ANDROID_DEVICE,
       config: {
         apk_path: apk
       }
@@ -96,6 +99,7 @@ class KrakenSetup
     @settings[user_id] = {
       id: device.id,
       model: device.model,
+      type: K::WEB_DEVICE,
       config: {}
     }
   end

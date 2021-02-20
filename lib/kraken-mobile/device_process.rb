@@ -1,3 +1,5 @@
+require 'fileutils'
+
 # Abstract class
 class DeviceProcess
   attr_accessor :id
@@ -43,10 +45,38 @@ class DeviceProcess
     end
   end
 
+  def unregister_process_from_directory
+    File.open(K::DIRECTORY_PATH, 'r') do |f|
+      File.open("#{K::DIRECTORY_PATH}.tmp", 'w') do |f2|
+        f.each_line do |line|
+          f2.write(line) unless line.start_with?(
+            "#{id}#{K::SEPARATOR}#{device}"
+          )
+        end
+      end
+    end
+    FileUtils.mv("#{K::DIRECTORY_PATH}.tmp", K::DIRECTORY_PATH)
+  end
+
   def notify_ready_to_start
     File.open(K::DIRECTORY_PATH, 'a') do |file|
       file.puts("#{id}#{K::SEPARATOR}#{device}")
     end
+  end
+
+  def running_on_windows?
+    RbConfig::CONFIG['host_os'] =~ /cygwin|mswin|mingw|bccwin|wince|emx/
+  end
+
+  def exporting_command_for_environment_variables(variables = {})
+    commands = variables.map do |key, value|
+      if running_on_windows?
+        "(SET \"#{key}=#{value}\")"
+      else
+        "#{key}=#{value};export #{key}"
+      end
+    end
+    commands.join(terminal_command_separator)
   end
 
   def self.directory
@@ -90,5 +120,11 @@ class DeviceProcess
     end
 
     devices_ready || []
+  end
+
+  def terminal_command_separator
+    return ' & ' if running_on_windows?
+
+    ';'
   end
 end

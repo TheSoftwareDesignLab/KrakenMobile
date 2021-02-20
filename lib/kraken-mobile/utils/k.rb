@@ -18,6 +18,7 @@ module K
   REPORT_PATH = './reports' unless defined? REPORT_PATH
   FILE_REPORT_NAME = 'report.json' unless defined? FILE_REPORT_NAME
   D3_DATA_FILE_NAME = 'data.json' unless defined? D3_DATA_FILE_NAME
+  SCREENSHOT_PATH = 'SCREENSHOT_PATH' unless defined? SCREENSHOT_PATH
 
   unless defined? DEVICES_REPORT_FILE_NAME
     DEVICES_REPORT_FILE_NAME = 'devices.json'

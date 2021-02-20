@@ -1,5 +1,5 @@
 require 'faker'
-require 'kraken-mobile/utils/k'
+require 'kraken-mobile/utils/k.rb'
 require 'json'
 
 class KrakenFaker
@@ -56,6 +56,7 @@ class KrakenFaker
     absolute_dictionary_path = File.expand_path(K::DICTIONARY_PATH)
     file = open(absolute_dictionary_path)
     content = file.read
+    file.close
     JSON.parse(content)
   end
 

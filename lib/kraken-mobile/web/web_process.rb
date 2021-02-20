@@ -10,6 +10,7 @@ class WebProcess < DeviceProcess
   end
 
   def after_execute
+    unregister_process_from_directory
     device.delete_inbox
   end
 
@@ -31,9 +32,10 @@ class WebProcess < DeviceProcess
     feature_path = test_scenario.feature_file.file_path
     raise 'ERROR: Invalid feature file path' if feature_path.nil?
 
-    # TODO, only execute one file
-    "|cucumber --tags @user#{id}\
+    "|cucumber #{feature_path} --tags @user#{id} \
     --require features/web/step_definitions/web_steps.rb \
-    --require features/web/support/app_life_cycle_hooks.rb"
+    --require features/web/support/app_life_cycle_hooks.rb \
+    --format pretty --format json -o \
+    #{K::REPORT_PATH}/#{@test_scenario.execution_id}/#{device.id}/#{K::FILE_REPORT_NAME}"
   end
 end

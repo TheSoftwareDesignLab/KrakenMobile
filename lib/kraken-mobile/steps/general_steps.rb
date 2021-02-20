@@ -64,6 +64,7 @@ def all_user_properties_as_json
 
   file = open(properties_absolute_path)
   content = file.read
+  file.close
   JSON.parse(content)
 end
 
