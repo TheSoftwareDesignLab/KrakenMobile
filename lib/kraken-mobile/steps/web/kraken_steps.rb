@@ -33,6 +33,10 @@ Then(/^I click on element having id "(.*?)"$/) do |id|
   sleep 2
 end
 
+Then(/^I wait$/) do
+  sleep 5
+end
+
 Then(/^I wait for (\d+) seconds$/) do |seconds|
   return if seconds.nil?
 

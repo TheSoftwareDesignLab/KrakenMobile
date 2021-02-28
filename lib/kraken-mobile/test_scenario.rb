@@ -29,13 +29,13 @@ class TestScenario
     @reporter = Reporter.new(test_scenario: self)
 
     ensure_apk_specified_if_necessary
-    setup_scenario_environment_variables
   end
 
   #-------------------------------
   # Lifecycle
   #-------------------------------
   def before_execution
+    setup_scenario_environment_variables
     delete_all_web_inboxes
     File.delete(K::DIRECTORY_PATH) if File.exist?(K::DIRECTORY_PATH)
     File.delete(K::DICTIONARY_PATH) if File.exist?(K::DICTIONARY_PATH)
