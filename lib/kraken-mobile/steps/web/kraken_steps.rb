@@ -47,6 +47,20 @@ Then(/^I should see text "(.*?)"$/) do |text|
   @driver.page_source.include?(text)
 end
 
+Then(/^I click on element having css selector "(.*?)"$/) do |selector|
+  @driver.find_element(:css, selector).click
+  sleep 2
+end
+
+Then(
+  /^I select option with value "(.*?)" for dropdown with id "(.*?)"$/
+) do |op_value, sel_id|
+  drop = @driver.find_element(:id, sel_id)
+  choose = Selenium::WebDriver::Support::Select.new(drop)
+  choose.select_by(:value, op_value)
+  sleep 2
+end
+
 # Kraken Steps
 Then(
   /^I send a signal to user (\d+) containing "([^\"]*)"$/
